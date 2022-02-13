@@ -51,6 +51,7 @@ class Schmackhaft extends LitElement {
         href="${link.href}"
         img="${link.img}"
         .tags="${link.tags}"
+        @chipClicked="${this.onChipClicked}"
       ></sh-link>
     `;
   }
@@ -90,6 +91,11 @@ class Schmackhaft extends LitElement {
     this.requestUpdate();
   }
 
+  onChipClicked(evt: Event) {
+    this.links.filter(evt.detail);
+    this.requestUpdate();
+  }
+
   override render() {
     return html`
       <mwc-textfield
@@ -105,7 +111,7 @@ class Schmackhaft extends LitElement {
       <mwc-button @click="${this._addTag}" label="Add" icon="add"></mwc-button>
       <br />
       <p class="tags">${this.links.searchedTags.map(this._renderTag, this)}</p>
-      ${this.links.filtered.map(this._renderLink)}
+      ${this.links.filtered.map(this._renderLink, this)}
     `;
   }
 }

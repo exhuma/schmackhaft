@@ -10,13 +10,20 @@ class Chip extends LitElement {
       margin-right: 0.5rem;
       padding: 0 0.8rem;
       border-radius: 1rem;
+      cursor: pointer;
     }
   `;
 
   @property()
   name = "";
 
+  onClick(evt: Event) {
+    this.dispatchEvent(new CustomEvent("chipClicked", { detail: this.name }));
+  }
+
   override render() {
-    return html`<span class="chip">${this.name}</span>`;
+    return html`<span class="chip" @click="${this.onClick}"
+      >${this.name}</span
+    >`;
   }
 }

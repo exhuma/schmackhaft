@@ -49,8 +49,16 @@ class Link extends LitElement {
   @property()
   img = "";
 
+  onClick(evt: Event) {
+    console.log(evt);
+    this.dispatchEvent(new CustomEvent("chipClicked", { detail: evt.detail }));
+  }
+
   _chip(name: string) {
-    return html`<sh-chip name="${name}"></sh-chip>`;
+    return html`<sh-chip
+      name="${name}"
+      @chipClicked="${this.onClick}"
+    ></sh-chip>`;
   }
 
   override render() {
@@ -60,7 +68,7 @@ class Link extends LitElement {
         <h2><a href="${this.href}">${this.title}</a></h2>
         <p>${this.description}</p>
         <a href="${this.href}">${this.href}</a>
-        <p>${this.tags.map(this._chip)}</p>
+        <p>${this.tags.map(this._chip, this)}</p>
       </div>
     `;
   }
