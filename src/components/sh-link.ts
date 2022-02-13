@@ -1,9 +1,14 @@
 import { css, CSSResultGroup, html, LitElement } from "lit";
 import { property, customElement } from "lit/decorators.js";
+import "./sh-chip";
 
 @customElement("sh-link")
 class Link extends LitElement {
   static styles = css`
+    * {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+        Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+    }
     .screenshot {
       width: 64px;
       height: 64px;
@@ -11,13 +16,21 @@ class Link extends LitElement {
       margin-right: 1rem;
     }
     .chip {
-      border: 1px dashed blue;
+      border: 1px solid #9494bb;
+      background-color: #e0e0ee;
+      margin-right: 0.5rem;
+      padding: 0 0.8rem;
+      border-radius: 1rem;
     }
     H2 {
       margin: 0;
     }
     DIV {
-      border: 1px solid black;
+      border: 1px solid #ddd;
+      background: #fafafa;
+      border-radius: 5px;
+      padding: 0.5rem 1rem;
+      margin-bottom: 0.5rem;
     }
   `;
 
@@ -37,7 +50,7 @@ class Link extends LitElement {
   img = "";
 
   _chip(name: string) {
-    return html`<span class="chip">${name}</span>`;
+    return html`<sh-chip name="${name}"></sh-chip>`;
   }
 
   override render() {

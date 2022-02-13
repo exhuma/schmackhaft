@@ -4,6 +4,8 @@ import { ref, createRef, Ref } from "lit/directives/ref.js";
 import "./components/sh-link";
 import { Links } from "./core/links";
 import { Link } from "./model/link";
+import "@material/mwc-textfield";
+import "@material/mwc-button";
 
 @customElement("app-schmackhaft")
 class Schmackhaft extends LitElement {
@@ -54,11 +56,11 @@ class Schmackhaft extends LitElement {
   }
 
   _renderTag(tagName: string, component: any) {
-    return html`<span
-      class="tag"
+    return html`<sh-chip
+      name="${tagName}"
       data-tag="${tagName}"
       @click="${this._removeTag}"
-      >${tagName}</span
+      >${tagName}</sh-chip
     >`;
   }
 
@@ -90,20 +92,18 @@ class Schmackhaft extends LitElement {
 
   override render() {
     return html`
-      <input
+      <mwc-textfield
         ${ref(this.searchTextRef)}
-        placeholder="search"
-        type="text"
-      /><input
-        type="button"
-        value="Go!"
+        label="Search term"
+      ></mwc-textfield>
+      <mwc-button
         @click="${this._onSearchExecuted}"
-      /><br />
-      <input ${ref(this.tagsRef)} placeholder="tags" type="text" /><input
-        type="button"
-        value="Add"
-        @click="${this._addTag}"
-      /><br />
+        label="Search"
+        icon="search"
+      ></mwc-button>
+      <mwc-textfield ${ref(this.tagsRef)} label="tags"></mwc-textfield>
+      <mwc-button @click="${this._addTag}" label="Add" icon="add"></mwc-button>
+      <br />
       <p class="tags">${this.links.searchedTags.map(this._renderTag, this)}</p>
       ${this.links.filtered.map(this._renderLink)}
     `;

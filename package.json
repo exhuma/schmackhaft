@@ -13,7 +13,11 @@
   "license": "MIT",
   "dependencies": {
     "@esm-bundle/chai": "^4.3.4-fix.0",
-    "lit": "^2.1.2"
+    "@material/mwc-button": "^0.25.3",
+    "@material/mwc-textfield": "^0.25.3",
+    "install": "^0.13.0",
+    "lit": "^2.1.2",
+    "npm": "^8.5.0"
   },
   "devDependencies": {
     "@web/dev-server": "^0.1.29",
