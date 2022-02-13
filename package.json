@@ -1,8 +1,8 @@
 {
-  "name": "schmackhaft",
+  "name": "app-schmackhaft",
   "version": "1.0.0",
   "description": "A bookmark manager based on del.icio.us",
-  "main": "dist/schmackhaft.js",
+  "main": "dist/app-schmackhaft.js",
   "type": "module",
   "scripts": {
     "serve": "web-dev-server",
