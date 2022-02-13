@@ -84,7 +84,8 @@ class Schmackhaft extends LitElement {
     if (!this.searchTextRef.value) {
       return;
     }
-    console.log(this.searchTextRef.value.value);
+    this.links.search(this.searchTextRef.value.value);
+    this.requestUpdate();
   }
 
   override render() {
