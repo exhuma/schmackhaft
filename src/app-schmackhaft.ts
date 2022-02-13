@@ -6,6 +6,7 @@ import { Links } from "./core/links";
 import { Link } from "./model/link";
 import "@material/mwc-textfield";
 import "@material/mwc-button";
+import { demoLinks } from "./data";
 
 @customElement("app-schmackhaft")
 class Schmackhaft extends LitElement {
@@ -19,29 +20,7 @@ class Schmackhaft extends LitElement {
   tagsRef: Ref<HTMLInputElement> = createRef();
   searchTextRef: Ref<HTMLInputElement> = createRef();
 
-  links = new Links([
-    new Link(
-      "https://example.com/1",
-      ["tag1-1", "tag1-2", "group1"],
-      "Link1",
-      "/demo/example1.jpg",
-      "description 1"
-    ),
-    new Link(
-      "https://example.com/2",
-      ["tag2-1", "tag2-2", "tag2-3", "group1", "group2"],
-      "Link2",
-      "/demo/example2.jpg",
-      "description 2"
-    ),
-    new Link(
-      "https://example.com/3",
-      ["group2"],
-      "Link3",
-      "/demo/example3.jpg",
-      "description 3"
-    ),
-  ]);
+  links = demoLinks;
 
   _renderLink(link: Link) {
     return html`

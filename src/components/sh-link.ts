@@ -62,11 +62,18 @@ class Link extends LitElement {
   }
 
   override render() {
+    let title = html``;
+    if (this.title) {
+      title = html`<h2><a href="${this.href}">${this.title}</a></h2>`;
+    }
+    let description = html``;
+    if (this.description) {
+      description = html`<p>${this.description}</p>`;
+    }
     return html`
       <div>
         <img class="screenshot" src="${this.img}" />
-        <h2><a href="${this.href}">${this.title}</a></h2>
-        <p>${this.description}</p>
+        ${title} ${description}
         <a href="${this.href}">${this.href}</a>
         <p>${this.tags.map(this._chip, this)}</p>
       </div>

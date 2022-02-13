@@ -24,6 +24,9 @@ export class Links {
     const output = this.links.filter((link) => {
       return this.isMatchingOnTags(link) && this.isMatchingOnSearchString(link);
     });
+    output.sort((a: Link, b: Link) => {
+      return a.compString.localeCompare(b.compString);
+    });
     return output;
   }
 
