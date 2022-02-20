@@ -49,7 +49,7 @@ class Link extends LitElement {
   @property()
   img = "";
 
-  onClick(evt: Event) {
+  onClick(evt: { detail: any }) {
     console.log(evt);
     this.dispatchEvent(new CustomEvent("chipClicked", { detail: evt.detail }));
   }
