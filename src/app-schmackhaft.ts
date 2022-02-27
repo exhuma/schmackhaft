@@ -3,6 +3,7 @@ import { state, customElement } from "lit/decorators.js";
 import { ref, createRef, Ref } from "lit/directives/ref.js";
 import "./components/sh-link";
 import "./components/sh-vsplit";
+import "./components/sh-taglist";
 import { Links } from "./core/links";
 import { Link } from "./model/link";
 import "@material/mwc-textfield";
@@ -82,6 +83,14 @@ class Schmackhaft extends LitElement {
     this.requestUpdate();
   }
 
+  onTagsModified(evt: { detail: string[] }) {
+    this.links.reset();
+    evt.detail.forEach((tagName) => {
+      this.links.filter(tagName);
+    });
+    this.requestUpdate();
+  }
+
   onChipClicked(evt: Event) {
     this.links.filter(evt.detail);
     this.requestUpdate();
@@ -90,7 +99,12 @@ class Schmackhaft extends LitElement {
   override render() {
     return html`
       <sh-vsplit>
-        <div slot="left">TODO</div>
+        <div slot="left">
+          <sh-taglist
+            @tagsModified="${this.onTagsModified}"
+            .links="${this.links}"
+          ></sh-taglist>
+        </div>
         <div slot="right">
           <div class="actions">
             <mwc-textfield

@@ -2,7 +2,7 @@ import { css, html, LitElement } from "lit";
 import { property, customElement } from "lit/decorators.js";
 
 @customElement("sh-chip")
-class Chip extends LitElement {
+export class Chip extends LitElement {
   static styles = css`
     .chip {
       border: 1px solid #9494bb;

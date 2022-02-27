@@ -51,6 +51,11 @@ export class Links {
     return output;
   }
 
+  reset() {
+    this.clearSearch();
+    this.searchedTags = [];
+  }
+
   unFilter(tagName: string) {
     if (!this.searchedTags.includes(tagName)) {
       return;
