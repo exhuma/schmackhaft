@@ -2,6 +2,7 @@ import { css, html, LitElement } from "lit";
 import { state, customElement } from "lit/decorators.js";
 import { ref, createRef, Ref } from "lit/directives/ref.js";
 import "./components/sh-link";
+import "./components/sh-vsplit";
 import { Links } from "./core/links";
 import { Link } from "./model/link";
 import "@material/mwc-textfield";
@@ -88,34 +89,41 @@ class Schmackhaft extends LitElement {
 
   override render() {
     return html`
-      <div class="actions">
-        <mwc-textfield
-          ${ref(this.searchTextRef)}
-          label="Search term"
-          helper="Search for a substring in the bookmark entries"
-          outlined
-          class="action-textfield"
-        ></mwc-textfield>
-        <mwc-button
-          @click="${this._onSearchExecuted}"
-          label="Search"
-          icon="search"
-        ></mwc-button>
-        <mwc-textfield
-          ${ref(this.tagsRef)}
-          label="tags"
-          outlined
-          helper="Search for a specific tag"
-          class="action-textfield"
-        ></mwc-textfield>
-        <mwc-button
-          @click="${this._addTag}"
-          label="Add"
-          icon="add"
-        ></mwc-button>
-      </div>
-      <p class="tags">${this.links.searchedTags.map(this._renderTag, this)}</p>
-      ${this.links.filtered.map(this._renderLink, this)}
+      <sh-vsplit>
+        <div slot="left">TODO</div>
+        <div slot="right">
+          <div class="actions">
+            <mwc-textfield
+              ${ref(this.searchTextRef)}
+              label="Search term"
+              helper="Search for a substring in the bookmark entries"
+              outlined
+              class="action-textfield"
+            ></mwc-textfield>
+            <mwc-button
+              @click="${this._onSearchExecuted}"
+              label="Search"
+              icon="search"
+            ></mwc-button>
+            <mwc-textfield
+              ${ref(this.tagsRef)}
+              label="tags"
+              outlined
+              helper="Search for a specific tag"
+              class="action-textfield"
+            ></mwc-textfield>
+            <mwc-button
+              @click="${this._addTag}"
+              label="Add"
+              icon="add"
+            ></mwc-button>
+          </div>
+          <p class="tags">
+            ${this.links.searchedTags.map(this._renderTag, this)}
+          </p>
+          ${this.links.filtered.map(this._renderLink, this)}
+        </div>
+      </sh-vsplit>
     `;
   }
 }
