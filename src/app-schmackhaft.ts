@@ -15,6 +15,17 @@ class Schmackhaft extends LitElement {
       border: 1px dashed blue;
       margin: 0.2rem;
     }
+
+    .actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 1rem;
+    }
+
+    .action-textfield {
+      flex-grow: 2;
+    }
   `;
 
   tagsRef: Ref<HTMLInputElement> = createRef();
@@ -77,18 +88,30 @@ class Schmackhaft extends LitElement {
 
   override render() {
     return html`
-      <mwc-textfield
-        ${ref(this.searchTextRef)}
-        label="Search term"
-      ></mwc-textfield>
-      <mwc-button
-        @click="${this._onSearchExecuted}"
-        label="Search"
-        icon="search"
-      ></mwc-button>
-      <mwc-textfield ${ref(this.tagsRef)} label="tags"></mwc-textfield>
-      <mwc-button @click="${this._addTag}" label="Add" icon="add"></mwc-button>
-      <br />
+      <div class="actions">
+        <mwc-textfield
+          ${ref(this.searchTextRef)}
+          label="Search term"
+          outlined
+          class="action-textfield"
+        ></mwc-textfield>
+        <mwc-button
+          @click="${this._onSearchExecuted}"
+          label="Search"
+          icon="search"
+        ></mwc-button>
+        <mwc-textfield
+          ${ref(this.tagsRef)}
+          label="tags"
+          outlined
+          class="action-textfield"
+        ></mwc-textfield>
+        <mwc-button
+          @click="${this._addTag}"
+          label="Add"
+          icon="add"
+        ></mwc-button>
+      </div>
       <p class="tags">${this.links.searchedTags.map(this._renderTag, this)}</p>
       ${this.links.filtered.map(this._renderLink, this)}
     `;
