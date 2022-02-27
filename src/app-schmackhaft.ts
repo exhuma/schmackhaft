@@ -92,6 +92,7 @@ class Schmackhaft extends LitElement {
         <mwc-textfield
           ${ref(this.searchTextRef)}
           label="Search term"
+          helper="Search for a substring in the bookmark entries"
           outlined
           class="action-textfield"
         ></mwc-textfield>
@@ -104,6 +105,7 @@ class Schmackhaft extends LitElement {
           ${ref(this.tagsRef)}
           label="tags"
           outlined
+          helper="Search for a specific tag"
           class="action-textfield"
         ></mwc-textfield>
         <mwc-button
