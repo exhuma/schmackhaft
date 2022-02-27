@@ -7,8 +7,17 @@ import { Chip } from "./sh-chip";
 @customElement("sh-taglist")
 class TagList extends LitElement {
   static styles = css`
-    sh-chip {
-      display: block;
+    .countedTag {
+      white-space: nowrap;
+      margin-top: 5px;
+      margin-bottom: 5px;
+    }
+    .tagCount {
+      border: 1px solid #888;
+      background-color: #efefef;
+      margin-left: -0.5rem;
+      display: inline-block;
+      padding: 0 0.5rem;
     }
   `;
 
@@ -53,11 +62,10 @@ class TagList extends LitElement {
   }
 
   renderFilterTag(tag: [string, number]) {
-    return html`<sh-chip
-        @click="${this.onFilterTagClick}"
-        name="${tag[0]}"
-      ></sh-chip
-      >&nbsp;(${tag[1]})<br />`;
+    return html`<div class="countedTag">
+      <sh-chip @click="${this.onFilterTagClick}" name="${tag[0]}"></sh-chip
+      >&nbsp;<span class="tagCount">${tag[1]}</span>
+    </div>`;
   }
 
   renderUnfilterTag(tag: string) {
