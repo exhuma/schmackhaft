@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "app-schmackhaft": "file:../schmackhaft/app-schmackhaft-1.0.0.tgz"
+  }
+}
