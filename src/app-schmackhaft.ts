@@ -29,6 +29,11 @@ class Schmackhaft extends LitElement {
     .action-textfield {
       flex-grow: 2;
     }
+
+    sh-linklist {
+      margin-top: 1em;
+      display: block;
+    }
   `;
 
   tagsRef: Ref<HTMLInputElement> = createRef();
@@ -86,6 +91,7 @@ class Schmackhaft extends LitElement {
       <sh-linklist
         ${ref(this.linkListRef)}
         .links=${this.links}
+        .renderSearchedTags="${false}"
         @tagFilterAdded="${this.onTagFilterAdded}"
         @tagFilterRemoved="${this.onTagFilterRemoved}"
         dense

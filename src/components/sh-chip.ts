@@ -11,6 +11,9 @@ export class Chip extends LitElement {
       padding: 0 0.8rem;
       border-radius: 1rem;
       cursor: pointer;
+      white-space: nowrap;
+      display: inline-block;
+      margin-top: 0.2rem;
     }
 
     .chip.dense {
@@ -31,10 +34,11 @@ export class Chip extends LitElement {
 
   override render() {
     let dynamicClasses = { dense: this.dense };
-    return html`<span
+    return html`<div
       class="chip ${classMap(dynamicClasses)}"
       @click="${this.onClick}"
-      >${this.name}</span
-    >`;
+    >
+      ${this.name}
+    </div>`;
   }
 }

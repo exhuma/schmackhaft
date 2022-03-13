@@ -10,6 +10,12 @@ export class LinkList extends LitElement {
   @property({ type: Object })
   links = new Links();
 
+  @property({ type: Boolean })
+  renderSearchedTags: boolean = true;
+
+  @property({ type: Boolean })
+  dense: boolean = false;
+
   _renderTag(tagName: string, component: any) {
     return html`<sh-chip
       name="${tagName}"
@@ -27,6 +33,7 @@ export class LinkList extends LitElement {
         href="${link.href}"
         img="${link.img}"
         .tags="${link.tags}"
+        dense="${this.dense}"
         @chipClicked="${this.onChipClicked}"
       ></sh-link>
     `;
@@ -49,9 +56,12 @@ export class LinkList extends LitElement {
   }
 
   override render() {
-    return html`
-      <p>${this.links.searchedTags.map(this._renderTag, this)}</p>
-      ${this.links.filtered.map(this._renderLink, this)}
-    `;
+    if (this.renderSearchedTags) {
+      return html`
+        <p>${this.links.searchedTags.map(this._renderTag, this)}</p>
+        ${this.links.filtered.map(this._renderLink, this)}
+      `;
+    }
+    return html` ${this.links.filtered.map(this._renderLink, this)} `;
   }
 }

@@ -15,27 +15,35 @@ export class TagList extends LitElement {
       display: inline-block;
       padding: 0 0.5rem;
     }
-    .countedTag {
+    .countedTag,
+    .unfilterTag {
       white-space: nowrap;
       margin-top: 5px;
       margin-bottom: 5px;
       display: inline-block;
       margin-left: 0.2rem;
     }
-    .countedTag.dense {
+    .countedTag.dense,
+    .unfilterTag.dense {
       font-size: 0.6em;
       margin-top: 0;
       margin-bottom: 0;
     }
-    .countedTag.dense .tagName {
+    .countedTag.dense .tagName,
+    .unfilterTag.dense .tagName {
       border-radius: 2px;
     }
-    .countedTag.dense .tagCount {
+    .countedTag.dense .tagCount,
+    .unfilterTag.dense .button {
       border: 1px solid #888;
       background-color: #efefef;
       margin-left: 0rem;
       padding: 0rem 0.2rem;
       border-left: 0;
+    }
+    .unfilterTag.dense .button {
+      background-color: #e0c5c5;
+      cursor: pointer;
     }
   `;
 
@@ -61,9 +69,9 @@ export class TagList extends LitElement {
       console.error("Tag click event with empty target");
       return;
     }
-    let chip = evt.currentTarget as Chip;
+    let div = evt.currentTarget as HTMLElement;
     this.dispatchEvent(
-      new CustomEvent("tagFilterRemoved", { detail: chip.name })
+      new CustomEvent("tagFilterRemoved", { detail: div.dataset.tag })
     );
   }
 
@@ -82,13 +90,13 @@ export class TagList extends LitElement {
 
   renderUnfilterTag(tag: string) {
     let dynamicClasses = { dense: this.dense };
-    return html`<div class="countedTag ${classMap(dynamicClasses)}">
-      <sh-chip
-        @click="${this.onUnfilterTagClick}"
-        class="tagName"
-        name="${tag}"
-        ?dense="${this.dense}"
-      ></sh-chip>
+    return html`<div
+      @click="${this.onUnfilterTagClick}"
+      class="unfilterTag ${classMap(dynamicClasses)}"
+      data-tag=${tag}
+    >
+      <sh-chip class="tagName" name="${tag}" ?dense="${this.dense}"></sh-chip
+      ><span class="button">x</span>
     </div>`;
   }
 
@@ -104,9 +112,10 @@ export class TagList extends LitElement {
       this.renderUnfilterTag,
       this
     );
-    let filterTags = counter.sortedEntries().map(this.renderFilterTag, this);
-    return html`${unfilterTags}
-      <hr />
-      ${filterTags}`;
+    let filterTags = counter.sortedEntries().filter((e) => {
+      return !this.links?.searchedTags.includes(e[0]);
+    });
+    let filterTagElements = filterTags.map(this.renderFilterTag, this);
+    return html`${unfilterTags} ${filterTagElements}`;
   }
 }
