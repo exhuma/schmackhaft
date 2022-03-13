@@ -1,5 +1,5 @@
 import { css, html, LitElement } from "lit";
-import { customElement } from "lit/decorators.js";
+import { customElement, property } from "lit/decorators.js";
 import { ref, createRef, Ref } from "lit/directives/ref.js";
 import "./components/sh-link";
 import "./components/sh-vsplit";
@@ -38,6 +38,9 @@ class Schmackhaft extends LitElement {
 
   links = demoLinks;
 
+  @property({ type: Boolean })
+  narrow: boolean = false;
+
   _addTag() {
     if (!this.tagsRef.value) {
       return;
@@ -71,7 +74,26 @@ class Schmackhaft extends LitElement {
     this.tagListRef.value?.requestUpdate();
   }
 
-  override render() {
+  renderNarrow() {
+    return html`
+      <sh-taglist
+        ${ref(this.tagListRef)}
+        @tagFilterAdded="${this.onTagFilterAdded}"
+        @tagFilterRemoved="${this.onTagFilterRemoved}"
+        .links="${this.links}"
+        dense
+      ></sh-taglist>
+      <sh-linklist
+        ${ref(this.linkListRef)}
+        .links=${this.links}
+        @tagFilterAdded="${this.onTagFilterAdded}"
+        @tagFilterRemoved="${this.onTagFilterRemoved}"
+        dense
+      ></sh-linklist>
+    `;
+  }
+
+  renderWide() {
     return html`
       <sh-vsplit>
         <div slot="left">
@@ -118,5 +140,12 @@ class Schmackhaft extends LitElement {
         </div>
       </sh-vsplit>
     `;
+  }
+
+  override render() {
+    if (this.narrow) {
+      return this.renderNarrow();
+    }
+    return this.renderWide();
   }
 }
