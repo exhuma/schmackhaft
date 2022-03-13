@@ -5,7 +5,7 @@ import { Links } from "../core/links";
 import { Chip } from "./sh-chip";
 
 @customElement("sh-taglist")
-class TagList extends LitElement {
+export class TagList extends LitElement {
   static styles = css`
     .countedTag {
       white-space: nowrap;
@@ -24,22 +24,14 @@ class TagList extends LitElement {
   @property({ type: Object })
   links: Links | null = null;
 
-  @state()
-  searchedTags: string[] = [];
-
   onFilterTagClick(evt: Event) {
     if (!evt.currentTarget) {
       console.error("Tag click event with empty target");
       return;
     }
     let chip = evt.currentTarget as Chip;
-    this.links?.filter(chip.name);
-    if (!this.searchedTags.includes(chip.name)) {
-      this.searchedTags.push(chip.name);
-    }
-    this.requestUpdate();
     this.dispatchEvent(
-      new CustomEvent("tagsModified", { detail: this.searchedTags })
+      new CustomEvent("tagFilterAdded", { detail: chip.name })
     );
   }
 
@@ -49,15 +41,8 @@ class TagList extends LitElement {
       return;
     }
     let chip = evt.currentTarget as Chip;
-    this.links?.unFilter(chip.name);
-    if (this.searchedTags.includes(chip.name)) {
-      this.searchedTags = this.searchedTags.filter(
-        (item) => item !== chip.name
-      );
-    }
-    this.requestUpdate();
     this.dispatchEvent(
-      new CustomEvent("tagsModified", { detail: this.searchedTags })
+      new CustomEvent("tagFilterRemoved", { detail: chip.name })
     );
   }
 
@@ -84,7 +69,10 @@ class TagList extends LitElement {
     this.links.filtered.forEach((element) => {
       counter.addAll(element.tags);
     });
-    let unfilterTags = this.searchedTags.map(this.renderUnfilterTag, this);
+    let unfilterTags = this.links.searchedTags.map(
+      this.renderUnfilterTag,
+      this
+    );
     let filterTags = counter.sortedEntries().map(this.renderFilterTag, this);
     return html`${unfilterTags}
       <hr />

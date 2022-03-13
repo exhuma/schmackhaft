@@ -1,14 +1,15 @@
 import { css, html, LitElement } from "lit";
-import { state, customElement } from "lit/decorators.js";
+import { customElement } from "lit/decorators.js";
 import { ref, createRef, Ref } from "lit/directives/ref.js";
 import "./components/sh-link";
 import "./components/sh-vsplit";
 import "./components/sh-taglist";
-import { Links } from "./core/links";
-import { Link } from "./model/link";
+import "./components/sh-linklist";
 import "@material/mwc-textfield";
 import "@material/mwc-button";
 import { demoLinks } from "./data";
+import { LinkList } from "./components/sh-linklist";
+import { TagList } from "./components/sh-taglist";
 
 @customElement("app-schmackhaft")
 class Schmackhaft extends LitElement {
@@ -32,30 +33,10 @@ class Schmackhaft extends LitElement {
 
   tagsRef: Ref<HTMLInputElement> = createRef();
   searchTextRef: Ref<HTMLInputElement> = createRef();
+  linkListRef: Ref<LinkList> = createRef();
+  tagListRef: Ref<TagList> = createRef();
 
   links = demoLinks;
-
-  _renderLink(link: Link) {
-    return html`
-      <sh-link
-        title="${link.title}"
-        description="${link.description}"
-        href="${link.href}"
-        img="${link.img}"
-        .tags="${link.tags}"
-        @chipClicked="${this.onChipClicked}"
-      ></sh-link>
-    `;
-  }
-
-  _renderTag(tagName: string, component: any) {
-    return html`<sh-chip
-      name="${tagName}"
-      data-tag="${tagName}"
-      @click="${this._removeTag}"
-      >${tagName}</sh-chip
-    >`;
-  }
 
   _addTag() {
     if (!this.tagsRef.value) {
@@ -63,15 +44,6 @@ class Schmackhaft extends LitElement {
     }
     const tagName = this.tagsRef.value.value;
     this.links.filter(tagName);
-    this.requestUpdate();
-  }
-
-  _removeTag(event: Event) {
-    const tagName = event.currentTarget?.dataset.tag;
-    if (!tagName) {
-      return;
-    }
-    this.links.unFilter(tagName);
     this.requestUpdate();
   }
 
@@ -83,17 +55,20 @@ class Schmackhaft extends LitElement {
     this.requestUpdate();
   }
 
-  onTagsModified(evt: { detail: string[] }) {
-    this.links.reset();
-    evt.detail.forEach((tagName) => {
-      this.links.filter(tagName);
-    });
+  onTagFilterAdded(evt: { detail: string }) {
+    let tag = evt.detail;
+    this.links.filter(tag);
     this.requestUpdate();
+    this.linkListRef.value?.requestUpdate();
+    this.tagListRef.value?.requestUpdate();
   }
 
-  onChipClicked(evt: Event) {
-    this.links.filter(evt.detail);
+  onTagFilterRemoved(evt: { detail: string }) {
+    let tag = evt.detail;
+    this.links.unFilter(tag);
     this.requestUpdate();
+    this.linkListRef.value?.requestUpdate();
+    this.tagListRef.value?.requestUpdate();
   }
 
   override render() {
@@ -101,7 +76,9 @@ class Schmackhaft extends LitElement {
       <sh-vsplit>
         <div slot="left">
           <sh-taglist
-            @tagsModified="${this.onTagsModified}"
+            ${ref(this.tagListRef)}
+            @tagFilterAdded="${this.onTagFilterAdded}"
+            @tagFilterRemoved="${this.onTagFilterRemoved}"
             .links="${this.links}"
           ></sh-taglist>
         </div>
@@ -132,10 +109,12 @@ class Schmackhaft extends LitElement {
               icon="add"
             ></mwc-button>
           </div>
-          <p class="tags">
-            ${this.links.searchedTags.map(this._renderTag, this)}
-          </p>
-          ${this.links.filtered.map(this._renderLink, this)}
+          <sh-linklist
+            ${ref(this.linkListRef)}
+            .links=${this.links}
+            @tagFilterAdded="${this.onTagFilterAdded}"
+            @tagFilterRemoved="${this.onTagFilterRemoved}"
+          ></sh-linklist>
         </div>
       </sh-vsplit>
     `;
