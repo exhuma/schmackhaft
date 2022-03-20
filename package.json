@@ -1,5 +1,11 @@
 {
   "dependencies": {
     "app-schmackhaft": "file:../schmackhaft/app-schmackhaft-1.0.0.tgz"
+  },
+  "scripts": {
+      "build": "tsc"
+  },
+  "devDependencies": {
+    "typescript": "^4.6.2"
   }
 }

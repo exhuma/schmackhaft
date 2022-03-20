@@ -18,9 +18,14 @@
         "128": "icons/icon.png"
     },
     "default_title": "Save to Schmackhaft",
-    "show_matches": ["http://*/*", "https://*/*"]
+    "show_matches": ["http://*/*", "https://*/*"],
+    "default_popup": "popup/page_action.html"
   },
   "background": {
     "page": "background.html"
-  }
+  },
+  "permissions": [
+    "<all_urls>",
+    "tabs"
+  ]
 }

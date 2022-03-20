@@ -1,22 +1,31 @@
+browser.runtime.getBackgroundPage().then((background) => {
+  refreshBookmarks();
+});
 
-// browser.runtime.getBackgroundPage().then(background => {
-//     let obj = background.document.getElementById("background-object");
-//     let existing = document.getElementById("background-object");
-//     console.log(document.body);
-//     // document.body.appendChild(obj);
-//     // console.log(obj)
-// })
+function refreshBookmarks() {
+  browser.runtime
+    .sendMessage({
+      method: "getBookmarks",
+    })
+    .then(onBookmarksRetrieved, handleError);
+}
 
-function handleResponse(response) {
-    console.log(response)
+function onBookmarksRetrieved(response) {
+  let element = document.getElementById("schmackhaft");
+  element.links = JSON.stringify(response);
 }
 
 function handleError() {
-    console.log({error_args: arguments})
+  console.log({ error_args: arguments });
 }
 
-document.getElementById("myButton").addEventListener('click', () => {
-    browser.runtime.sendMessage({
-        method: "getElement"
-    }).then(handleResponse, handleError)
-});
+function handleMessage(request, sender, sendResponse) {
+  console.log({ sidebarmessagehandler: request });
+  if (request.method === "bookmarksModified") {
+    refreshBookmarks();
+  } else {
+    console.error(`Unknown request: ${request.method}`);
+  }
+}
+
+browser.runtime.onMessage.addListener(handleMessage);
