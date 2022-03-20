@@ -12,9 +12,14 @@ function handleMessage(request, sender, sendResponse) {
   if (request.method === "getBookmarks") {
     sendResponse(BOOKMARKS);
   } else if (request.method === "addBookmark") {
+    if (BOOKMARKS.find((item) => item.href === request.args.href)) {
+      // TODO Update existing tags instead of returning and doing nothing
+      return;
+    }
+
     BOOKMARKS.push({
       href: request.args.href,
-      tags: ["from-popup"],
+      tags: request.args.tags.length === 0 ? ["untagged"] : request.args.tags,
       title: request.args.title,
     });
     browser.runtime.sendMessage({

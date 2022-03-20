@@ -6,9 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Hello Popup (title)</title>
     <script type="module" src="popup.js"></script>
+    <style>
+      BODY {
+        margin: 2rem;
+      }
+      INPUT {
+        margin-bottom: 0.5rem;
+      }
+    </style>
   </head>
   <body>
-    Hello popup
-    <button id="ActionButton">Go!</button>
+    <input type="text" placeholder="tag1, tag2, tag3" id="TagsField" /><br />
+    <button id="ActionButton">TODO (better button design)</button>
   </body>
 </html>
