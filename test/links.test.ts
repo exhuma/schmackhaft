@@ -93,3 +93,93 @@ describe("Link Collection", () => {
     expect(hrefs).to.have.members(expected);
   });
 });
+
+describe("JSON links", () => {
+  it("Allows loading links from JSON content", () => {
+    let links = Links.fromJson(
+      JSON.stringify([
+        {
+          href: "https://example.com/1",
+          title: "example-1",
+          description: "description-1",
+          image: "https://image-1",
+          tags: ["tag-1-1", "tag-1-2"],
+        },
+        {
+          href: "https://example.com/2",
+          title: "example-2",
+          description: "description-2",
+          image: "https://image-2",
+          tags: ["tag-2-1", "tag-2-2"],
+        },
+      ])
+    );
+    let expected = new Links([
+      new Link(
+        "https://example.com/1",
+        ["tag-1-1", "tag-1-2"],
+        "example-1",
+        "https://image-1",
+        "description-1"
+      ),
+      new Link(
+        "https://example.com/2",
+        ["tag-2-1", "tag-2-2"],
+        "example-2",
+        "https://image-2",
+        "description-2"
+      ),
+    ]);
+    expect(links).to.eql(expected);
+  });
+  it("Allows converting links to JSON", () => {
+    let data = new Links([
+      new Link(
+        "https://example.com/1",
+        ["tag-1-1", "tag-1-2"],
+        "example-1",
+        "https://image-1",
+        "description-1"
+      ),
+      new Link(
+        "https://example.com/2",
+        ["tag-2-1", "tag-2-2"],
+        "example-2",
+        "https://image-2",
+        "description-2"
+      ),
+    ]);
+    let expected = [
+      {
+        href: "https://example.com/1",
+        title: "example-1",
+        description: "description-1",
+        image: "https://image-1",
+        tags: ["tag-1-1", "tag-1-2"],
+      },
+      {
+        href: "https://example.com/2",
+        title: "example-2",
+        description: "description-2",
+        image: "https://image-2",
+        tags: ["tag-2-1", "tag-2-2"],
+      },
+    ];
+    let result = JSON.parse(data.toJson());
+    expect(result).to.eql(expected);
+  });
+  it("sets sensible defaults on missing keys", () => {
+    let result = Links.fromJson(
+      JSON.stringify([
+        {
+          href: "https://example.com/2",
+          tags: ["tag-2-1", "tag-2-2"],
+        },
+      ])
+    );
+    let expected = new Links([
+      new Link("https://example.com/2", ["tag-2-1", "tag-2-2"]),
+    ]);
+    expect(result).to.eql(expected);
+  });
+});

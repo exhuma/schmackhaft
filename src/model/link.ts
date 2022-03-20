@@ -1,3 +1,11 @@
+export type JsonSchema = {
+  href: string;
+  tags: string[];
+  title: string;
+  image: string;
+  description: string;
+};
+
 export class Link {
   title: string;
   description: string;

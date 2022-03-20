@@ -23,9 +23,19 @@
   </head>
 
   <body>
-    <app-schmackhaft narrow></app-schmackhaft>
+    <app-schmackhaft
+      id="schmackhaft"
+      narrow
+      links='[{"href": "https://example.com", "tags": ["tag1"]}]'
+    ></app-schmackhaft>
+    <button id="TestButton">Set new links</button>
     <script type="module">
       import "./dist/app-schmackhaft.js";
+      document.getElementById("TestButton").addEventListener("click", () => {
+        document.getElementById("schmackhaft").links = JSON.stringify([
+          { href: "https://example-2", tags: ["tag-2"] },
+        ]);
+      });
     </script>
   </body>
 </html>

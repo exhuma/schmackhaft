@@ -7,9 +7,9 @@ import "./components/sh-taglist";
 import "./components/sh-linklist";
 import "@material/mwc-textfield";
 import "@material/mwc-button";
-import { demoLinks } from "./data";
 import { LinkList } from "./components/sh-linklist";
 import { TagList } from "./components/sh-taglist";
+import { Links } from "./core/links";
 
 @customElement("app-schmackhaft")
 class Schmackhaft extends LitElement {
@@ -41,17 +41,27 @@ class Schmackhaft extends LitElement {
   linkListRef: Ref<LinkList> = createRef();
   tagListRef: Ref<TagList> = createRef();
 
-  links = demoLinks;
+  private _links: Links = new Links();
 
   @property({ type: Boolean })
   narrow: boolean = false;
+
+  @property({ type: String })
+  get links() {
+    return this._links.toJson();
+  }
+
+  set links(data: string) {
+    this._links = Links.fromJson(data);
+    this.requestUpdate();
+  }
 
   _addTag() {
     if (!this.tagsRef.value) {
       return;
     }
     const tagName = this.tagsRef.value.value;
-    this.links.filter(tagName);
+    this._links.filter(tagName);
     this.requestUpdate();
   }
 
@@ -59,13 +69,13 @@ class Schmackhaft extends LitElement {
     if (!this.searchTextRef.value) {
       return;
     }
-    this.links.search(this.searchTextRef.value.value);
+    this._links.search(this.searchTextRef.value.value);
     this.requestUpdate();
   }
 
   onTagFilterAdded(evt: { detail: string }) {
     let tag = evt.detail;
-    this.links.filter(tag);
+    this._links.filter(tag);
     this.requestUpdate();
     this.linkListRef.value?.requestUpdate();
     this.tagListRef.value?.requestUpdate();
@@ -73,7 +83,7 @@ class Schmackhaft extends LitElement {
 
   onTagFilterRemoved(evt: { detail: string }) {
     let tag = evt.detail;
-    this.links.unFilter(tag);
+    this._links.unFilter(tag);
     this.requestUpdate();
     this.linkListRef.value?.requestUpdate();
     this.tagListRef.value?.requestUpdate();
@@ -85,12 +95,12 @@ class Schmackhaft extends LitElement {
         ${ref(this.tagListRef)}
         @tagFilterAdded="${this.onTagFilterAdded}"
         @tagFilterRemoved="${this.onTagFilterRemoved}"
-        .links="${this.links}"
+        .links="${this._links}"
         dense
       ></sh-taglist>
       <sh-linklist
         ${ref(this.linkListRef)}
-        .links=${this.links}
+        .links=${this._links}
         .renderSearchedTags="${false}"
         @tagFilterAdded="${this.onTagFilterAdded}"
         @tagFilterRemoved="${this.onTagFilterRemoved}"
@@ -107,7 +117,7 @@ class Schmackhaft extends LitElement {
             ${ref(this.tagListRef)}
             @tagFilterAdded="${this.onTagFilterAdded}"
             @tagFilterRemoved="${this.onTagFilterRemoved}"
-            .links="${this.links}"
+            .links="${this._links}"
           ></sh-taglist>
         </div>
         <div slot="right">
@@ -139,7 +149,7 @@ class Schmackhaft extends LitElement {
           </div>
           <sh-linklist
             ${ref(this.linkListRef)}
-            .links=${this.links}
+            .links=${this._links}
             @tagFilterAdded="${this.onTagFilterAdded}"
             @tagFilterRemoved="${this.onTagFilterRemoved}"
           ></sh-linklist>

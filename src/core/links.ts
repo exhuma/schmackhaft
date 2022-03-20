@@ -1,4 +1,4 @@
-import { Link } from "../model/link";
+import { JsonSchema as LinkSchema, Link } from "../model/link";
 
 function intersection(setA: Array<string>, setB: Array<string>) {
   let _intersection = new Array();
@@ -18,6 +18,34 @@ export class Links {
   constructor(links: Array<Link> = []) {
     this.links = links;
     this.searchedTags = [];
+  }
+
+  static fromJson(data: string): Links {
+    let parsed = JSON.parse(data);
+    let links = parsed.map((item: LinkSchema) => {
+      return new Link(
+        item["href"],
+        item["tags"],
+        item["title"],
+        item["image"],
+        item["description"]
+      );
+    });
+    return new Links(links);
+  }
+
+  toJson(): string {
+    return JSON.stringify(
+      this.links.map((item): LinkSchema => {
+        return {
+          href: item.href,
+          tags: item.tags,
+          title: item.title || "",
+          image: item.img || "",
+          description: item.description || "",
+        };
+      })
+    );
   }
 
   get filtered() {
