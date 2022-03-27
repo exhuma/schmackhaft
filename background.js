@@ -4,6 +4,11 @@ function handleClick() {
   console.log({ app: APP, links: APP.links });
 }
 
+async function removeBookmark(href) {
+  let storage = createStorage("local");
+  await storage.remove(href);
+}
+
 async function storeBookmark(bookmark) {
   let storage = createStorage("local");
   let persistentItem = await storage.get(bookmark.href);
@@ -24,6 +29,11 @@ async function handleMessage(request, sender, sendResponse) {
       return bookmarks;
     } else if (request.method === "addBookmark") {
       await storeBookmark(request.args);
+      browser.runtime.sendMessage({
+        method: "bookmarksModified",
+      });
+    } else if (request.method === "removeBookmark") {
+      await removeBookmark(request.args.href);
       browser.runtime.sendMessage({
         method: "bookmarksModified",
       });

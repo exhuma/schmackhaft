@@ -18,4 +18,10 @@ export class LocalStorage {
     newBookmarks.push(data);
     await browser.storage.local.set({ bookmarks: newBookmarks });
   }
+
+  async remove(href) {
+    let result = await browser.storage.local.get({ bookmarks: [] });
+    let newBookmarks = result.bookmarks.filter((item) => item.href !== href);
+    await browser.storage.local.set({ bookmarks: newBookmarks });
+  }
 }
