@@ -4,15 +4,26 @@ function handleClick() {
   console.log({ app: APP, links: APP.links });
 }
 
+async function storeBookmark(bookmark) {
+  let storage = createStorage("local");
+  let persistentItem = await storage.get(bookmark.href);
+  if (persistentItem) {
+    persistentItem.title = bookmark.title;
+    persistentItem.tags = bookmark.tags;
+  } else {
+    persistentItem = bookmark;
+  }
+  await storage.put(persistentItem);
+}
+
 async function handleMessage(request, sender, sendResponse) {
   try {
     if (request.method === "getBookmarks") {
       let storage = createStorage("local");
-      let bookmarks = await storage.get();
+      let bookmarks = await storage.getAll();
       return bookmarks;
     } else if (request.method === "addBookmark") {
-      let storage = createStorage("local");
-      await storage.put(request.args);
+      await storeBookmark(request.args);
       browser.runtime.sendMessage({
         method: "bookmarksModified",
       });
