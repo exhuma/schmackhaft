@@ -7,7 +7,8 @@ function refreshBookmarks() {
     .sendMessage({
       method: "getBookmarks",
     })
-    .then(onBookmarksRetrieved, handleError);
+    .then(onBookmarksRetrieved, handleError)
+    .catch(console.error);
 }
 
 function onBookmarksRetrieved(response) {
@@ -23,7 +24,9 @@ function handleMessage(request, sender, sendResponse) {
   if (request.method === "bookmarksModified") {
     refreshBookmarks();
   } else {
-    console.error(`Unknown request: ${request.method}`);
+    console.debug(
+      `Ignoring unknown message-type for the sidebar: ${request.method}`
+    );
   }
 }
 
