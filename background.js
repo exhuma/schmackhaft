@@ -1,32 +1,26 @@
-const BOOKMARKS = [
-  { href: "https://example.com/from-backend", tags: ["backend"] },
-  { href: "https://google.com", tags: ["search"] },
-  { href: "https://bluesnews.com", tags: ["news"] },
-];
+import { createStorage } from "./storage/factory.js";
 
 function handleClick() {
   console.log({ app: APP, links: APP.links });
 }
 
-function handleMessage(request, sender, sendResponse) {
-  if (request.method === "getBookmarks") {
-    sendResponse(BOOKMARKS);
-  } else if (request.method === "addBookmark") {
-    if (BOOKMARKS.find((item) => item.href === request.args.href)) {
-      // TODO Update existing tags instead of returning and doing nothing
-      return;
+async function handleMessage(request, sender, sendResponse) {
+  try {
+    if (request.method === "getBookmarks") {
+      let storage = createStorage("local");
+      let bookmarks = await storage.get();
+      return bookmarks;
+    } else if (request.method === "addBookmark") {
+      let storage = createStorage("local");
+      await storage.put(request.args);
+      browser.runtime.sendMessage({
+        method: "bookmarksModified",
+      });
+    } else {
+      console.error(`Unknown request: ${request.method}`);
     }
-
-    BOOKMARKS.push({
-      href: request.args.href,
-      tags: request.args.tags.length === 0 ? ["untagged"] : request.args.tags,
-      title: request.args.title,
-    });
-    browser.runtime.sendMessage({
-      method: "bookmarksModified",
-    });
-  } else {
-    console.error(`Unknown request: ${request.method}`);
+  } catch (error) {
+    console.error(error);
   }
 }
 
