@@ -20,7 +20,6 @@ function handleError() {
 }
 
 function handleMessage(request, sender, sendResponse) {
-  console.log({ sidebarmessagehandler: request });
   if (request.method === "bookmarksModified") {
     refreshBookmarks();
   } else {

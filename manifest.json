@@ -1,5 +1,4 @@
 {
-
   "manifest_version": 2,
   "name": "Schmackhaft",
   "version": "0.1",
@@ -15,7 +14,7 @@
   "page_action": {
     "browser_style": true,
     "default_icon": {
-        "128": "icons/icon.png"
+      "128": "icons/icon.png"
     },
     "default_title": "Save to Schmackhaft",
     "show_matches": ["http://*/*", "https://*/*"],
