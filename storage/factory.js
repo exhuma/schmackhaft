@@ -1,15 +1,11 @@
 import { LocalStorage } from "./local.js";
 import { HttpStorage } from "./http.js";
 
-const CONFIG = {
-  url: "https://raw.githubusercontent.com/exhuma/dotfiles/master/bookmarks.json",
-};
-
-export function createStorage(type) {
+export function createStorage(settings, type) {
   if (type === "local") {
-    return new LocalStorage(CONFIG);
+    return new LocalStorage(settings);
   } else if (type === "http") {
-    return new HttpStorage(CONFIG);
+    return new HttpStorage(settings);
   } else {
     throw new Error(`Unsupported storage type: ${type}`);
   }

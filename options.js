@@ -1,0 +1,18 @@
+import { Settings } from "./settings.js";
+
+async function saveSettings() {
+  let url = document.getElementById("RemoteBookmarkURL").value;
+  let settings = Settings.default();
+  await settings.replace({ version: 1, remoteUrl: url });
+}
+
+async function restoreSettings() {
+  let settings = Settings.default();
+  let remoteUrl = await settings.get("remoteUrl");
+  if (remoteUrl !== "") {
+    document.getElementById("RemoteBookmarkURL").value = remoteUrl;
+  }
+}
+
+document.getElementById("SaveButton").addEventListener("click", saveSettings);
+restoreSettings();

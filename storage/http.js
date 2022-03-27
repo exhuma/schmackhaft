@@ -1,6 +1,6 @@
 export class HttpStorage {
-  constructor(config) {
-    this.config = config;
+  constructor(settings) {
+    this.settings = settings;
   }
   async get(href) {
     let data = await this.getAll();
@@ -8,7 +8,8 @@ export class HttpStorage {
   }
 
   async getAll() {
-    let result = await fetch(this.config.url);
+    let remoteUrl = await this.settings.get("remoteUrl");
+    let result = await fetch(remoteUrl);
     let data = await result.json();
     return data;
   }
