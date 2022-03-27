@@ -1,4 +1,8 @@
 export class LocalStorage {
+  constructor(config) {
+    this.config = config;
+  }
+
   async get(href) {
     let result = await browser.storage.local.get({ bookmarks: {} });
     return result.bookmarks[href] || null;

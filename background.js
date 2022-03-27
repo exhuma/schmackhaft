@@ -1,16 +1,22 @@
 import { createStorage } from "./storage/factory.js";
 
+const COLLECTIONS = ["local", "http"];
+const TARGET_COLLECTION = "local";
+
 function handleClick() {
   console.log({ app: APP, links: APP.links });
 }
 
 async function removeBookmark(href) {
-  let storage = createStorage("local");
-  await storage.remove(href);
+  let promises = COLLECTIONS.map(async (type) => {
+    let storage = createStorage(type);
+    await storage.remove(href);
+  });
+  await Promise.all(promises);
 }
 
 async function storeBookmark(bookmark) {
-  let storage = createStorage("local");
+  let storage = createStorage(TARGET_COLLECTION);
   let persistentItem = await storage.get(bookmark.href);
   if (persistentItem) {
     persistentItem.title = bookmark.title;
@@ -24,9 +30,14 @@ async function storeBookmark(bookmark) {
 async function handleMessage(request, sender, sendResponse) {
   try {
     if (request.method === "getBookmarks") {
-      let storage = createStorage("local");
-      let bookmarks = await storage.getAll();
-      return bookmarks;
+      let output = [];
+      let promises = COLLECTIONS.map(async (type) => {
+        let storage = createStorage(type);
+        let bookmarks = await storage.getAll();
+        output = [...output, ...bookmarks];
+      });
+      await Promise.all(promises);
+      return output;
     } else if (request.method === "addBookmark") {
       await storeBookmark(request.args);
       browser.runtime.sendMessage({
