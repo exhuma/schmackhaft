@@ -1,27 +1,23 @@
 export class LocalStorage {
   async get(href) {
-    let all = await this.getAll();
-    let existingItem = all.find((item) => item.href === href);
-    return existingItem || null;
+    let result = await browser.storage.local.get({ bookmarks: {} });
+    return result.bookmarks[href] || null;
   }
 
   async getAll() {
-    let result = await browser.storage.local.get({ bookmarks: [] });
-    return result.bookmarks;
+    let result = await browser.storage.local.get({ bookmarks: {} });
+    return Object.values(result.bookmarks);
   }
 
   async put(data) {
-    let result = await browser.storage.local.get({ bookmarks: [] });
-    let newBookmarks = result.bookmarks.filter(
-      (item) => item.href !== data.href
-    );
-    newBookmarks.push(data);
-    await browser.storage.local.set({ bookmarks: newBookmarks });
+    let result = await browser.storage.local.get({ bookmarks: {} });
+    result.bookmarks[data.href] = data;
+    await browser.storage.local.set({ bookmarks: result.bookmarks });
   }
 
   async remove(href) {
-    let result = await browser.storage.local.get({ bookmarks: [] });
-    let newBookmarks = result.bookmarks.filter((item) => item.href !== href);
-    await browser.storage.local.set({ bookmarks: newBookmarks });
+    let result = await browser.storage.local.get({ bookmarks: {} });
+    delete result.bookmarks[href];
+    await browser.storage.local.set({ bookmarks: result.bookmarks });
   }
 }
