@@ -4,10 +4,6 @@ import { Settings } from "./settings.js";
 const COLLECTIONS = ["local", "http"];
 const TARGET_COLLECTION = "local";
 
-function handleClick() {
-  console.log({ app: APP, links: APP.links });
-}
-
 async function removeBookmark(href) {
   let settings = Settings.default();
   let promises = COLLECTIONS.map(async (type) => {
@@ -60,5 +56,4 @@ async function handleMessage(request, sender, sendResponse) {
   }
 }
 
-browser.pageAction.onClicked.addListener(handleClick);
 browser.runtime.onMessage.addListener(handleMessage);
