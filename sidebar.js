@@ -17,7 +17,7 @@ function onBookmarksRetrieved(response) {
 }
 
 function handleError() {
-  console.log({ error_args: arguments });
+  console.error({ error_args: arguments });
 }
 
 function handleMessage(request, sender, sendResponse) {
