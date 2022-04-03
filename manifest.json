@@ -26,5 +26,5 @@
   "background": {
     "page": "extension/background.html"
   },
-  "permissions": ["<all_urls>", "tabs", "storage"]
+  "permissions": ["<all_urls>", "tabs", "storage", "bookmarks"]
 }

@@ -1,7 +1,7 @@
 import { createStorage } from "./storage/factory.js";
 import { Settings } from "./settings.js";
 
-const COLLECTIONS = ["local", "http"];
+const COLLECTIONS = ["local", "http", "bookmarks"];
 const TARGET_COLLECTION = "local";
 
 async function removeBookmark(href) {
