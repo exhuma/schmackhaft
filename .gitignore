@@ -1,2 +1,3 @@
-node_modules
-vendor
+/node_modules
+/extension/components
+/web-ext-artifacts

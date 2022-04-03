@@ -1,11 +1,23 @@
 {
+  "name": "schmackhaft",
+  "version": "0.1.0",
+  "description": "A bookmark manager based on del.icio.us",
+  "author": "Michel Albert <michel@albert.lu>",
+  "license": "MIT",
   "dependencies": {
-    "app-schmackhaft": "file:../schmackhaft/app-schmackhaft-1.0.0.tgz"
+    "@esm-bundle/chai": "^4.3.4-fix.0",
+    "@material/mwc-button": "^0.25.3",
+    "@material/mwc-textfield": "^0.25.3",
+    "lit": "^2.1.2"
   },
   "scripts": {
-      "build": "tsc"
+    "autobuild": "vite build --watch",
+    "browser": "web-ext run",
+    "dist": "vite build && web-ext build"
   },
   "devDependencies": {
-    "typescript": "^4.6.2"
+    "typescript": "^4.6.2",
+    "vite": "^2.9.1",
+    "web-ext": "^6.8.0"
   }
 }
