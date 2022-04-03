@@ -11,8 +11,9 @@
     "lit": "^2.1.2"
   },
   "scripts": {
-    "build": "vite build",
-    "dist": "web-ext build"
+    "autobuild": "vite build --watch",
+    "browser": "web-ext run",
+    "dist": "vite build && web-ext build"
   },
   "devDependencies": {
     "typescript": "^4.6.2",
