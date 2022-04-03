@@ -3,11 +3,12 @@
     "app-schmackhaft": "file:../schmackhaft/app-schmackhaft-1.0.0.tgz"
   },
   "scripts": {
-      "build": "tsc",
-      "dist": "web-ext build"
+    "build": "vite build",
+    "dist": "web-ext build"
   },
   "devDependencies": {
     "typescript": "^4.6.2",
+    "vite": "^2.9.1",
     "web-ext": "^6.8.0"
   }
 }
