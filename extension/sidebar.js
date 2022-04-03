@@ -13,6 +13,7 @@ function refreshBookmarks() {
 
 function onBookmarksRetrieved(response) {
   let element = document.getElementById("schmackhaft");
+  console.log(response)
   element.links = JSON.stringify(response);
 }
 
