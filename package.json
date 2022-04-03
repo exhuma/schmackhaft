@@ -1,7 +1,4 @@
 {
-  "dependencies": {
-    "app-schmackhaft": "file:../schmackhaft/app-schmackhaft-1.0.0.tgz"
-  },
   "scripts": {
     "build": "vite build",
     "dist": "web-ext build"
