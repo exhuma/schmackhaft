@@ -9,7 +9,7 @@ async function saveSettings() {
 async function restoreSettings() {
   let settings = Settings.default();
   let remoteUrl = await settings.get("remoteUrl");
-  if (remoteUrl !== "") {
+  if (remoteUrl && remoteUrl !== "") {
     document.getElementById("RemoteBookmarkURL").value = remoteUrl;
   }
 }

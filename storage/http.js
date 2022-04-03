@@ -9,6 +9,9 @@ export class HttpStorage {
 
   async getAll() {
     let remoteUrl = await this.settings.get("remoteUrl");
+    if (!remoteUrl || remoteUrl === "") {
+      return [];
+    }
     let result = await fetch(remoteUrl);
     let data = await result.json();
     return data;
