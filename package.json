@@ -1,6 +1,6 @@
 {
   "name": "schmackhaft",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A bookmark manager based on del.icio.us",
   "author": "Michel Albert <michel@albert.lu>",
   "license": "MIT",

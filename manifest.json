@@ -1,10 +1,14 @@
 {
   "manifest_version": 2,
   "name": "Schmackhaft",
-  "version": "0.1",
+  "version": "0.2",
   "description": "Bookmark manager reminiscent to del.icio.us",
+  "author": "Michel Albert",
+  "homepage_url": "https://github.com/exhuma/schmackhaft",
   "icons": {
-    "128": "extension/icons/icon.png"
+    "48": "assets/icon.svg",
+    "96": "assets/icon.svg",
+    "128": "assets/icon.svg"
   },
   "sidebar_action": {
     "default_title": "Schmackhaft",
