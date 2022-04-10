@@ -14,14 +14,15 @@
       href="https://fonts.googleapis.com/css?family=Material+Icons&display=block"
       rel="stylesheet"
     />
-    <script type="module" src="/extension/sidebar.js"></script>
-    <script
-      type="module"
-      src="/extension/components/app-schmackhaft.es.js"
-    ></script>
+    <script type="module" src="./options.js"></script>
   </head>
 
   <body>
-    <app-schmackhaft id="schmackhaft" narrow></app-schmackhaft>
+    <input
+      type="text"
+      placeholder="https://my.domain.tld/my-bookmarks.json"
+      id="RemoteBookmarkURL"
+    /><br />
+    <input type="button" id="SaveButton" value="Save Options" />
   </body>
 </html>

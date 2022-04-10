@@ -12,6 +12,7 @@
   },
   "scripts": {
     "autobuild": "vite build --watch",
+    "build": "vite build",
     "browser": "web-ext run",
     "dist": "vite build && web-ext build"
   },

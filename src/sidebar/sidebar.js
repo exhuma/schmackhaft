@@ -13,6 +13,9 @@ function refreshBookmarks() {
 
 function onBookmarksRetrieved(response) {
   let element = document.getElementById("schmackhaft");
+  if (!response) {
+    console.error("Invalid (empty) response from the background.");
+  }
   element.links = JSON.stringify(response);
 }
 

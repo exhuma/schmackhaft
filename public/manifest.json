@@ -6,29 +6,29 @@
   "author": "Michel Albert",
   "homepage_url": "https://github.com/exhuma/schmackhaft",
   "icons": {
-    "48": "assets/icon.svg",
-    "96": "assets/icon.svg",
-    "128": "assets/icon.svg"
+    "48": "/assets/icon.svg",
+    "96": "/assets/icon.svg",
+    "128": "/assets/icon.svg"
   },
   "sidebar_action": {
     "default_title": "Schmackhaft",
-    "default_panel": "extension/sidebar.html",
-    "default_icon": "extension/icons/icon.png"
+    "default_panel": "/src/sidebar/index.html",
+    "default_icon": "/assets/icon.png"
   },
   "options_ui": {
-    "page": "extension/options.html"
+    "page": "/src/options/index.html"
   },
   "page_action": {
     "browser_style": true,
     "default_icon": {
-      "128": "extension/icons/icon.png"
+      "128": "/assets/icon.png"
     },
     "default_title": "Save to Schmackhaft",
     "show_matches": ["http://*/*", "https://*/*"],
-    "default_popup": "extension/popup/page_action.html"
+    "default_popup": "/src/popup/index.html"
   },
   "background": {
-    "page": "extension/background.html"
+    "page": "/src/background/index.html"
   },
   "permissions": ["<all_urls>", "tabs", "storage", "bookmarks"]
 }
