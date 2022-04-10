@@ -14,9 +14,6 @@ export default {
         options: fileURLToPath(
           new URL("./src/views/options/index.html", import.meta.url)
         ),
-        background: fileURLToPath(
-          new URL("./src/background/index.html", import.meta.url)
-        ),
       },
     },
   },

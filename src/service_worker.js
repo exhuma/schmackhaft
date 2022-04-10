@@ -1,5 +1,5 @@
-import { createStorage } from "../core/storage/factory.js";
-import { Settings } from "../core/settings.js";
+import { createStorage } from "./core/storage/factory.js";
+import { Settings } from "./core/settings.js";
 
 const COLLECTIONS = ["local", "http", "bookmarks"];
 const TARGET_COLLECTION = "local";
@@ -40,12 +40,12 @@ async function handleMessage(request, sender, sendResponse) {
       return output;
     } else if (request.method === "addBookmark") {
       await storeBookmark(request.args);
-      browser.runtime.sendMessage({
+      chrome.runtime.sendMessage({
         method: "bookmarksModified",
       });
     } else if (request.method === "removeBookmark") {
       await removeBookmark(request.args.href);
-      browser.runtime.sendMessage({
+      chrome.runtime.sendMessage({
         method: "bookmarksModified",
       });
     } else {
@@ -56,4 +56,4 @@ async function handleMessage(request, sender, sendResponse) {
   }
 }
 
-browser.runtime.onMessage.addListener(handleMessage);
+chrome.runtime.onMessage.addListener(handleMessage);

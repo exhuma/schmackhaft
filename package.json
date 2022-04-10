@@ -11,10 +11,10 @@
     "lit": "^2.1.2"
   },
   "scripts": {
-    "autobuild": "cp public/manifest-mozilla.json public/manifest.json && vite build --watch",
-    "build": "vite build",
+    "autobuild": "cp public/manifest-chrome.json public/manifest.json && vite build --watch",
+    "build": "cp public/manifest-chrome.json public/manifest.json && vite build && vite build --config vite-sw.config.js",
     "browser": "web-ext run",
-    "dist": "cp public/manifest-mozilla.json public/manifest.json && vite build && web-ext build"
+    "dist": "cp public/manifest-chrome.json public/manifest.json && vite build && web-ext build"
   },
   "devDependencies": {
     "typescript": "^4.6.2",
