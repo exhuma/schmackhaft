@@ -1,5 +1,5 @@
-import { createStorage } from "../storage/factory.js";
-import { Settings } from "../options/settings.js";
+import { createStorage } from "../core/storage/factory.js";
+import { Settings } from "../core/settings.js";
 
 const COLLECTIONS = ["local", "http", "bookmarks"];
 const TARGET_COLLECTION = "local";
