@@ -2,3 +2,4 @@
 /extension/components
 /web-ext-artifacts
 dist
+public/manifest.json
