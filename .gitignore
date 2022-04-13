@@ -1,5 +1,5 @@
 /node_modules
-/extension/components
-/web-ext-artifacts
-dist
-public/manifest.json
+/build-serviceworker
+/build-pages
+/dist-chrome
+/dist-mozilla

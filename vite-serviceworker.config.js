@@ -1,7 +1,7 @@
 export default {
   build: {
     emptyOutDir: false,
-    outDir: "dist/",
+    outDir: "build-serviceworker/",
     target: "es2015",
     lib: {
       entry: "src/service_worker.js",
