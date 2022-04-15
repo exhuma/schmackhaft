@@ -34,3 +34,7 @@ function handleMessage(request, sender, sendResponse) {
 }
 
 browser.runtime.onMessage.addListener(handleMessage);
+let refreshButton = document.getElementById("RefreshButton");
+refreshButton.addEventListener("click", () => {
+  refreshBookmarks();
+});
