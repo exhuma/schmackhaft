@@ -21,3 +21,6 @@ serviceworker:
 
 pages:
 	npm run build -- --config vite-pages.config.js
+
+clean:
+	rm -rf dist build
