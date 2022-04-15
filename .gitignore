@@ -1,5 +1,3 @@
 /node_modules
-/build-serviceworker
-/build-pages
-/dist-chrome
-/dist-mozilla
+/build
+/dist
