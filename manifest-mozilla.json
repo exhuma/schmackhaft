@@ -12,11 +12,11 @@
   },
   "sidebar_action": {
     "default_title": "Schmackhaft",
-    "default_panel": "/src/sidebar/index.html",
+    "default_panel": "/src/views/sidebar/index.html",
     "default_icon": "/assets/icon.png"
   },
   "options_ui": {
-    "page": "/src/options/index.html"
+    "page": "/src/views/options/index.html"
   },
   "page_action": {
     "browser_style": true,
@@ -25,10 +25,10 @@
     },
     "default_title": "Save to Schmackhaft",
     "show_matches": ["http://*/*", "https://*/*"],
-    "default_popup": "/src/popup/index.html"
+    "default_popup": "/src/views/popup/index.html"
   },
   "background": {
-    "page": "/src/background/index.html"
+    "page": "/src/core/background/index.html"
   },
   "permissions": ["<all_urls>", "tabs", "storage", "bookmarks"]
 }

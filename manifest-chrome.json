@@ -19,10 +19,10 @@
     },
     "default_title": "Save to Schmackhaft",
     "show_matches": ["http://*/*", "https://*/*"],
-    "default_popup": "/src/views/popup/index.html"
+    "default_popup": "/src/views/sidebar/index.html"
   },
   "background": {
-    "service_worker": "/service-worker.es.js"
+    "service_worker": "/src/core/service-worker.es.js"
   },
   "permissions": ["activeTab", "storage", "bookmarks"]
 }
