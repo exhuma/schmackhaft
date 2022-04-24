@@ -35,5 +35,10 @@
   "background": {
     "page": "/src/core/background/index.html"
   },
-  "permissions": ["<all_urls>", "tabs", "storage", "bookmarks"]
+  "permissions": ["<all_urls>", "tabs", "storage", "bookmarks"],
+  "browser_specific_settings": {
+      "gecko": {
+          "id": "schmackhaft@albert.lu"
+      }
+  }
 }
