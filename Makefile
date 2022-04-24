@@ -1,6 +1,7 @@
 .PHONY: build
 
 all: chrome mozilla
+	notify-send -u low -t 1000 Build done
 
 mozilla: pages serviceworker
 	mkdir -p dist/mozilla
