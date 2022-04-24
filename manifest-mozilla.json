@@ -10,6 +10,11 @@
     "96": "/assets/icon.svg",
     "128": "/assets/icon.svg"
   },
+  "browser_action": {
+    "default_title": "Schmackhaft",
+    "default_popup": "/src/views/sidebar/index.html",
+    "default_icon": "/assets/icon.png"
+  },
   "sidebar_action": {
     "default_title": "Schmackhaft",
     "default_panel": "/src/views/sidebar/index.html",
