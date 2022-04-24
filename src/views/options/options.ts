@@ -1,16 +1,22 @@
 import { Settings } from "../../core/settings";
 
-async function saveSettings() {
-  let url = document.getElementById("RemoteBookmarkURL").value;
+async function saveSettings(): Promise<void> {
+  let element = document.getElementById(
+    "RemoteBookmarkURL"
+  ) as HTMLInputElement;
+  let url = element.value;
   let settings = Settings.default();
   await settings.replace({ version: 1, remoteUrl: url });
 }
 
-async function restoreSettings() {
+async function restoreSettings(): Promise<void> {
   let settings = Settings.default();
   let remoteUrl = await settings.get("remoteUrl");
   if (remoteUrl && remoteUrl !== "") {
-    document.getElementById("RemoteBookmarkURL").value = remoteUrl;
+    let element = document.getElementById(
+      "RemoteBookmarkURL"
+    ) as HTMLInputElement;
+    element.value = remoteUrl;
   }
 }
 

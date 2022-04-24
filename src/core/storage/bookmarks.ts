@@ -1,6 +1,11 @@
 import * as browser from "webextension-polyfill";
+import { Bookmark, BrowserBookmarkNode, IStorage } from "../../types";
+import { Settings } from "../settings";
 
-function visit(node, parentFolderNames) {
+function visit(
+  node: BrowserBookmarkNode,
+  parentFolderNames: string[]
+): Bookmark[] {
   parentFolderNames = parentFolderNames || [];
   let output = [];
   if (node.children) {
@@ -19,17 +24,18 @@ function visit(node, parentFolderNames) {
   return output;
 }
 
-export class BookmarkStorage {
-  constructor(settings) {
+export class BookmarkStorage implements IStorage {
+  settings: Settings;
+  constructor(settings: Settings) {
     this.settings = settings;
   }
 
-  async get(href) {
+  async get(href: string): Promise<Bookmark | null> {
     let data = await this.getAll();
     return data.find((item) => item.href === href) || null;
   }
 
-  async getAll() {
+  async getAll(): Promise<Bookmark[]> {
     let root = await browser.bookmarks.getTree();
     let all = [];
     root.forEach((item) => {
@@ -39,11 +45,11 @@ export class BookmarkStorage {
     return all;
   }
 
-  async put(data) {
+  async put(data: Bookmark): Promise<void> {
     return;
   }
 
-  async remove(href) {
+  async remove(href: string): Promise<void> {
     return;
   }
 }

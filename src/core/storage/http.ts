@@ -1,13 +1,18 @@
-export class HttpStorage {
-  constructor(settings) {
+import { Bookmark, IStorage } from "../../types";
+import { Settings } from "../settings";
+
+export class HttpStorage implements IStorage {
+  settings: Settings;
+
+  constructor(settings: Settings) {
     this.settings = settings;
   }
-  async get(href) {
+  async get(href: string): Promise<Bookmark | null> {
     let data = await this.getAll();
     return data.find((item) => item.href === href) || null;
   }
 
-  async getAll() {
+  async getAll(): Promise<Bookmark[]> {
     let remoteUrl = await this.settings.get("remoteUrl");
     if (!remoteUrl || remoteUrl === "") {
       return [];
@@ -17,11 +22,11 @@ export class HttpStorage {
     return data;
   }
 
-  async put(data) {
+  async put(data: Bookmark): Promise<void> {
     return;
   }
 
-  async remove(href) {
+  async remove(href: string): Promise<void> {
     return;
   }
 }

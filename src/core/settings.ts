@@ -1,11 +1,13 @@
 import * as browser from "webextension-polyfill";
+import { IStorageBackend } from "../types";
 
 export class Settings {
+  backend: any;
   static default() {
     return new Settings(browser.storage.local);
   }
 
-  constructor(backend) {
+  constructor(backend: IStorageBackend) {
     this.backend = backend;
   }
 
@@ -15,7 +17,7 @@ export class Settings {
     });
   }
 
-  async get(key, fallback) {
+  async get(key: string, fallback: any = null): Promise<any> {
     let result = await this.backend.get({
       settings: {},
     });
