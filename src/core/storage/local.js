@@ -1,3 +1,5 @@
+import * as browser from "webextension-polyfill";
+
 export class LocalStorage {
   constructor(config) {
     this.config = config;

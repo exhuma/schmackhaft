@@ -1,3 +1,4 @@
+import * as browser from "webextension-polyfill";
 import { createStorage } from "./core/storage/factory.js";
 import { Settings } from "./core/settings.js";
 
@@ -40,12 +41,12 @@ async function handleMessage(request, sender, sendResponse) {
       return output;
     } else if (request.method === "addBookmark") {
       await storeBookmark(request.args);
-      chrome.runtime.sendMessage({
+      browser.runtime.sendMessage({
         method: "bookmarksModified",
       });
     } else if (request.method === "removeBookmark") {
       await removeBookmark(request.args.href);
-      chrome.runtime.sendMessage({
+      browser.runtime.sendMessage({
         method: "bookmarksModified",
       });
     } else {
@@ -56,4 +57,4 @@ async function handleMessage(request, sender, sendResponse) {
   }
 }
 
-chrome.runtime.onMessage.addListener(handleMessage);
+browser.runtime.onMessage.addListener(handleMessage);

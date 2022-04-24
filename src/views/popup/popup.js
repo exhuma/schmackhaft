@@ -1,3 +1,5 @@
+import * as browser from "webextension-polyfill";
+
 document.getElementById("SaveButton").addEventListener("click", () => {
   let tagInput = document.getElementById("TagsField").value.trim();
   let tags = [];

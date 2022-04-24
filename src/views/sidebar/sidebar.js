@@ -1,6 +1,4 @@
-browser.runtime.getBackgroundPage().then((background) => {
-  refreshBookmarks();
-});
+import * as browser from "webextension-polyfill";
 
 function refreshBookmarks() {
   browser.runtime
@@ -34,6 +32,15 @@ function handleMessage(request, sender, sendResponse) {
 }
 
 browser.runtime.onMessage.addListener(handleMessage);
+browser.runtime
+  .getBackgroundPage()
+  .then((background) => {
+    refreshBookmarks();
+  })
+  .catch(() => {
+    console.debug("Error retrieving the background page!");
+  });
+
 let refreshButton = document.getElementById("RefreshButton");
 refreshButton.addEventListener("click", () => {
   refreshBookmarks();

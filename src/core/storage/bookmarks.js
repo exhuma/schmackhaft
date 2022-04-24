@@ -1,3 +1,5 @@
+import * as browser from "webextension-polyfill";
+
 function visit(node, parentFolderNames) {
   parentFolderNames = parentFolderNames || [];
   let output = [];

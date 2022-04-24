@@ -1,3 +1,5 @@
+import * as browser from "webextension-polyfill";
+
 export class Settings {
   static default() {
     return new Settings(browser.storage.local);
