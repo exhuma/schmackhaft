@@ -14,6 +14,13 @@ import { Links } from "./core/links";
 @customElement("app-schmackhaft")
 export class Schmackhaft extends LitElement {
   static styles = css`
+    #FlexContainer {
+      display: grid;
+      grid-template-columns: 100%;
+      grid-template-rows: 20% 80%;
+      height: 100vh;
+    }
+
     .tag {
       border: 1px dashed blue;
       margin: 0.2rem;
@@ -30,9 +37,16 @@ export class Schmackhaft extends LitElement {
       flex-grow: 2;
     }
 
-    sh-linklist {
-      margin-top: 1em;
+    sh-taglist {
       display: block;
+      overflow-y: scroll;
+      margin-bottom: 0.5rem;
+      border-bottom: 1px solid black;
+    }
+
+    sh-linklist {
+      display: block;
+      overflow: auto;
     }
   `;
 
@@ -91,21 +105,23 @@ export class Schmackhaft extends LitElement {
 
   renderNarrow() {
     return html`
-      <sh-taglist
-        ${ref(this.tagListRef)}
-        @tagFilterAdded="${this.onTagFilterAdded}"
-        @tagFilterRemoved="${this.onTagFilterRemoved}"
-        .links="${this._links}"
-        dense
-      ></sh-taglist>
-      <sh-linklist
-        ${ref(this.linkListRef)}
-        .links=${this._links}
-        .renderSearchedTags="${false}"
-        @tagFilterAdded="${this.onTagFilterAdded}"
-        @tagFilterRemoved="${this.onTagFilterRemoved}"
-        dense
-      ></sh-linklist>
+      <div id="FlexContainer">
+        <sh-taglist
+          ${ref(this.tagListRef)}
+          @tagFilterAdded="${this.onTagFilterAdded}"
+          @tagFilterRemoved="${this.onTagFilterRemoved}"
+          .links="${this._links}"
+          dense
+        ></sh-taglist>
+        <sh-linklist
+          ${ref(this.linkListRef)}
+          .links=${this._links}
+          .renderSearchedTags="${false}"
+          @tagFilterAdded="${this.onTagFilterAdded}"
+          @tagFilterRemoved="${this.onTagFilterRemoved}"
+          dense
+        ></sh-linklist>
+      </div>
     `;
   }
 
