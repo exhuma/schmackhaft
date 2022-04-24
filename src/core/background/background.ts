@@ -1,4 +1,4 @@
 import * as browser from "webextension-polyfill";
-import { handleMessage } from "./core/messaging.js";
+import { handleMessage } from "../messaging";
 
 browser.runtime.onMessage.addListener(handleMessage);

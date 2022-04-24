@@ -1,6 +1,6 @@
-import { LocalStorage } from "./local.js";
-import { HttpStorage } from "./http.js";
-import { BookmarkStorage } from "./bookmarks.js";
+import { LocalStorage } from "./local";
+import { HttpStorage } from "./http";
+import { BookmarkStorage } from "./bookmarks";
 
 export function createStorage(settings, type) {
   if (type === "local") {

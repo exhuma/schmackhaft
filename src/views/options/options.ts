@@ -1,4 +1,4 @@
-import { Settings } from "../../core/settings.js";
+import { Settings } from "../../core/settings";
 
 async function saveSettings() {
   let url = document.getElementById("RemoteBookmarkURL").value;

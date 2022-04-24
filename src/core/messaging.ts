@@ -1,7 +1,7 @@
 import * as browser from "webextension-polyfill";
 
-import { createStorage } from "./storage/factory.js";
-import { Settings } from "./settings.js";
+import { createStorage } from "./storage/factory";
+import { Settings } from "./settings";
 
 const COLLECTIONS = ["local", "http", "bookmarks"];
 const TARGET_COLLECTION = "local";
