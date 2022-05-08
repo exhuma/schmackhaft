@@ -24,4 +24,11 @@ export class Settings {
     let output = result?.settings[key] || fallback;
     return output;
   }
+
+  async getAll(): Promise<any> {
+    let result = await this.backend.get({
+      settings: {},
+    });
+    return result.settings;
+  }
 }

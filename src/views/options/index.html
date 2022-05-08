@@ -15,14 +15,10 @@
       rel="stylesheet"
     />
     <script type="module" src="./options"></script>
+    <script type="module" src="../../components/views/sh-settings"></script>
   </head>
 
   <body>
-    <input
-      type="text"
-      placeholder="https://my.domain.tld/my-bookmarks.json"
-      id="RemoteBookmarkURL"
-    /><br />
-    <input type="button" id="SaveButton" value="Save Options" />
+    <sh-settings id="Settings" settings="{}"></sh-settings>
   </body>
 </html>

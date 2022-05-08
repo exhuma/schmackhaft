@@ -1,24 +1,21 @@
 import { Settings } from "../../core/settings";
 
-async function saveSettings(): Promise<void> {
-  let element = document.getElementById(
-    "RemoteBookmarkURL"
-  ) as HTMLInputElement;
-  let url = element.value;
+async function saveSettings(evt): Promise<void> {
+  let newData = JSON.parse(evt.detail.settings ?? '{}');
   let settings = Settings.default();
-  await settings.replace({ version: 1, remoteUrl: url });
+  await settings.replace(newData);
 }
 
 async function restoreSettings(): Promise<void> {
   let settings = Settings.default();
-  let remoteUrl = await settings.get("remoteUrl");
-  if (remoteUrl && remoteUrl !== "") {
-    let element = document.getElementById(
-      "RemoteBookmarkURL"
-    ) as HTMLInputElement;
-    element.value = remoteUrl;
+  let result = await settings.getAll();
+  let settingsElement = document.getElementById("Settings");
+  if (!settingsElement) {
+    console.error("Requred DOM ID 'Settings' not found!");
+    return;
   }
+  settingsElement.settings = JSON.stringify(result);
 }
 
-document.getElementById("SaveButton").addEventListener("click", saveSettings);
+document.getElementById("Settings").addEventListener("change", saveSettings);
 restoreSettings();
