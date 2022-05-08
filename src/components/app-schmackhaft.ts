@@ -14,7 +14,7 @@ import { Links } from "./core/links";
 @customElement("app-schmackhaft")
 export class Schmackhaft extends LitElement {
   static styles = css`
-    #FlexContainer {
+    #GridContainer {
       display: grid;
       grid-template-columns: 100%;
       grid-template-rows: 20% 80%;
@@ -105,7 +105,7 @@ export class Schmackhaft extends LitElement {
 
   renderNarrow() {
     return html`
-      <div id="FlexContainer">
+      <div id="GridContainer">
         <sh-taglist
           ${ref(this.tagListRef)}
           @tagFilterAdded="${this.onTagFilterAdded}"
