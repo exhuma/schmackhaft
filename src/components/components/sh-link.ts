@@ -83,7 +83,7 @@ class Link extends LitElement {
   override render() {
     let dynamicClasses = { dense: this.dense };
     let title = html`<h4>
-      <a href="${this.href}">${this.title || this.href}</a>
+      <a href="${this.href}" target="_blank">${this.title || this.href}</a>
     </h4>`;
     let description = html``;
     if (this.description) {
