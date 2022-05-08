@@ -40,13 +40,14 @@ export class Schmackhaft extends LitElement {
     sh-taglist {
       display: block;
       overflow-y: scroll;
-      margin-bottom: 0.5rem;
+      padding: 1rem;
       border-bottom: 1px solid black;
     }
 
     sh-linklist {
       display: block;
       overflow: auto;
+      padding: 1rem;
     }
   `;
 
