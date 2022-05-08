@@ -47,3 +47,5 @@ let refreshButton = document.getElementById("RefreshButton");
 refreshButton.addEventListener("click", () => {
   refreshBookmarks();
 });
+
+document.addEventListener("DOMContentLoaded", refreshBookmarks);
