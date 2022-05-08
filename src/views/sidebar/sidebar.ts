@@ -2,16 +2,41 @@ import * as browser from "webextension-polyfill";
 import { Schmackhaft } from "../../components/app-schmackhaft";
 import { HMRequest } from "../../types";
 
+function displayToast(text) {
+  let toast = document.getElementById("Toast");
+  toast.innerText = text;
+  toast.style.display = "block";
+}
+
+function displayTimedToast(text, timeout) {
+  let toast = document.getElementById("Toast");
+  toast.innerText = text;
+  toast.style.display = "block";
+  window.setTimeout(hideToast, timeout);
+}
+
+function hideToast() {
+  let toast = document.getElementById("Toast");
+  toast.innerText = "";
+  toast.style.display = "none";
+}
+
 function refreshBookmarks(): void {
+  displayToast("Loading...");
   browser.runtime
     .sendMessage({
       method: "getBookmarks",
     })
     .then(onBookmarksRetrieved, handleError)
-    .catch(console.error);
+    .catch((error) => {
+      hideToast();
+      console.error(error);
+    });
 }
 
 function onBookmarksRetrieved(response: string): void {
+  hideToast();
+  displayTimedToast("done", 1000);
   let element = document.getElementById("schmackhaft") as Schmackhaft;
   if (!response) {
     console.error("Invalid (empty) response from the background.");
@@ -20,6 +45,7 @@ function onBookmarksRetrieved(response: string): void {
 }
 
 function handleError(): void {
+  hideToast();
   console.error({ error_args: arguments });
 }
 

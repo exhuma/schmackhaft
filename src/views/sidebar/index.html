@@ -22,11 +22,30 @@
         height: 600px;
         margin: 0;
       }
+
+      #RefreshButton {
+        cursor: pointer;
+        position: fixed;
+        top: 0.3rem;
+        right: 1.5rem;
+      }
+
+      #Toast {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        text-align: center;
+        border-bottom: 1px solid #23642b;
+        background: #dcffd7;
+        display: none;
+      }
     </style>
   </head>
 
   <body>
-    <button id="RefreshButton">Refresh</button>
+    <span id="RefreshButton" class="material-icons md-24">refresh</span>
+    <div id="Toast"></div>
     <app-schmackhaft id="schmackhaft" narrow></app-schmackhaft>
   </body>
 </html>
