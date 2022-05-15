@@ -33,7 +33,10 @@ export class Settings {
     let result = await this.backend.get({
       settings: {},
     });
-    let output = result?.settings[key] || fallback;
+    let output = result?.settings[key] 
+    if (output === undefined) {
+      return fallback;
+    }
     return output;
   }
 

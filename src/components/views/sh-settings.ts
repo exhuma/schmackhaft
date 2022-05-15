@@ -80,6 +80,13 @@ export class Settings extends LitElement {
     return output;
   }
 
+  onBrowserBookmarkToggled(evt) {
+    this._settings.enableBrowserBookmarks = evt.target.checked
+    this.dispatchEvent(new CustomEvent("change", {detail: {
+      settings: this.settings
+    }}));
+  }
+
   override render() {
     if (!this._isVersionSupported) {
       return html`
@@ -106,6 +113,10 @@ export class Settings extends LitElement {
       placeholder="https://my.domain.tld/my-bookmarks.json"
       @change="${this.onNewItemChanged}"
       ></mwc-textfield>
+      <div class="formField">
+        <input @change="${this.onBrowserBookmarkToggled}" id="enableBrowserBookmarks" type="checkbox" ?checked="${this._settings.enableBrowserBookmarks}"></input>
+        <label for="enableBrowserBookmarks">Include Browser Bookmarks (folders will be provided as tags)</label>
+      </div>
       <mwc-button id="SaveButton" raised @click="${this.onButtonClick}">Save</mwc-button>
     </div>
     `
