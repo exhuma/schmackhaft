@@ -10,8 +10,8 @@ settingsElementV2.settings = JSON.stringify({
   enableBrowserBookmarks: true,
   version: 2,
 });
-settingsElementV1.addEventListener("change", (event) => {
-  console.log(JSON.parse(event.detail["settings"]).remoteUrls);
+settingsElementV2.addEventListener("change", (event) => {
+  console.log(JSON.parse(event.detail["settings"]));
 });
 
 settingsElementV1.settings = JSON.stringify({
