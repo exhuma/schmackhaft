@@ -13,13 +13,18 @@ export class HttpStorage implements IStorage {
   }
 
   async getAll(): Promise<Bookmark[]> {
-    let remoteUrl = await this.settings.get("remoteUrl");
-    if (!remoteUrl || remoteUrl === "") {
-      return [];
-    }
-    let result = await fetch(remoteUrl);
-    let data = await result.json();
-    return data;
+    let remoteUrls = await this.settings.get("remoteUrls");
+    let output = [];
+    let promises = remoteUrls.map(async (remoteUrl) => {
+      if (!remoteUrl || remoteUrl === "") {
+        return;
+      }
+      let result = await fetch(remoteUrl);
+      let data = await result.json();
+      output = [...output, ...data];
+    })
+    await Promise.all(promises);
+    return output;
   }
 
   async put(data: Bookmark): Promise<void> {

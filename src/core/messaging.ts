@@ -8,7 +8,7 @@ const COLLECTIONS = ["local", "http", "bookmarks"];
 const TARGET_COLLECTION = "local";
 
 async function removeBookmark(href: string): Promise<void> {
-  let settings = Settings.default();
+  let settings = await Settings.default();
   let promises = COLLECTIONS.map(async (type) => {
     let storage = createStorage(settings, type);
     await storage.remove(href);
@@ -17,7 +17,7 @@ async function removeBookmark(href: string): Promise<void> {
 }
 
 async function storeBookmark(bookmark: Bookmark): Promise<void> {
-  let settings = Settings.default();
+  let settings = await Settings.default();
   let storage = createStorage(settings, TARGET_COLLECTION);
   let persistentItem = await storage.get(bookmark.href);
   if (persistentItem) {
@@ -30,7 +30,7 @@ async function storeBookmark(bookmark: Bookmark): Promise<void> {
 }
 
 export async function handleMessage(request: HMRequest, sender, sendResponse) {
-  let settings = Settings.default();
+  let settings = await Settings.default();
   try {
     if (request.method === "getBookmarks") {
       let output = [];
