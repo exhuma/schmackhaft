@@ -5,10 +5,16 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Development Page</title>
-    <script type="module" src="./settings-demo"></script>
+    <script type="module" src="./demo"></script>
+    <script type="module" src="../src/components/components/sh-taglist"></script>
 </head>
 <body>
 
+    <sh-taglist id="TagList"></sh-taglist>
+    <div style="float: left; padding: 1rem; width: 400px; height: 500px; border: 1px solid black;">
+        <h1>Settings V0 (empty)</h1>
+        <sh-settings settings="{}"></sh-settings>
+    </div>
     <div style="float: left; padding: 1rem; width: 400px; height: 500px; border: 1px solid black;">
         <h1>Settings V1</h1>
         <sh-settings id="SettingsV1" settings="{}"></sh-settings>
@@ -17,6 +23,6 @@
         <h1>Settings V2</h1>
         <sh-settings id="SettingsV2" settings="{}"></sh-settings>
     </div>
-    
+
 </body>
 </html>
