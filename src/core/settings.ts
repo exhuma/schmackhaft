@@ -6,6 +6,19 @@ export class Settings {
   static async default() {
     let settings = new Settings(browser.storage.local);
     let current = await settings.getAll();
+    if (current.verison === undefined) {
+      // We have no settings yet. Let's start with a sensible default as
+      // example.
+      await settings.replace(
+        {
+          remoteUrls: [
+            "https://raw.githubusercontent.com/exhuma/schmackhaft/c4bbbe94856a1bdb5f88812ca5679327dcbddadc/docs/examples/external-file.json"
+          ],
+          enableBrowserBookmarks: true,
+          version: 2,
+        });
+      return settings
+    }
     // TODO ideally this would loop over all migrations and apply everything
     // that's necessary.
     let migrationName = `migrate_${current.version}_to_${current.version+1}`;
