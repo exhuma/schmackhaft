@@ -25,7 +25,7 @@ export class TagList extends LitElement {
     }
     .countedTag.dense,
     .unfilterTag.dense {
-      font-size: 0.6em;
+      font-size: 14px;
       margin-top: 0;
       margin-bottom: 0;
     }

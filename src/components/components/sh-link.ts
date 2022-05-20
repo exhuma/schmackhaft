@@ -9,6 +9,7 @@ class Link extends LitElement {
     * {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
         Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+      font-size: 16px;
     }
     .screenshot {
       width: 64px;
@@ -45,7 +46,7 @@ class Link extends LitElement {
     }
     SH-CHIP {
       margin-left: 0.1rem;
-      font-size: 70%;
+      font-size: 14px;
     }
   `;
 
