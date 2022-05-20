@@ -38,7 +38,7 @@
   "permissions": ["<all_urls>", "tabs", "storage", "bookmarks"],
   "browser_specific_settings": {
       "gecko": {
-          "id": "schmackhaft@albert.lu"
+          "id": "{a4621edc-b7f8-4dda-97de-e184bce99be8}"
       }
   }
 }
