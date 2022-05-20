@@ -10,6 +10,9 @@ mozilla: pages serviceworker
 
 chrome: pages serviceworker
 	mkdir -p dist/chrome/src/core
+	mkdir -p dist/chrome/pages/docs
+	pandoc -s -f markdown -t html README.md > dist/chrome/pages/README.html
+	cp -rv docs/screenshots dist/chrome/pages/docs
 	cp -r build/pages/* dist/chrome/
 	cp \
 		build/serviceworker/service-worker.es.js \

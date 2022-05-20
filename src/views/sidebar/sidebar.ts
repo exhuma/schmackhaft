@@ -21,6 +21,14 @@ function hideToast() {
   toast.style.display = "none";
 }
 
+function showHelp(): void {
+  browser.tabs.create({
+    active: true,
+    selected: true,
+    url: "/pages/README.html"
+  })
+}
+
 function refreshBookmarks(): void {
   displayToast("Loading...");
   browser.runtime
@@ -72,6 +80,11 @@ browser.runtime
 let refreshButton = document.getElementById("RefreshButton");
 refreshButton.addEventListener("click", () => {
   refreshBookmarks();
+});
+
+let helpButton = document.getElementById("HelpButton");
+helpButton.addEventListener("click", () => {
+  showHelp();
 });
 
 document.addEventListener("DOMContentLoaded", refreshBookmarks);
