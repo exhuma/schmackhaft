@@ -14,6 +14,9 @@ export class Settings extends LitElement {
   #SaveButton {
     grid-column-start: 2;
   }
+  #ClearButton {
+    grid-column-start: 2;
+  }
   .formField {
     grid-column-start: span 2;
   }
