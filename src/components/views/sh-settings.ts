@@ -57,9 +57,15 @@ export class Settings extends LitElement {
     }}));
   }
 
-  onButtonClick() {
+  onSaveClick() {
     this.dispatchEvent(new CustomEvent("change", {detail: {
       settings: this.settings
+    }}));
+  }
+
+  onClearClick() {
+    this.dispatchEvent(new CustomEvent("change", {detail: {
+      settings: "{}"
     }}));
   }
 
@@ -117,7 +123,8 @@ export class Settings extends LitElement {
         <input @change="${this.onBrowserBookmarkToggled}" id="enableBrowserBookmarks" type="checkbox" ?checked="${this._settings.enableBrowserBookmarks}"></input>
         <label for="enableBrowserBookmarks">Include Browser Bookmarks (folders will be provided as tags)</label>
       </div>
-      <mwc-button id="SaveButton" raised @click="${this.onButtonClick}">Save</mwc-button>
+      <mwc-button id="SaveButton" raised @click="${this.onSaveClick}">Save</mwc-button>
+      <mwc-button id="ClearButton" @click="${this.onClearClick}">Clear all settings</mwc-button>
     </div>
     `
   }
