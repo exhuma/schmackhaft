@@ -24,7 +24,6 @@ function hideToast() {
 function showHelp(): void {
   browser.tabs.create({
     active: true,
-    selected: true,
     url: "/pages/README.html"
   })
 }
