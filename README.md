@@ -19,7 +19,10 @@ This extension allows the storage of bookmarks in a *non-hierarchical*
 structure. Each bookmark is identified by the URL and has a collection of
 *tags*. They can then be browsed by filtering according to those tags.
 
-This in turn allows "drilling down" into tags without being forced to pick a specific tag as "first level". So whether you pick "Python" first and _then_ "Programming" is going to be the same as picking "Programming" first followed by "Python".
+This in turn allows "drilling down" into tags without being forced to pick a
+specific tag as "first level". So whether you pick "Python" first and _then_
+"Programming" is going to be the same as picking "Programming" first followed by
+"Python".
 
 This reproduces a behaviour reminiscent to to https://del.icio.us from the early
 2000s which has since completely changed its behaviour and is - to the best of
@@ -33,11 +36,21 @@ The Browser Button gives access to the stored bookmarks. It also contains a
 refresh button to force a reload. This can be useful if remote JSON URLs have
 changed.
 
-Clicking on the tag-chips at the top will add them to the filter. The bottom
-panel will then show only bookmarks with those tags. Clicking on an additional
-tag, will filter the bookmarks further.
+Clicking on the tag-chips at the top will cycle their filtering state. By
+default they are "ignored" in filtering. Clicking once will set them to an
+"inclusive" state. This will show *only* links that have this tag. Clicking
+again will set them to an "exclusive" state. This will *hide* all links that
+have this tag.
 
-Clicking on a filtered tag will remove it again.
+The state-transition is:
+
+    neutral -> included -> excluded -> neutral ...
+
+Right-Clicking on a tag will set the state in reverse:
+
+    neutral -> excluded -> included -> neutral ...
+
+The bottom panel will show the links with the tag-states applied.
 
 ![Page Action](docs/screenshots/browser-button.png "Browser Button")
 
@@ -48,7 +61,8 @@ The extension currently has two main options:
 * A list of external JSON URLs
 * An option to include browser-stored bookmarks in the UI or not.
 
-Each JSON URL can store bookmarks in the format described below. To remove a URL, simply set it to the empty string.
+Each JSON URL can store bookmarks in the format described below. To remove a
+URL, simply set it to the empty string.
 
 Enabling the browser bookmarks will make them available. They will all have the
 automatic tag "browser bookmark" and each folder-name is used as additional
@@ -67,7 +81,8 @@ be added fairly easily.
 
 ### Web URL (JSON)
 
-The initially supported JSON collection is read-only and only simple HTTP-GET requests are made. An example collection looks like this:
+The initially supported JSON collection is read-only and only simple HTTP-GET
+requests are made. An example collection looks like this:
 
 ```javascript
 [
