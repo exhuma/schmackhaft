@@ -64,7 +64,6 @@ class Link extends LitElement {
   dense: boolean = false;
 
   onClick(evt: { detail: any }) {
-    console.log(evt);
     this.dispatchEvent(new CustomEvent("chipClicked", { detail: evt.detail }));
   }
 
