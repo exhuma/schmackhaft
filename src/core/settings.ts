@@ -6,7 +6,7 @@ export class Settings {
   static async default() {
     let settings = new Settings(browser.storage.local);
     let current = await settings.getAll();
-    if (current.verison === undefined) {
+    if (current.version === undefined) {
       // We have no settings yet. Let's start with a sensible default as
       // example.
       await settings.replace(
