@@ -46,7 +46,7 @@ export class Chip extends LitElement {
   state: TagState = TagState.NEUTRAL;
 
   onClick(evt: Event) {
-    this.dispatchEvent(new CustomEvent("chipClicked", { detail: {name: this.name, newState: this.state} }));
+    this.dispatchEvent(new CustomEvent("chipClicked", { detail: {name: this.name} }));
   }
 
   override render() {
