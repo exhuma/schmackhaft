@@ -1,59 +1,108 @@
 # Schmackhaft
 
+## Early Development
+
+This is an early release for this extension which scratches my own itch.
+Development will be slow, unless I notice public interest. In that case I might
+shuffle around some priorities to invest more time in this extension.
+
+Feedback is of course more than welcome, epecially in this early stage of the
+project.
+
+The biggest shortcoming right now is the visual design and UX of the extension.
+As this is, for now, dogfood-ware, this might remain basic as UI/UX design is
+not my strength.
+
 ## Description
 
-This extension allows the storage of bookmarks in a non-hierarchical structure. Each bookmark is identified by the URL and has a collection of tags. They can then be browsed by filtering according to those tags.
+This extension allows the storage of bookmarks in a *non-hierarchical*
+structure. Each bookmark is identified by the URL and has a collection of
+*tags*. They can then be browsed by filtering according to those tags.
 
-This in turn allows "drilling down" into tags without being forced to pick a specific tag as "first level". So whether you pick "Python" first and _then_ "Programming" is going to be the same as picking "Programming" first followed by "Python".
+This in turn allows "drilling down" into tags without being forced to pick a
+specific tag as "first level". So whether you pick "Python" first and _then_
+"Programming" is going to be the same as picking "Programming" first followed by
+"Python".
 
-This reproduces a behaviour reminiscen to to https://del.icio.us from the early 2000s which has since completely changed its behaviour and is - to the best of my knowledge - become effectively defunct.
+This reproduces a behaviour reminiscent to to https://del.icio.us from the early
+2000s which has since completely changed its behaviour and is - to the best of
+my knowledge - become effectively defunct.
 
 ## Screenshots
 
-### Page Action
+### Browser Button
 
-The page action offers a way to add and remove bookmarks. Saving over an existing bookmark will replace any existing tags.
+The Browser Button gives access to the stored bookmarks. It also contains a
+refresh button to force a reload. This can be useful if remote JSON URLs have
+changed.
 
-![Page Action](docs/screenshots/page-action.png "Page Action")
+Clicking on the tag-chips at the top will cycle their filtering state. By
+default they are "ignored" in filtering. Clicking once will set them to an
+"inclusive" state. This will show *only* links that have this tag. Clicking
+again will set them to an "exclusive" state. This will *hide* all links that
+have this tag.
 
-### Sidebar
+The state-transition is:
 
-The sidebar is the main bookmark navigation UI in v0.2. Clicking on the tag-chips at the top will add them to the filter. Clicking on a filtered tag will remove it again.
+    neutral -> included -> excluded -> neutral ...
 
-![Sidebar](docs/screenshots/sidebar.png "Sidebar")
+Right-Clicking on a tag will set the state in reverse:
 
-### Preferences
+    neutral -> excluded -> included -> neutral ...
 
-As of version 0.2, the preferences offers the possibility to add a remote web URL to the collections. This should point to a JSON documnent with links and their tags. See the "Collections" section below for an example.
+The bottom panel will show the links with the tag-states applied.
 
-![Preferences](docs/screenshots/preferences.png "Preferences")
+![Page Action](docs/screenshots/browser-button.png "Browser Button")
+
+### Preferences/Options
+
+The extension currently has two main options:
+
+* A list of external JSON URLs
+* An option to include browser-stored bookmarks in the UI or not.
+
+Each JSON URL can store bookmarks in the format described below. To remove a
+URL, simply set it to the empty string.
+
+Enabling the browser bookmarks will make them available. They will all have the
+automatic tag "browser bookmark" and each folder-name is used as additional
+tags.
+
+![Preferences](docs/screenshots/options.png "Preferences")
+
 
 ## Bookmark Collections
 
-The extension aims to provide support for multiple collections from which to draw un when browsing the bookmarks. In this first iteration (v0.2) this supports browser local-storage (non synced) and an external JSON URL (without authentication just yet). Collection support is flexible in the source code and additional collections can be added fairly easily.
+The extension aims to provide support for multiple collections from which to
+draw un when browsing the bookmarks. This currently (in version 0.3) this only
+supports external JSON files and the bookmarks stored in the browser.
+Collection support is flexible in the source code and additional collections can
+be added fairly easily.
 
 ### Web URL (JSON)
 
-The initially supported JSON collection is read-only and only simple HTTP-GET requests are made. An example collection looks like this:
+The initially supported JSON collection is read-only and only simple HTTP-GET
+requests are made. An example collection looks like this:
 
 ```javascript
 [
   {
-    href: "https://www.google.com",
-    tags: ["search", "google"],
-    title: "Google Search",
+    "href": "https://www.google.com",
+    "tags": ["search", "google"],
+    "title": "Google Search",
+    "description": "An example description"
   },
   {
-    href: "https://news.ycombinator.com",
-    tags: ["news", "it"],
+    "href": "https://news.ycombinator.com",
+    "tags": ["news", "it"],
   },
   {
-    href: "https://duckduckgo.com",
-    tags: ["search"],
+    "href": "https://duckduckgo.com",
+    "tags": ["search"]
   },
   {
-    href: "https://bbc.com",
-    tags: ["news", "world"],
+    "href": "https://bbc.com",
+    "tags": ["news", "world"]
   },
 ];
 ```
@@ -73,22 +122,30 @@ The initially supported JSON collection is read-only and only simple HTTP-GET re
    npm ci
    ```
 
-1. Run the auto-reloading build process
+1. Build the extension
 
-   This process will monitor the code-base for any changes and automatically
-   build the JavaScript files from the TypeScript files and bundle them up for
-   usage as a browser extension.
-
-   ```
-   npm run autobuild
-   ```
-
-1. Run a web-browser with the extension
-
-   This process will open a new web-browser in development mode with the
-   extension readily loaded. It also automatically reloads the extension on any
-   changes.
+   The project provides a `Makefile` to abstract away browser differences. To
+   build, simply run:
 
    ```
-   npm run browser
+   make
    ```
+
+   This will create the subfolder `dist/chrome` and `dist/mozilla` which should
+   cover most browsers.
+
+1. Component Development
+
+   For an easier development cycle, a lot of code is written in
+   [lit](https://lit.dev). This allows us to run a development server with `npm
+   run serve` and access `/demo/index.html` to try out the components. This
+   makes it possible to have a develop/test cycle without the need to reload the
+   browser extension. It also makes it a lot easier to use the browser
+   development tools.
+
+1. Load the extension into the browser for testing
+
+   Bug/Feature-tracker is over at [exhuma/schmackhaft](https://github.com/exhuma/schmackhaft).
+
+   * [Mozilla: Installing](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Your_first_WebExtension#installing)
+   * [Chrome: Loading unpacked extensions](https://developer.chrome.com/docs/extensions/mv3/getstarted/#unpacked)

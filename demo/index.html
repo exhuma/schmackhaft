@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Development Page</title>
+    <script type="module" src="./demo"></script>
+    <script type="module" src="../src/components/app-schmackhaft"></script>
+    <style>
+        .clickable {
+            color: #00f;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        #Bookmarks {
+            width: 400px;
+            border: 1px solid black;
+        }
+    </style>
+</head>
+
+<body>
+
+    <a class="clickable" id="BookmarksLink" data-div="Bookmarks">Bookmarks</a> |
+    <a class="clickable" id="SettingsLink" data-div="Settings">Settings</a> |
+    Load JSON file: <input type="text" id="ExternalJsonFile" placeholder="https://example.com/example.json" />
+    <button id="ReloadJsonButton">Reload</button>
+
+    <hr>
+
+    <div class="toggleable" id="Bookmarks">
+        <app-schmackhaft id="schmackhaft"></app-schmackhaft>
+    </div>
+
+    <div class="toggleable" style="display: none;" id="Settings">
+        <div style="float: left; padding: 1rem; width: 400px; height: 500px; border: 1px solid black;">
+            <h1>Settings V0 (empty)</h1>
+            <sh-settings settings="{}"></sh-settings>
+        </div>
+        <div style="float: left; padding: 1rem; width: 400px; height: 500px; border: 1px solid black;">
+            <h1>Settings V1</h1>
+            <sh-settings id="SettingsV1" settings="{}"></sh-settings>
+        </div>
+        <div style="float: left; padding: 1rem; width: 400px; height: 500px; border: 1px solid black;">
+            <h1>Settings V2</h1>
+            <sh-settings id="SettingsV2" settings="{}"></sh-settings>
+        </div>
+    </div>
+
+
+</body>
+
+</html>

@@ -13,5 +13,5 @@
     "useDefineForClassFields": false,
     "skipLibCheck": true
   },
-  "include": ["web-components/**/*"]
+  "include": ["src/**/*"]
 }
