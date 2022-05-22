@@ -2,6 +2,7 @@ import { css, html, LitElement } from "lit";
 import { property, customElement } from "lit/decorators.js";
 import { classMap } from "lit/directives/class-map.js";
 import { TagState } from "../../types";
+import 'material-icon-component/md-icon.js';
 
 @customElement("sh-chip")
 export class Chip extends LitElement {
@@ -55,11 +56,29 @@ export class Chip extends LitElement {
       included: this.state === TagState.INCLUDED,
       excluded: this.state === TagState.EXCLUDED,
     };
+    let label;
+    let actionText;
+    switch (this.state) {
+      case TagState.INCLUDED:
+        label = html`<md-icon>label</md-icon>`
+        actionText = "exclude links with this tag";
+        break;
+      case TagState.EXCLUDED:
+        label = html`<md-icon>label_off</md-icon>`
+        actionText = "ignore this tag";
+        break;
+      case TagState.NEUTRAL:
+      default:
+        label = html`<md-icon outlined>label</md-icon>`
+        actionText = "include only links with this tag";
+        break;
+    }
     return html`<div
       class="chip ${classMap(dynamicClasses)}"
       @click="${this.onClick}"
+      title="Click to ${actionText}"
     >
-      ${this.name}
+      ${label} ${this.name}
     </div>`;
   }
 }
