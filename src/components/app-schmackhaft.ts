@@ -55,17 +55,9 @@ export class Schmackhaft extends LitElement {
     this.requestUpdate();
   }
 
-  onTagFilterAdded(evt: { detail: string }) {
+  onTagClicked(evt: { detail: string }) {
     let tag = evt.detail;
-    this._links.filter(tag);
-    this.requestUpdate();
-    this.linkListRef.value?.requestUpdate();
-    this.tagListRef.value?.requestUpdate();
-  }
-
-  onTagFilterRemoved(evt: { detail: string }) {
-    let tag = evt.detail;
-    this._links.unFilter(tag);
+    this._links.advanceState(tag);
     this.requestUpdate();
     this.linkListRef.value?.requestUpdate();
     this.tagListRef.value?.requestUpdate();
@@ -76,8 +68,7 @@ export class Schmackhaft extends LitElement {
       <div id="GridContainer">
         <sh-taglist
           ${ref(this.tagListRef)}
-          @tagFilterAdded="${this.onTagFilterAdded}"
-          @tagFilterRemoved="${this.onTagFilterRemoved}"
+          @tagClicked="${this.onTagClicked}"
           .links="${this._links}"
           dense
         ></sh-taglist>
@@ -85,8 +76,7 @@ export class Schmackhaft extends LitElement {
           ${ref(this.linkListRef)}
           .links=${this._links}
           .renderSearchedTags="${false}"
-          @tagFilterAdded="${this.onTagFilterAdded}"
-          @tagFilterRemoved="${this.onTagFilterRemoved}"
+          @tagClicked="${this.onTagClicked}"
           dense
         ></sh-linklist>
       </div>

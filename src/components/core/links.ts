@@ -69,18 +69,40 @@ export class Links {
   }
 
   get searchedTags() {
-    let searchedTags: string[] = [];
+    let output: string[] = [];
     Object.entries(this.states).forEach(([key, value]) => {
       if (value === TagState.INCLUDED) {
-        searchedTags.push(key);
+        output.push(key);
       }
     })
-    return searchedTags;
+    return output;
+  }
+
+  get excludedTags() {
+    let output: string[] = [];
+    Object.entries(this.states).forEach(([key, value]) => {
+      if (value === TagState.EXCLUDED) {
+        output.push(key);
+      }
+    })
+    return output;
+  }
+
+  getState(tagName: string): TagState {
+    let output = TagState.NEUTRAL;
+    if (this.links) {
+      output = this.states[tagName] ?? TagState.NEUTRAL;
+    }
+    return output;
   }
 
   isMatchingOnTags(link: Link) {
     if (!this.states || Object.keys(this.states).length === 0) {
       return true;
+    }
+    let intersectExcluded = intersection(this.excludedTags, link.tags);
+    if (intersectExcluded.length !== 0) {
+      return false;
     }
     let intersect = intersection(this.searchedTags, link.tags);
     let output = true;
@@ -93,14 +115,6 @@ export class Links {
   reset() {
     this.clearSearch();
     this.states = {};
-  }
-
-  unFilter(tagName: string) {
-    this.states[tagName] = TagState.NEUTRAL;
-  }
-
-  filter(tagName: string) {
-    this.states[tagName] = TagState.INCLUDED;
   }
 
   advanceState(tagName: string) {

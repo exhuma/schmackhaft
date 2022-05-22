@@ -1,6 +1,7 @@
 import { css, html, LitElement } from "lit";
 import { property, customElement } from "lit/decorators.js";
 import { classMap } from "lit/directives/class-map.js";
+import { TagState } from "../../types";
 import "./sh-chip";
 
 @customElement("sh-link")
@@ -46,7 +47,7 @@ class Link extends LitElement {
   `;
 
   @property({ type: Array })
-  tags: Array<string> = [];
+  tags: Array<[string, TagState]> = [];
 
   @property()
   title = "Link Title";
@@ -67,10 +68,11 @@ class Link extends LitElement {
     this.dispatchEvent(new CustomEvent("chipClicked", { detail: evt.detail }));
   }
 
-  _chip(name: string) {
+  _chip([name, state]: [string, TagState]) {
     return html`<sh-chip
       name="${name}"
       ?dense="${this.dense}"
+      .state="${state}"
       @chipClicked="${this.onClick}"
     ></sh-chip>`;
   }

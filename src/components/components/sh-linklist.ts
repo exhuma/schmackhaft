@@ -20,38 +20,28 @@ export class LinkList extends LitElement {
     return html`<sh-chip
       name="${tagName}"
       data-tag="${tagName}"
-      @click="${this._removeTag}"
       >${tagName}</sh-chip
     >`;
   }
 
   _renderLink(link: Link) {
+    let tagsWithStates = link.tags.map(tagName => {return [tagName, this.links.getState(tagName)]});
     return html`
       <sh-link
         title="${link.title}"
         description="${link.description}"
         href="${link.href}"
         img="${link.img}"
-        .tags="${link.tags}"
+        .tags="${tagsWithStates}"
         dense="${this.dense}"
         @chipClicked="${this.onChipClicked}"
       ></sh-link>
     `;
   }
 
-  _removeTag(event: { currentTarget: HTMLElement }) {
-    const tagName = event.currentTarget?.dataset.tag;
-    if (!tagName) {
-      return;
-    }
-    this.dispatchEvent(
-      new CustomEvent("tagFilterRemoved", { detail: tagName })
-    );
-  }
-
   onChipClicked(evt: { detail: any }) {
     this.dispatchEvent(
-      new CustomEvent("tagFilterAdded", { detail: evt.detail.name })
+      new CustomEvent("tagClicked", { detail: evt.detail.name })
     );
   }
 

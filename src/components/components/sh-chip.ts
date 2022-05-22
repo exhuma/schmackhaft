@@ -21,6 +21,18 @@ export class Chip extends LitElement {
       border-radius: 2px;
       padding: 0 0.2rem;
     }
+
+    .chip.neutral {
+      background-color: #e0e0ee;
+    }
+
+    .chip.included {
+      background-color: #aaffaa;
+    }
+
+    .chip.excluded {
+      background-color: #ffaaaa;
+    }
   `;
 
   @property()
@@ -37,7 +49,12 @@ export class Chip extends LitElement {
   }
 
   override render() {
-    let dynamicClasses = { dense: this.dense };
+    let dynamicClasses = {
+      dense: this.dense,
+      neutral: this.state === TagState.NEUTRAL,
+      included: this.state === TagState.INCLUDED,
+      excluded: this.state === TagState.EXCLUDED,
+    };
     return html`<div
       class="chip ${classMap(dynamicClasses)}"
       @click="${this.onClick}"
