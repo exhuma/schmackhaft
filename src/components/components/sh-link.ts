@@ -6,11 +6,6 @@ import "./sh-chip";
 @customElement("sh-link")
 class Link extends LitElement {
   static styles = css`
-    * {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-        Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-      font-size: 16px;
-    }
     .screenshot {
       width: 64px;
       height: 64px;

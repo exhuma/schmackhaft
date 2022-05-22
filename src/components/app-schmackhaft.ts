@@ -14,6 +14,12 @@ import { Links } from "./core/links";
 @customElement("app-schmackhaft")
 export class Schmackhaft extends LitElement {
   static styles = css`
+    * {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+        Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+      font-size: 16px;
+    }
+
     #GridContainer {
       display: grid;
       grid-template-columns: 100%;
