@@ -39,3 +39,30 @@ function toggleDiv(evt) {
 document.querySelectorAll(".clickable").forEach(element => {
   element.addEventListener("click", toggleDiv)
 });
+
+
+async function reloadJson(url) {
+  if (url === undefined || url.trim() === "") {
+    return;
+  }
+  let response = await fetch(url);
+  if (!response.ok) {
+    console.error(`Unable to fetch ${url} (${response.statusText})`)
+    return;
+  }
+  let text = await response.text();
+  let bookmarksElement = document.getElementById("schmackhaft");
+  bookmarksElement.links = text;
+}
+
+document.getElementById("ReloadJsonButton").addEventListener("click", () => {
+  let txtJsonFile = document.getElementById("ExternalJsonFile");
+  let url = txtJsonFile.value;
+  reloadJson(url);
+});
+
+let txtJsonFile = document.getElementById("ExternalJsonFile");
+txtJsonFile.addEventListener("change", async (evt) => {
+  let url = evt.target.value;
+  reloadJson(url);
+});
