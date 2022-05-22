@@ -2,6 +2,8 @@ import "../src/components/views/sh-settings";
 import { Settings } from "../src/components/views/sh-settings";
 import { Links } from "../src/components/core/links";
 import { Link } from "../src/components/model/link";
+import exampleData from "../docs/examples/external-file.json";
+
 
 let settingsElementV1 = document.getElementById("SettingsV1") as Settings;
 let settingsElementV2 = document.getElementById("SettingsV2") as Settings;
@@ -22,14 +24,18 @@ settingsElementV1.settings = JSON.stringify({
   version: 1,
 });
 
-let tagListElement = document.getElementById("TagList");
-tagListElement.links = new Links([
-  new Link(
-    "https://example.com",
-    ["tag1", "tag2"],
-    "Example Link",
-    "image-url",
-    "description"
-    )
-  ]
-)
+let bookmarksElement = document.getElementById("schmackhaft");
+bookmarksElement.links = JSON.stringify(exampleData);
+
+function toggleDiv(evt) {
+  let enabledName = evt.target.dataset["div"]
+  document.querySelectorAll(".toggleable").forEach(element => {
+    let currentName = element.id;
+    let displayValue = (enabledName === currentName ? "block" : "none");
+    element.style.display = displayValue;
+  })
+}
+
+document.querySelectorAll(".clickable").forEach(element => {
+  element.addEventListener("click", toggleDiv)
+});
