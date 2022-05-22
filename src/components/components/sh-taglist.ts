@@ -54,14 +54,9 @@ export class TagList extends LitElement {
   @property({ type: Boolean })
   dense: boolean = false;
 
-  onTagClick(evt: Event) {
-    if (!evt.currentTarget) {
-      console.error("Tag click event with empty target");
-      return;
-    }
-    let chip = evt.currentTarget as Chip;
+  onChipClicked(evt: {detail: any}) {
     this.dispatchEvent(
-      new CustomEvent("tagClicked", { detail: chip.name })
+      new CustomEvent("chipClicked", { detail: evt.detail })
     );
   }
 
@@ -76,7 +71,7 @@ export class TagList extends LitElement {
     >
       <sh-chip
         .state="${state}"
-        @click="${this.onTagClick}"
+        @chipClicked="${this.onChipClicked}"
         class="tagName"
         name="${tag[0]}"
         ?dense="${this.dense}"></sh-chip

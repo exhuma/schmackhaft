@@ -7,6 +7,7 @@ import "./components/sh-linklist";
 import { LinkList } from "./components/sh-linklist";
 import { TagList } from "./components/sh-taglist";
 import { Links } from "./core/links";
+import { TagStateTransition } from "../types";
 
 @customElement("app-schmackhaft")
 export class Schmackhaft extends LitElement {
@@ -55,9 +56,16 @@ export class Schmackhaft extends LitElement {
     this.requestUpdate();
   }
 
-  onTagClicked(evt: { detail: string }) {
-    let tag = evt.detail;
-    this._links.advanceState(tag);
+  onChipClicked(evt: { detail: string }) {
+    switch(evt.detail.direction) {
+      case TagStateTransition.ADVANCE:
+      default:
+        this._links.advanceState(evt.detail.name);
+        break;
+      case TagStateTransition.REVERSE:
+        this._links.reverseState(evt.detail.name);
+        break;
+    }
     this.requestUpdate();
     this.linkListRef.value?.requestUpdate();
     this.tagListRef.value?.requestUpdate();
@@ -68,7 +76,7 @@ export class Schmackhaft extends LitElement {
       <div id="GridContainer">
         <sh-taglist
           ${ref(this.tagListRef)}
-          @tagClicked="${this.onTagClicked}"
+          @chipClicked="${this.onChipClicked}"
           .links="${this._links}"
           dense
         ></sh-taglist>
@@ -76,7 +84,7 @@ export class Schmackhaft extends LitElement {
           ${ref(this.linkListRef)}
           .links=${this._links}
           .renderSearchedTags="${false}"
-          @tagClicked="${this.onTagClicked}"
+          @chipClicked="${this.onChipClicked}"
           dense
         ></sh-linklist>
       </div>

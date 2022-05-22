@@ -1,7 +1,7 @@
 import { css, html, LitElement } from "lit";
 import { property, customElement } from "lit/decorators.js";
 import { classMap } from "lit/directives/class-map.js";
-import { TagState } from "../../types";
+import { TagState, TagStateTransition } from "../../types";
 import 'material-icon-component/md-icon.js';
 
 @customElement("sh-chip")
@@ -46,7 +46,12 @@ export class Chip extends LitElement {
   state: TagState = TagState.NEUTRAL;
 
   onClick(evt: Event) {
-    this.dispatchEvent(new CustomEvent("chipClicked", { detail: {name: this.name} }));
+    this.dispatchEvent(new CustomEvent("chipClicked", { detail: {name: this.name, direction: TagStateTransition.ADVANCE} }));
+  }
+
+  onAuxClick(evt: Event) {
+    evt.preventDefault();
+    this.dispatchEvent(new CustomEvent("chipClicked", { detail: {name: this.name, direction: TagStateTransition.REVERSE} }));
   }
 
   override render() {
@@ -76,6 +81,7 @@ export class Chip extends LitElement {
     return html`<div
       class="chip ${classMap(dynamicClasses)}"
       @click="${this.onClick}"
+      @contextmenu="${this.onAuxClick}"
       title="Click to ${actionText}"
     >
       ${label} ${this.name}

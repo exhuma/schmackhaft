@@ -6,6 +6,11 @@ export enum TagState {
   EXCLUDED,
 }
 
+export enum TagStateTransition {
+  ADVANCE,
+  REVERSE,
+}
+
 export type Bookmark = {
   title: string;
   tags: string[];

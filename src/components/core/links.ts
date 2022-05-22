@@ -137,6 +137,26 @@ export class Links {
     this.states[tagName] = newState;
   }
 
+  reverseState(tagName: string) {
+    let currentState = this.states[tagName] ?? TagState.NEUTRAL;
+    let newState = TagState.NEUTRAL;
+    switch(currentState) {
+      case TagState.NEUTRAL:
+        newState = TagState.EXCLUDED;
+        break;
+      case TagState.INCLUDED:
+        newState = TagState.NEUTRAL;
+        break;
+      case TagState.EXCLUDED:
+        newState = TagState.INCLUDED;
+        break;
+      default:
+        newState = TagState.NEUTRAL;
+        break;
+    }
+    this.states[tagName] = newState;
+  }
+
   search(substring: string) {
     this.searchString = substring;
   }
