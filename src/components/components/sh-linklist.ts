@@ -51,7 +51,7 @@ export class LinkList extends LitElement {
 
   onChipClicked(evt: { detail: any }) {
     this.dispatchEvent(
-      new CustomEvent("tagFilterAdded", { detail: evt.detail })
+      new CustomEvent("tagFilterAdded", { detail: evt.detail.name })
     );
   }
 

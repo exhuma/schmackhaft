@@ -1,5 +1,11 @@
 import { Settings } from "./core/settings";
 
+export enum TagState {
+  NEUTRAL,
+  INCLUDED,
+  EXCLUDED,
+}
+
 export type Bookmark = {
   title: string;
   tags: string[];

@@ -1,3 +1,4 @@
+import { TagState } from "../../types";
 import { JsonSchema as LinkSchema, Link } from "../model/link";
 
 function intersection(setA: Array<string>, setB: Array<string>) {
@@ -12,12 +13,12 @@ function intersection(setA: Array<string>, setB: Array<string>) {
 
 export class Links {
   links: Array<Link>;
-  searchedTags: Array<string>;
   searchString: string = "";
+  states: {[key: string]: TagState}
 
   constructor(links: Array<Link> = []) {
     this.links = links;
-    this.searchedTags = [];
+    this.states = {};
   }
 
   static fromJson(data: string): Links {
@@ -67,8 +68,18 @@ export class Links {
     );
   }
 
+  get searchedTags() {
+    let searchedTags: string[] = [];
+    Object.entries(this.states).forEach(([key, value]) => {
+      if (value === TagState.INCLUDED) {
+        searchedTags.push(key);
+      }
+    })
+    return searchedTags;
+  }
+
   isMatchingOnTags(link: Link) {
-    if (!this.searchedTags || this.searchedTags.length === 0) {
+    if (!this.states || Object.keys(this.states).length === 0) {
       return true;
     }
     let intersect = intersection(this.searchedTags, link.tags);
@@ -81,21 +92,35 @@ export class Links {
 
   reset() {
     this.clearSearch();
-    this.searchedTags = [];
+    this.states = {};
   }
 
   unFilter(tagName: string) {
-    if (!this.searchedTags.includes(tagName)) {
-      return;
-    }
-    this.searchedTags = this.searchedTags.filter((item) => item !== tagName);
+    this.states[tagName] = TagState.NEUTRAL;
   }
 
   filter(tagName: string) {
-    if (this.searchedTags.includes(tagName)) {
-      return;
+    this.states[tagName] = TagState.INCLUDED;
+  }
+
+  advanceState(tagName: string) {
+    let currentState = this.states[tagName] ?? TagState.NEUTRAL;
+    let newState = TagState.NEUTRAL;
+    switch(currentState) {
+      case TagState.NEUTRAL:
+        newState = TagState.INCLUDED;
+        break;
+      case TagState.INCLUDED:
+        newState = TagState.EXCLUDED;
+        break;
+      case TagState.EXCLUDED:
+        newState = TagState.NEUTRAL;
+        break;
+      default:
+        newState = TagState.NEUTRAL;
+        break;
     }
-    this.searchedTags.push(tagName);
+    this.states[tagName] = newState;
   }
 
   search(substring: string) {

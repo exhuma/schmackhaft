@@ -1,6 +1,7 @@
 import { css, html, LitElement } from "lit";
 import { property, customElement, state } from "lit/decorators.js";
 import { classMap } from "lit/directives/class-map.js";
+import { TagState } from "../../types";
 import { Counter } from "../core/counter";
 import { Links } from "../core/links";
 import { Chip } from "./sh-chip";
@@ -82,6 +83,7 @@ export class TagList extends LitElement {
         @click="${this.onFilterTagClick}"
         class="tagName"
         name="${tag[0]}"
+        .state="${TagState.NEUTRAL}"
         ?dense="${this.dense}"
       ></sh-chip
       ><span class="tagCount">${tag[1]}</span>
@@ -95,7 +97,9 @@ export class TagList extends LitElement {
       class="unfilterTag ${classMap(dynamicClasses)}"
       data-tag=${tag}
     >
-      <sh-chip class="tagName" name="${tag}" ?dense="${this.dense}"></sh-chip
+      <sh-chip 
+        .state="${TagState.INCLUDED}"
+        class="tagName" name="${tag}" ?dense="${this.dense}"></sh-chip
       ><span class="button">x</span>
     </div>`;
   }
