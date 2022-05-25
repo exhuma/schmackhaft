@@ -1,6 +1,5 @@
 .PHONY: build
-CURRENT_MOZ_VERSION = $(shell jq -r .version manifest-mozilla.json)
-CURRENT_CHR_VERSION = $(shell jq -r .version manifest-chrome.json)
+CURRENT_VERSION = $(shell jq -r .version package.json)
 
 all: chrome mozilla
 	notify-send -u low -t 1000 Build done
@@ -8,7 +7,8 @@ all: chrome mozilla
 mozilla: pages serviceworker bundled_docs
 	mkdir -p unpackaged/mozilla
 	cp -r build/pages/* unpackaged/mozilla/
-	cp manifest-mozilla.json unpackaged/mozilla/manifest.json
+	sed -e 's/__version__/$(CURRENT_VERSION)/' \
+		manifest-mozilla.json > unpackaged/mozilla/manifest.json
 
 chrome: pages serviceworker bundled_docs
 	mkdir -p unpackaged/chrome/src/core
@@ -17,7 +17,8 @@ chrome: pages serviceworker bundled_docs
 		build/serviceworker/service-worker.es.js \
 		build/serviceworker/service-worker.umd.js \
 		unpackaged/chrome/src/core
-	cp manifest-chrome.json unpackaged/chrome/manifest.json
+	sed -e 's/__version__/$(CURRENT_VERSION)/' \
+		manifest-chrome.json > unpackaged/chrome/manifest.json
 
 bundled_docs:
 	mkdir -p unpackaged/chrome/pages/docs
@@ -34,14 +35,12 @@ pages:
 	npm run build -- --config vite-pages.config.js
 
 dist: mozilla chrome
-ifeq ($(CURRENT_CHR_VERSION), $(CURRENT_MOZ_VERSION))
 	mkdir -p dist
-	(cd unpackaged/mozilla && zip -r ../../dist/mozilla-$(CURRENT_MOZ_VERSION).zip .)
-	(cd unpackaged/chrome && zip -r ../../dist/chrome-$(CURRENT_CHR_VERSION).zip .)
-	git archive --format zip --output dist/schmackhaft-v$(CURRENT_CHR_VERSION)-src.zip master
-else
-	$(error Inconsistent versions in Chrome and Mozilla package.json)
-endif
+	(cd unpackaged/mozilla && zip -r ../../dist/mozilla-$(CURRENT_VERSION).zip .)
+	(cd unpackaged/chrome && zip -r ../../dist/chrome-$(CURRENT_VERSION).zip .)
+	git archive --format zip --output \
+		dist/schmackhaft-v$(CURRENT_VERSION)-src.zip \
+		v$(CURRENT_VERSION)
 
 
 clean:
