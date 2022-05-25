@@ -107,7 +107,16 @@ requests are made. An example collection looks like this:
 ];
 ```
 
-## Development & Maintenance
+## Development, Building & Maintenance
+
+Bug/Feature-tracker is over at [exhuma/schmackhaft](https://github.com/exhuma/schmackhaft).
+
+The project provides a definition for a VS-Code "development container". This
+is purely optional but makes developemnt easier because it comes with all the
+required dependencies. When not working directly with VS-Code (including the
+`ms-vscode-remote.vscode-remote-extensionpack` extension) the development
+container can be buid manually using the Dockerfile inside the `.devcontainer`
+folder.
 
 1. Clone the Repository
 
@@ -120,6 +129,7 @@ requests are made. An example collection looks like this:
 
    ```
    npm ci
+   apt install pandoc
    ```
 
 1. Build the extension
@@ -131,8 +141,13 @@ requests are made. An example collection looks like this:
    make
    ```
 
-   This will create the subfolder `dist/chrome` and `dist/mozilla` which should
-   cover most browsers.
+   This will create the subfolder `unpackaged/chrome` and `unpackaged/mozilla`
+   which should cover most browsers.
+
+1. Preparing for distribution
+
+   Running `make dist` will create a folder `dist` which will contain all the
+   required files to publish the extension to the web-store.
 
 1. Component Development
 
@@ -144,8 +159,6 @@ requests are made. An example collection looks like this:
    development tools.
 
 1. Load the extension into the browser for testing
-
-   Bug/Feature-tracker is over at [exhuma/schmackhaft](https://github.com/exhuma/schmackhaft).
 
    * [Mozilla: Installing](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Your_first_WebExtension#installing)
    * [Chrome: Loading unpacked extensions](https://developer.chrome.com/docs/extensions/mv3/getstarted/#unpacked)
