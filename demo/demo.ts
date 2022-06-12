@@ -3,6 +3,7 @@ import { Settings } from "../src/components/views/sh-settings";
 import { Links } from "../src/components/core/links";
 import { Link } from "../src/components/model/link";
 import exampleData from "../docs/examples/external-file.json";
+import "../src/components/components/layout-vsplit";
 
 
 let settingsElementV1 = document.getElementById("SettingsV1") as Settings;
