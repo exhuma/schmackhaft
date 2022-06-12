@@ -19,17 +19,18 @@
             display: none;
         }
 
-        #Bookmarks {
-            width: 400px;
-            border: 1px solid black;
-        }
-
         layout-vsplit {
             padding: 1em;
             border: 1px solid #ccc;
             box-shadow: 2px 2px 2px;
             margin: 1em;
             height: 400px;
+        }
+
+        app-schmackhaft {
+            height: 500px;
+            width: 300px;
+            border: 1px solid black;
         }
 
         DIV[slot="top"] {
@@ -54,6 +55,10 @@
 
     <hr>
 
+    <div class="toggleable" id="Bookmarks">
+        <app-schmackhaft id="schmackhaft"></app-schmackhaft>
+    </div>
+
     <div class="toggleable" id="Layout">
         <layout-vsplit>
             <div slot="top">
@@ -65,10 +70,6 @@
                 <p>Donec tincidunt leo elementum, fringilla nisi a, semper velit. Morbi hendrerit nisl eget purus suscipit efficitur id id nunc. Vivamus fringilla, metus a varius faucibus, est ante suscipit enim, at venenatis urna risus in ipsum. Suspendisse potenti. Cras laoreet, ex in rutrum lobortis, ipsum urna efficitur dolor, sed congue dolor magna at purus. Duis eu metus nec urna laoreet pellentesque. Vestibulum pretium cursus tortor, quis vestibulum massa. </p>
             </div>
         </layout-vsplit>
-    </div>
-
-    <div class="toggleable" id="Bookmarks">
-        <app-schmackhaft id="schmackhaft"></app-schmackhaft>
     </div>
 
     <div class="toggleable" id="Settings">

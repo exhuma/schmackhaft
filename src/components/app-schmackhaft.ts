@@ -4,6 +4,7 @@ import { ref, createRef, Ref } from "lit/directives/ref.js";
 import "./components/sh-link";
 import "./components/sh-taglist";
 import "./components/sh-linklist";
+import "./components/layout-vsplit";
 import { LinkList } from "./components/sh-linklist";
 import { TagList } from "./components/sh-taglist";
 import { Links } from "./core/links";
@@ -18,24 +19,12 @@ export class Schmackhaft extends LitElement {
       font-size: 16px;
     }
 
-    #GridContainer {
-      display: grid;
-      grid-template-columns: 100%;
-      grid-template-rows: 20% 80%;
-      height: 100vh;
+    :host {
+      display: block;
     }
 
-    sh-taglist {
-      display: block;
-      overflow-y: scroll;
-      padding: 1rem;
-      border-bottom: 1px solid black;
-    }
-
-    sh-linklist {
-      display: block;
-      overflow: auto;
-      padding: 1rem;
+    layout-vsplit {
+      height: 100%;
     }
   `;
 
@@ -73,21 +62,23 @@ export class Schmackhaft extends LitElement {
 
   override render() {
     return html`
-      <div id="GridContainer">
+      <layout-vsplit>
         <sh-taglist
+          slot="top"
           ${ref(this.tagListRef)}
           @chipClicked="${this.onChipClicked}"
           .links="${this._links}"
           dense
         ></sh-taglist>
         <sh-linklist
+          slot="bottom"
           ${ref(this.linkListRef)}
           .links=${this._links}
           .renderSearchedTags="${false}"
           @chipClicked="${this.onChipClicked}"
           dense
         ></sh-linklist>
-      </div>
+      </layout-vsplit>
     `;
   }
 }
