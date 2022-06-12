@@ -28,9 +28,8 @@
         }
 
         app-schmackhaft {
-            height: 500px;
-            width: 300px;
-            border: 1px solid black;
+            resize: both;
+            height: 100%;
         }
 
         DIV[slot="top"] {
@@ -42,52 +41,85 @@
             border: 1px solid blue;
             padding: 1em;
         }
+
+        #Page {
+            display: flex;
+            flex-direction: column;
+        }
+
+        #Menu {
+            flex-grow: 0;
+            margin-bottom: 1em;
+        }
+
+        #Content {
+            flex-grow: 1;
+        }
     </style>
 </head>
 
 <body>
-
-    <a class="clickable" id="LayoutLink" data-div="Layout">Layout</a> |
-    <a class="clickable" id="BookmarksLink" data-div="Bookmarks">Bookmarks</a> |
-    <a class="clickable" id="SettingsLink" data-div="Settings">Settings</a> |
-    Load JSON file: <input type="text" id="ExternalJsonFile" placeholder="https://example.com/example.json" />
-    <button id="ReloadJsonButton">Reload</button>
-
-    <hr>
-
-    <div class="toggleable" id="Bookmarks">
-        <app-schmackhaft id="schmackhaft"></app-schmackhaft>
-    </div>
-
-    <div class="toggleable" id="Layout">
-        <layout-vsplit>
-            <div slot="top">
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque commodo ante lorem, sit amet lacinia lectus pulvinar ut. Etiam risus enim, dictum at posuere a, porttitor eget orci. Nam aliquet velit eu purus pretium convallis. Maecenas lacinia felis ante, ac facilisis nisl viverra id. Aenean dignissim commodo hendrerit. Cras ut mauris quis metus auctor auctor in sed diam. Vivamus suscipit, ex nec semper faucibus, quam tortor hendrerit purus, id volutpat justo dolor a quam. Donec tempor tempus justo sed finibus.</p>
-                <p>Donec tincidunt leo elementum, fringilla nisi a, semper velit. Morbi hendrerit nisl eget purus suscipit efficitur id id nunc. Vivamus fringilla, metus a varius faucibus, est ante suscipit enim, at venenatis urna risus in ipsum. Suspendisse potenti. Cras laoreet, ex in rutrum lobortis, ipsum urna efficitur dolor, sed congue dolor magna at purus. Duis eu metus nec urna laoreet pellentesque. Vestibulum pretium cursus tortor, quis vestibulum massa. </p>
+    <div id="Page">
+        <div id="Menu">
+            <a class="clickable" id="LayoutLink" data-div="Layout">Layout</a> |
+            <a class="clickable" id="BookmarksLink" data-div="Bookmarks">Bookmarks</a> |
+            <a class="clickable" id="SettingsLink" data-div="Settings">Settings</a> |
+            Load JSON file: <input type="text" id="ExternalJsonFile" placeholder="https://example.com/example.json" />
+            <button id="ReloadJsonButton">Reload</button>
+        </div>
+        <div id="Content">
+            <div class="toggleable" id="Bookmarks">
+                <app-schmackhaft id="schmackhaft"></app-schmackhaft>
             </div>
-            <div slot="bottom">
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque commodo ante lorem, sit amet lacinia lectus pulvinar ut. Etiam risus enim, dictum at posuere a, porttitor eget orci. Nam aliquet velit eu purus pretium convallis. Maecenas lacinia felis ante, ac facilisis nisl viverra id. Aenean dignissim commodo hendrerit. Cras ut mauris quis metus auctor auctor in sed diam. Vivamus suscipit, ex nec semper faucibus, quam tortor hendrerit purus, id volutpat justo dolor a quam. Donec tempor tempus justo sed finibus.</p>
-                <p>Donec tincidunt leo elementum, fringilla nisi a, semper velit. Morbi hendrerit nisl eget purus suscipit efficitur id id nunc. Vivamus fringilla, metus a varius faucibus, est ante suscipit enim, at venenatis urna risus in ipsum. Suspendisse potenti. Cras laoreet, ex in rutrum lobortis, ipsum urna efficitur dolor, sed congue dolor magna at purus. Duis eu metus nec urna laoreet pellentesque. Vestibulum pretium cursus tortor, quis vestibulum massa. </p>
+
+            <div class="toggleable" id="Layout">
+                <layout-vsplit>
+                    <div slot="top">
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque commodo ante lorem, sit amet
+                            lacinia lectus pulvinar ut. Etiam risus enim, dictum at posuere a, porttitor eget orci. Nam
+                            aliquet velit eu purus pretium convallis. Maecenas lacinia felis ante, ac facilisis nisl
+                            viverra id. Aenean dignissim commodo hendrerit. Cras ut mauris quis metus auctor auctor in
+                            sed diam. Vivamus suscipit, ex nec semper faucibus, quam tortor hendrerit purus, id volutpat
+                            justo dolor a quam. Donec tempor tempus justo sed finibus.</p>
+                        <p>Donec tincidunt leo elementum, fringilla nisi a, semper velit. Morbi hendrerit nisl eget
+                            purus suscipit efficitur id id nunc. Vivamus fringilla, metus a varius faucibus, est ante
+                            suscipit enim, at venenatis urna risus in ipsum. Suspendisse potenti. Cras laoreet, ex in
+                            rutrum lobortis, ipsum urna efficitur dolor, sed congue dolor magna at purus. Duis eu metus
+                            nec urna laoreet pellentesque. Vestibulum pretium cursus tortor, quis vestibulum massa. </p>
+                    </div>
+                    <div slot="bottom">
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque commodo ante lorem, sit amet
+                            lacinia lectus pulvinar ut. Etiam risus enim, dictum at posuere a, porttitor eget orci. Nam
+                            aliquet velit eu purus pretium convallis. Maecenas lacinia felis ante, ac facilisis nisl
+                            viverra id. Aenean dignissim commodo hendrerit. Cras ut mauris quis metus auctor auctor in
+                            sed diam. Vivamus suscipit, ex nec semper faucibus, quam tortor hendrerit purus, id volutpat
+                            justo dolor a quam. Donec tempor tempus justo sed finibus.</p>
+                        <p>Donec tincidunt leo elementum, fringilla nisi a, semper velit. Morbi hendrerit nisl eget
+                            purus suscipit efficitur id id nunc. Vivamus fringilla, metus a varius faucibus, est ante
+                            suscipit enim, at venenatis urna risus in ipsum. Suspendisse potenti. Cras laoreet, ex in
+                            rutrum lobortis, ipsum urna efficitur dolor, sed congue dolor magna at purus. Duis eu metus
+                            nec urna laoreet pellentesque. Vestibulum pretium cursus tortor, quis vestibulum massa. </p>
+                    </div>
+                </layout-vsplit>
             </div>
-        </layout-vsplit>
+
+            <div class="toggleable" id="Settings">
+                <div style="float: left; padding: 1rem; width: 400px; height: 500px; border: 1px solid black;">
+                    <h1>Settings V0 (empty)</h1>
+                    <sh-settings settings="{}"></sh-settings>
+                </div>
+                <div style="float: left; padding: 1rem; width: 400px; height: 500px; border: 1px solid black;">
+                    <h1>Settings V1</h1>
+                    <sh-settings id="SettingsV1" settings="{}"></sh-settings>
+                </div>
+                <div style="float: left; padding: 1rem; width: 400px; height: 500px; border: 1px solid black;">
+                    <h1>Settings V2</h1>
+                    <sh-settings id="SettingsV2" settings="{}"></sh-settings>
+                </div>
+            </div>
+
+        </div>
     </div>
-
-    <div class="toggleable" id="Settings">
-        <div style="float: left; padding: 1rem; width: 400px; height: 500px; border: 1px solid black;">
-            <h1>Settings V0 (empty)</h1>
-            <sh-settings settings="{}"></sh-settings>
-        </div>
-        <div style="float: left; padding: 1rem; width: 400px; height: 500px; border: 1px solid black;">
-            <h1>Settings V1</h1>
-            <sh-settings id="SettingsV1" settings="{}"></sh-settings>
-        </div>
-        <div style="float: left; padding: 1rem; width: 400px; height: 500px; border: 1px solid black;">
-            <h1>Settings V2</h1>
-            <sh-settings id="SettingsV2" settings="{}"></sh-settings>
-        </div>
-    </div>
-
-
 </body>
 
 </html>
