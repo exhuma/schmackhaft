@@ -67,3 +67,5 @@ txtJsonFile.addEventListener("change", async (evt) => {
   let url = evt.target.value;
   reloadJson(url);
 });
+
+document.querySelector(".toggleable").style.display = "block";

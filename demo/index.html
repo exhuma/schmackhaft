@@ -15,6 +15,10 @@
             text-decoration: underline;
         }
 
+        .toggleable {
+            display: none;
+        }
+
         #Bookmarks {
             width: 400px;
             border: 1px solid black;
@@ -63,11 +67,11 @@
         </layout-vsplit>
     </div>
 
-    <div class="toggleable" style="display: none;" id="Bookmarks">
+    <div class="toggleable" id="Bookmarks">
         <app-schmackhaft id="schmackhaft"></app-schmackhaft>
     </div>
 
-    <div class="toggleable" style="display: none;" id="Settings">
+    <div class="toggleable" id="Settings">
         <div style="float: left; padding: 1rem; width: 400px; height: 500px; border: 1px solid black;">
             <h1>Settings V0 (empty)</h1>
             <sh-settings settings="{}"></sh-settings>
