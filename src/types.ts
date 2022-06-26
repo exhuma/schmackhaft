@@ -1,4 +1,4 @@
-import { SettingsBridge } from "./core/settings";
+import { Settings } from "./model/settings";
 
 export enum TagState {
   NEUTRAL,
@@ -33,8 +33,15 @@ export type BrowserTab = {
   title: string;
 };
 
+export type Browser = {
+  storage: any,
+  tabs: any,
+  runtime: any
+  bookmarks: any,
+};
+
 export interface IStorage {
-  settings: SettingsBridge;
+  settings: Settings;
   get(href: string): Promise<Bookmark | null>;
   getAll(): Promise<Bookmark[]>;
   put(data: Bookmark): Promise<void>;

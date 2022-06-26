@@ -1,10 +1,7 @@
 import "../src/components/views/sh-settings";
+import { Settings } from "../src/model/settings";
 import { SettingsBridge } from "../src/components/views/sh-settings";
-import { Links } from "../src/components/core/links";
-import { Link } from "../src/components/model/link";
-import exampleData from "../docs/examples/external-file.json";
 import "../src/components/components/layout-vsplit";
-
 
 let settingsElementV1 = document.getElementById("SettingsV1") as SettingsBridge;
 let settingsElementV2 = document.getElementById("SettingsV2") as SettingsBridge;
@@ -26,7 +23,12 @@ settingsElementV1.settings = JSON.stringify({
 });
 
 let bookmarksElement = document.getElementById("schmackhaft");
-bookmarksElement.links = JSON.stringify(exampleData);
+let settings = new Settings(
+  ["https://raw.githubusercontent.com/exhuma/dotfiles/master/bookmarks.json"],
+  true,
+  2
+);
+bookmarksElement.settings = settings.toJson();
 
 function toggleDiv(evt) {
   let enabledName = evt.target.dataset["div"]

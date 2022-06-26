@@ -27,6 +27,16 @@ export class Link {
     this.description = description;
   }
 
+  static fromObject(data: any): Link {
+    return new Link(
+      data.href,
+      data.tags ?? [],
+      data.title ?? "",
+      data.img ?? "",
+      data.description ?? ""
+    )
+  }
+
   get tags() {
     return this._tags.sort((a: string, b: string) => {
       return a.localeCompare(b);

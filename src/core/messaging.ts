@@ -19,7 +19,7 @@ async function removeBookmark(href: string): Promise<void> {
   let settings = await SettingsBridge.default();
   let collections = await getCollections(settings);
   let promises = collections.map(async (type) => {
-    let storage = createStorage(settings, type);
+    let storage = createStorage(settings, type, browser);
     await storage.remove(href);
   });
   await Promise.all(promises);
@@ -27,7 +27,7 @@ async function removeBookmark(href: string): Promise<void> {
 
 async function storeBookmark(bookmark: Bookmark): Promise<void> {
   let settings = await SettingsBridge.default();
-  let storage = createStorage(settings, TARGET_COLLECTION);
+  let storage = createStorage(settings, TARGET_COLLECTION, browser);
   let persistentItem = await storage.get(bookmark.href);
   if (persistentItem) {
     persistentItem.title = bookmark.title;
@@ -41,7 +41,7 @@ async function storeBookmark(bookmark: Bookmark): Promise<void> {
 async function readAllStorages() {
       let output = [];
       let promises = collections.map(async (type) => {
-        let storage = createStorage(settings, type);
+        let storage = createStorage(settings, type, browser);
         console.info(`Requesting bookmarks from ${type}`);
         let bookmarks = await storage.getAll();
         output = [...output, ...bookmarks];

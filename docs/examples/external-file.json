@@ -6,6 +6,7 @@
   },
   {
     "href": "https://google.com",
-    "tags": ["search engine", "google"]
+    "tags": ["search engine", "google"],
+    "title": "Google"
   }
 ]
