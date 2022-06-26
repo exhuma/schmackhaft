@@ -38,11 +38,7 @@ async function storeBookmark(bookmark: Bookmark): Promise<void> {
   await storage.put(persistentItem);
 }
 
-export async function handleMessage(request: HMRequest, sender, sendResponse) {
-  let settings = await Settings.default();
-  let collections = await getCollections(settings);
-  try {
-    if (request.method === "getBookmarks") {
+async function readAllStorages() {
       let output = [];
       let promises = collections.map(async (type) => {
         let storage = createStorage(settings, type);
@@ -51,6 +47,16 @@ export async function handleMessage(request: HMRequest, sender, sendResponse) {
         output = [...output, ...bookmarks];
       });
       await Promise.all(promises);
+      return output;
+
+}
+
+export async function handleMessage(request: HMRequest, sender, sendResponse) {
+  let settings = await Settings.default();
+  let collections = await getCollections(settings);
+  try {
+    if (request.method === "getBookmarks") {
+      let output = await readAllStorages();
       return output;
     } else if (request.method === "addBookmark") {
       await storeBookmark(request.args);

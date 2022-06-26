@@ -2,25 +2,6 @@ import * as browser from "webextension-polyfill";
 import { Schmackhaft } from "../../components/app-schmackhaft";
 import { HMRequest } from "../../types";
 
-function displayToast(text) {
-  let toast = document.getElementById("Toast");
-  toast.innerText = text;
-  toast.style.display = "block";
-}
-
-function displayTimedToast(text, timeout) {
-  let toast = document.getElementById("Toast");
-  toast.innerText = text;
-  toast.style.display = "block";
-  window.setTimeout(hideToast, timeout);
-}
-
-function hideToast() {
-  let toast = document.getElementById("Toast");
-  toast.innerText = "";
-  toast.style.display = "none";
-}
-
 function showHelp(): void {
   browser.tabs.create({
     active: true,
