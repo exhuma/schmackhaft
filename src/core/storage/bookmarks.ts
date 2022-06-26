@@ -1,6 +1,6 @@
 import * as browser from "webextension-polyfill";
 import { Bookmark, BrowserBookmarkNode, IStorage } from "../../types";
-import { Settings } from "../settings";
+import { SettingsBridge } from "../settings";
 
 function visit(
   node: BrowserBookmarkNode,
@@ -25,8 +25,8 @@ function visit(
 }
 
 export class BookmarkStorage implements IStorage {
-  settings: Settings;
-  constructor(settings: Settings) {
+  settings: SettingsBridge;
+  constructor(settings: SettingsBridge) {
     this.settings = settings;
   }
 

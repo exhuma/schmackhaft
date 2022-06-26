@@ -1,12 +1,12 @@
 import * as browser from "webextension-polyfill";
 
 import { createStorage } from "./storage/factory";
-import { Settings } from "./settings";
+import { SettingsBridge } from "./settings";
 import { Bookmark, HMRequest } from "../types";
 
 const TARGET_COLLECTION = "local";
 
-async function getCollections(settings: Settings): Promise<string[]> {
+async function getCollections(settings: SettingsBridge): Promise<string[]> {
   let enableBrowserBookmarks = await settings.get("enableBrowserBookmarks");
   let output = ["local", "http"]
   if (enableBrowserBookmarks) {
@@ -16,7 +16,7 @@ async function getCollections(settings: Settings): Promise<string[]> {
 }
 
 async function removeBookmark(href: string): Promise<void> {
-  let settings = await Settings.default();
+  let settings = await SettingsBridge.default();
   let collections = await getCollections(settings);
   let promises = collections.map(async (type) => {
     let storage = createStorage(settings, type);
@@ -26,7 +26,7 @@ async function removeBookmark(href: string): Promise<void> {
 }
 
 async function storeBookmark(bookmark: Bookmark): Promise<void> {
-  let settings = await Settings.default();
+  let settings = await SettingsBridge.default();
   let storage = createStorage(settings, TARGET_COLLECTION);
   let persistentItem = await storage.get(bookmark.href);
   if (persistentItem) {
@@ -52,7 +52,7 @@ async function readAllStorages() {
 }
 
 export async function handleMessage(request: HMRequest, sender, sendResponse) {
-  let settings = await Settings.default();
+  let settings = await SettingsBridge.default();
   let collections = await getCollections(settings);
   try {
     if (request.method === "getBookmarks") {

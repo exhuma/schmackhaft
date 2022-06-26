@@ -1,10 +1,10 @@
 import { LocalStorage } from "./local";
 import { HttpStorage } from "./http";
 import { BookmarkStorage } from "./bookmarks";
-import { Settings } from "../settings";
+import { SettingsBridge } from "../settings";
 import { IStorage } from "../../types";
 
-export function createStorage(settings: Settings, type: string): IStorage {
+export function createStorage(settings: SettingsBridge, type: string): IStorage {
   if (type === "local") {
     return new LocalStorage(settings);
   } else if (type === "http") {

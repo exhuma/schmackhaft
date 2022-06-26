@@ -4,7 +4,7 @@ import { css, html, LitElement } from "lit";
 import { property, customElement, state } from "lit/decorators.js";
 
 @customElement("sh-settings")
-export class Settings extends LitElement {
+export class SettingsBridge extends LitElement {
   static styles = css`
   #GridContainer {
     display: grid;

@@ -1,10 +1,10 @@
 import { Bookmark, IStorage } from "../../types";
-import { Settings } from "../settings";
+import { SettingsBridge } from "../settings";
 
 export class HttpStorage implements IStorage {
-  settings: Settings;
+  settings: SettingsBridge;
 
-  constructor(settings: Settings) {
+  constructor(settings: SettingsBridge) {
     this.settings = settings;
   }
   async get(href: string): Promise<Bookmark | null> {

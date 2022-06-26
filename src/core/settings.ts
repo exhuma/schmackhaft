@@ -1,10 +1,10 @@
 import * as browser from "webextension-polyfill";
 import { IStorageBackend } from "../types";
 
-export class Settings {
+export class SettingsBridge {
   backend: any;
   static async default() {
-    let settings = new Settings(browser.storage.local);
+    let settings = new SettingsBridge(browser.storage.local);
     let current = await settings.getAll();
     if (current.version === undefined) {
       // We have no settings yet. Let's start with a sensible default as

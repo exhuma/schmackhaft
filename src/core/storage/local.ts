@@ -1,10 +1,10 @@
 import * as browser from "webextension-polyfill";
 import { Bookmark, IStorage } from "../../types";
-import { Settings } from "../settings";
+import { SettingsBridge } from "../settings";
 
 export class LocalStorage implements IStorage {
-  settings: Settings;
-  constructor(settings: Settings) {
+  settings: SettingsBridge;
+  constructor(settings: SettingsBridge) {
     this.settings = settings;
   }
 

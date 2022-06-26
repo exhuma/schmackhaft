@@ -1,13 +1,13 @@
 import "../src/components/views/sh-settings";
-import { Settings } from "../src/components/views/sh-settings";
+import { SettingsBridge } from "../src/components/views/sh-settings";
 import { Links } from "../src/components/core/links";
 import { Link } from "../src/components/model/link";
 import exampleData from "../docs/examples/external-file.json";
 import "../src/components/components/layout-vsplit";
 
 
-let settingsElementV1 = document.getElementById("SettingsV1") as Settings;
-let settingsElementV2 = document.getElementById("SettingsV2") as Settings;
+let settingsElementV1 = document.getElementById("SettingsV1") as SettingsBridge;
+let settingsElementV2 = document.getElementById("SettingsV2") as SettingsBridge;
 settingsElementV2.settings = JSON.stringify({
   remoteUrls: [
     "https://raw.githubusercontent.com/exhuma/dotfiles/master/bookmarks.json",
