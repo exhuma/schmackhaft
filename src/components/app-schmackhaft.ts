@@ -1,9 +1,12 @@
 import "./components/layout-vsplit";
+import "@material/mwc-button";
 import "./components/sh-link";
 import "./components/sh-linklist";
 import "./components/sh-taglist";
+import "./views/sh-settings";
 import "material-icon-component/md-icon.js";
 import { LitElement, css, html } from "lit";
+import { PageName, TagStateTransition } from "../types";
 import { Ref, createRef, ref } from "lit/directives/ref.js";
 import { customElement, property, state } from "lit/decorators.js";
 import { Link } from "./model/link";
@@ -11,7 +14,6 @@ import { LinkList } from "./components/sh-linklist";
 import { Links } from "./core/links";
 import { Settings } from "../model/settings";
 import { TagList } from "./components/sh-taglist";
-import { TagStateTransition } from "../types";
 import { classMap } from "lit/directives/class-map.js";
 import { createStorage } from "../core/storage/factory";
 
@@ -82,18 +84,21 @@ export class Schmackhaft extends LitElement {
   private _links: Links = new Links();
 
   @state()
+  private _view = PageName.BOOKMARKS;
+
+  @state()
   private _toast = "";
 
   @state()
   private _busy = false;
 
   @state()
-  private _settings = {};
+  private _settings: Settings = new Settings();
 
   @property()
   set settings(data: string) {
     this._settings = Settings.fromJson(data);
-    this._fetchBookmarks();
+    this._fetchBookmarks(); // TODO: Should we really always do this when the settings change?
   }
 
   get refreshClasses() {
@@ -118,7 +123,9 @@ export class Schmackhaft extends LitElement {
     });
   }
 
-  onChipClicked(evt: { detail: string }) {
+  onChipClicked(evt: {
+    detail: { direction: TagStateTransition; name: string };
+  }) {
     switch (evt.detail.direction) {
       case TagStateTransition.ADVANCE:
       default:
@@ -138,27 +145,25 @@ export class Schmackhaft extends LitElement {
   }
 
   onSettingsClicked() {
+    this._view = PageName.SETTINGS;
     // TODO
   }
 
   onHelpClicked() {
+    this._view = PageName.HELP;
     // TODO
   }
 
-  override render() {
+  _switchView(pageName: PageName): void {
+    this._view = pageName;
+  }
+
+  _onSettingsChanged(evt: { detail: { settings: string } }) {
+    this.settings = evt.detail.settings;
+  }
+
+  _renderBookmarks() {
     return html`
-      <div id="Toolbar">
-        <div id="Toast">${this._toast}</div>
-        <div class="action" @click="${this.onRefreshClicked}">
-          <md-icon class=${classMap(this.refreshClasses)}>refresh</md-icon>
-        </div>
-        <div class="action" @click="${this.onSettingsClicked}">
-          <md-icon>settings</md-icon>
-        </div>
-        <div class="action" @click="${this.onHelpClicked}">
-          <md-icon>help</md-icon>
-        </div>
-      </div>
       <layout-vsplit>
         <sh-taglist
           slot="top"
@@ -176,6 +181,52 @@ export class Schmackhaft extends LitElement {
           dense
         ></sh-linklist>
       </layout-vsplit>
+    `;
+  }
+
+  _renderSettings() {
+    return html`
+      <sh-settings
+        @change="${this._onSettingsChanged}"
+        settings="${this._settings.toJson()}"
+      ></sh-settings>
+      <mwc-button raised @click="${() => this._switchView(PageName.BOOKMARKS)}"
+        >Close</mwc-button
+      >
+    `;
+  }
+
+  _renderHelp() {
+    return html`help`;
+  }
+
+  _renderMainContent() {
+    switch (this._view) {
+      case PageName.BOOKMARKS:
+      default:
+        return this._renderBookmarks();
+      case PageName.SETTINGS:
+        return this._renderSettings();
+      case PageName.HELP:
+        return this._renderHelp();
+    }
+  }
+
+  override render() {
+    return html`
+      <div id="Toolbar">
+        <div id="Toast">${this._toast}</div>
+        <div class="action" @click="${this.onRefreshClicked}">
+          <md-icon class=${classMap(this.refreshClasses)}>refresh</md-icon>
+        </div>
+        <div class="action" @click="${this.onSettingsClicked}">
+          <md-icon>settings</md-icon>
+        </div>
+        <div class="action" @click="${this.onHelpClicked}">
+          <md-icon>help</md-icon>
+        </div>
+      </div>
+      ${this._renderMainContent()}
     `;
   }
 }

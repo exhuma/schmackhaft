@@ -4,9 +4,9 @@ export class Settings {
   version: number;
 
   constructor(
-    remoteUrls: string[],
-    enableBrowserBookmarks: boolean,
-    version: number
+    remoteUrls: string[] = [],
+    enableBrowserBookmarks: boolean = true,
+    version: number = 2
   ) {
     this.remoteUrls = remoteUrls;
     this.enableBrowserBookmarks = enableBrowserBookmarks;

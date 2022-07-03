@@ -11,6 +11,12 @@ export enum TagStateTransition {
   REVERSE,
 }
 
+export enum PageName {
+  BOOKMARKS,
+  SETTINGS,
+  HELP,
+}
+
 export type Bookmark = {
   title: string;
   tags: string[];
