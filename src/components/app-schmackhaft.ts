@@ -1,14 +1,18 @@
 import "./components/layout-vsplit";
-import "@material/mwc-button";
 import "./components/sh-link";
 import "./components/sh-linklist";
 import "./components/sh-taglist";
 import "./views/sh-settings";
+import "@material/mwc-button";
 import "material-icon-component/md-icon.js";
 import { LitElement, css, html } from "lit";
 import { PageName, TagStateTransition } from "../types";
 import { Ref, createRef, ref } from "lit/directives/ref.js";
 import { customElement, property, state } from "lit/decorators.js";
+import { parse, setOptions } from "marked";
+import Readme from "../../README.md?raw";
+import hljs from "highlight.js";
+import hlstyle from "highlight.js/styles/monokai.css";
 import { Link } from "./model/link";
 import { LinkList } from "./components/sh-linklist";
 import { Links } from "./core/links";
@@ -16,65 +20,79 @@ import { Settings } from "../model/settings";
 import { TagList } from "./components/sh-taglist";
 import { classMap } from "lit/directives/class-map.js";
 import { createStorage } from "../core/storage/factory";
+import { unsafeHTML } from "lit/directives/unsafe-html.js";
+
+setOptions({
+  langPrefix: "hljs language-",
+  highlight: function (code: string, lang: string) {
+    const language = hljs.getLanguage(lang) ? lang : "plaintext";
+    return hljs.highlight(code, { language }).value;
+  },
+});
 
 @customElement("app-schmackhaft")
 export class Schmackhaft extends LitElement {
-  static styles = css`
-    * {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-        Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-      font-size: 16px;
-    }
-
-    :host {
-      display: block;
-    }
-
-    #Toolbar {
-      display: flex;
-      flex-direction: row;
-      margin-bottom: 0.5rem;
-    }
-
-    #Toast {
-      flex-grow: 1;
-    }
-
-    .action {
-      flex-grow: 0;
-      margin-left: 0.5em;
-      cursor: pointer;
-      border-radius: 100%;
-      width: 20px;
-      height: 20px;
-      text-align: center;
-    }
-
-    .action:hover {
-      background-color: #bdd5e4;
-      color: #4747d4;
-    }
-
-    layout-vsplit {
-      height: 100%;
-    }
-
-    @keyframes rotate {
-      from {
-        transform: rotate(0deg);
+  static styles = [
+    // @ts-ignore
+    css([hlstyle]),
+    css`
+      :host {
+        display: block;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+        font-size: 16px;
       }
-      to {
-        transform: rotate(360deg);
-      }
-    }
 
-    .spinning {
-      animation-name: rotate;
-      animation-duration: 1s;
-      animation-timing-function: linear;
-      animation-iteration-count: infinite;
-    }
-  `;
+      PRE CODE {
+        font-family: "Fira Code", monospace;
+      }
+
+      #Toolbar {
+        display: flex;
+        flex-direction: row;
+        margin-bottom: 0.5rem;
+      }
+
+      #Toast {
+        flex-grow: 1;
+      }
+
+      .action {
+        flex-grow: 0;
+        margin-left: 0.5em;
+        cursor: pointer;
+        border-radius: 100%;
+        width: 20px;
+        height: 20px;
+        text-align: center;
+      }
+
+      .action:hover {
+        background-color: #bdd5e4;
+        color: #4747d4;
+      }
+
+      layout-vsplit {
+        height: 100%;
+      }
+
+      @keyframes rotate {
+        from {
+          transform: rotate(0deg);
+        }
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .spinning {
+        animation-name: rotate;
+        animation-duration: 1s;
+        animation-timing-function: linear;
+        animation-iteration-count: infinite;
+      }
+    `,
+  ];
 
   tagsRef: Ref<HTMLInputElement> = createRef();
   searchTextRef: Ref<HTMLInputElement> = createRef();
@@ -146,12 +164,10 @@ export class Schmackhaft extends LitElement {
 
   onSettingsClicked() {
     this._view = PageName.SETTINGS;
-    // TODO
   }
 
   onHelpClicked() {
     this._view = PageName.HELP;
-    // TODO
   }
 
   _switchView(pageName: PageName): void {
@@ -197,13 +213,14 @@ export class Schmackhaft extends LitElement {
   }
 
   _renderHelp() {
-    return html`help`;
+    const content = parse(Readme);
+    return unsafeHTML(content);
   }
 
   _renderMainContent() {
     switch (this._view) {
-      case PageName.BOOKMARKS:
       default:
+      case PageName.BOOKMARKS:
         return this._renderBookmarks();
       case PageName.SETTINGS:
         return this._renderSettings();
