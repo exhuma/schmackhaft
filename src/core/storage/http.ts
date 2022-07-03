@@ -24,7 +24,7 @@ export class HttpStorage implements IStorage {
       let result = await fetch(remoteUrl);
       let data = await result.json();
       output = [...output, ...data];
-    })
+    });
     await Promise.all(promises);
     return output;
   }

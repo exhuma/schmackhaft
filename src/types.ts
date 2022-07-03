@@ -34,10 +34,10 @@ export type BrowserTab = {
 };
 
 export type Browser = {
-  storage: any,
-  tabs: any,
-  runtime: any
-  bookmarks: any,
+  storage: any;
+  tabs: any;
+  runtime: any;
+  bookmarks: any;
 };
 
 export interface IStorage {

@@ -1,19 +1,19 @@
-import { css, html, LitElement } from "lit";
-import { customElement, property, state } from "lit/decorators.js";
-import { ref, createRef, Ref } from "lit/directives/ref.js";
-import "./components/sh-link";
-import "./components/sh-taglist";
-import "./components/sh-linklist";
 import "./components/layout-vsplit";
-import { LinkList } from "./components/sh-linklist";
-import { TagList } from "./components/sh-taglist";
-import { Links } from "./core/links";
-import { TagStateTransition } from "../types";
+import "./components/sh-link";
+import "./components/sh-linklist";
+import "./components/sh-taglist";
 import "material-icon-component/md-icon.js";
-import { classMap } from "lit/directives/class-map.js";
-import { Settings } from "../model/settings";
+import { LitElement, css, html } from "lit";
+import { Ref, createRef, ref } from "lit/directives/ref.js";
+import { customElement, property, state } from "lit/decorators.js";
 import { Link } from "./model/link";
-import {createStorage} from "../core/storage/factory";
+import { LinkList } from "./components/sh-linklist";
+import { Links } from "./core/links";
+import { Settings } from "../model/settings";
+import { TagList } from "./components/sh-taglist";
+import { TagStateTransition } from "../types";
+import { classMap } from "lit/directives/class-map.js";
+import { createStorage } from "../core/storage/factory";
 
 @customElement("app-schmackhaft")
 export class Schmackhaft extends LitElement {
@@ -92,8 +92,8 @@ export class Schmackhaft extends LitElement {
   set settings(data: string) {
     let dataObject = Settings.fromJson(data);
     let storage = createStorage(dataObject, "http", null);
-    storage.getAll().then(result => {
-      let links = result.map(item => Link.fromObject(item));
+    storage.getAll().then((result) => {
+      let links = result.map((item) => Link.fromObject(item));
       this._links = new Links(links);
       this.requestUpdate();
     });
@@ -118,7 +118,7 @@ export class Schmackhaft extends LitElement {
   }
 
   onChipClicked(evt: { detail: string }) {
-    switch(evt.detail.direction) {
+    switch (evt.detail.direction) {
       case TagStateTransition.ADVANCE:
       default:
         this._links.advanceState(evt.detail.name);

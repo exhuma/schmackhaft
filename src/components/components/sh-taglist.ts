@@ -1,10 +1,8 @@
-import { css, html, LitElement } from "lit";
-import { property, customElement, state } from "lit/decorators.js";
-import { classMap } from "lit/directives/class-map.js";
-import { TagState } from "../../types";
+import { LitElement, css, html } from "lit";
+import { customElement, property } from "lit/decorators.js";
 import { Counter } from "../core/counter";
 import { Links } from "../core/links";
-import { Chip } from "./sh-chip";
+import { classMap } from "lit/directives/class-map.js";
 
 @customElement("sh-taglist")
 export class TagList extends LitElement {
@@ -54,10 +52,8 @@ export class TagList extends LitElement {
   @property({ type: Boolean })
   dense: boolean = false;
 
-  onChipClicked(evt: {detail: any}) {
-    this.dispatchEvent(
-      new CustomEvent("chipClicked", { detail: evt.detail })
-    );
+  onChipClicked(evt: { detail: any }) {
+    this.dispatchEvent(new CustomEvent("chipClicked", { detail: evt.detail }));
   }
 
   renderFilterTag(tag: [string, number]) {
@@ -66,15 +62,14 @@ export class TagList extends LitElement {
     }
     let state = this.links.getState(tag[0]);
     let dynamicClasses = { dense: this.dense };
-    return html`<div
-      class="countedTag ${classMap(dynamicClasses)}"
-    >
+    return html`<div class="countedTag ${classMap(dynamicClasses)}">
       <sh-chip
         .state="${state}"
         @chipClicked="${this.onChipClicked}"
         class="tagName"
         name="${tag[0]}"
-        ?dense="${this.dense}"></sh-chip
+        ?dense="${this.dense}"
+      ></sh-chip
       ><span class="tagCount">${tag[1]}</span>
     </div>`;
   }

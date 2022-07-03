@@ -1,5 +1,5 @@
+import { Link, JsonSchema as LinkSchema } from "../model/link";
 import { TagState } from "../../types";
-import { JsonSchema as LinkSchema, Link } from "../model/link";
 
 function intersection(setA: Array<string>, setB: Array<string>) {
   let _intersection = new Array();
@@ -14,7 +14,7 @@ function intersection(setA: Array<string>, setB: Array<string>) {
 export class Links {
   links: Array<Link>;
   searchString: string = "";
-  states: {[key: string]: TagState}
+  states: { [key: string]: TagState };
 
   constructor(links: Array<Link> = []) {
     this.links = links;
@@ -74,7 +74,7 @@ export class Links {
       if (value === TagState.INCLUDED) {
         output.push(key);
       }
-    })
+    });
     return output;
   }
 
@@ -84,7 +84,7 @@ export class Links {
       if (value === TagState.EXCLUDED) {
         output.push(key);
       }
-    })
+    });
     return output;
   }
 
@@ -120,7 +120,7 @@ export class Links {
   advanceState(tagName: string) {
     let currentState = this.states[tagName] ?? TagState.NEUTRAL;
     let newState = TagState.NEUTRAL;
-    switch(currentState) {
+    switch (currentState) {
       case TagState.NEUTRAL:
         newState = TagState.INCLUDED;
         break;
@@ -140,7 +140,7 @@ export class Links {
   reverseState(tagName: string) {
     let currentState = this.states[tagName] ?? TagState.NEUTRAL;
     let newState = TagState.NEUTRAL;
-    switch(currentState) {
+    switch (currentState) {
       case TagState.NEUTRAL:
         newState = TagState.EXCLUDED;
         break;

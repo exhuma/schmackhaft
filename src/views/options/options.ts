@@ -1,7 +1,7 @@
 import { SettingsBridge } from "../../core/settings";
 
 async function saveSettings(evt): Promise<void> {
-  let newData = JSON.parse(evt.detail.settings ?? '{}');
+  let newData = JSON.parse(evt.detail.settings ?? "{}");
   let settings = await SettingsBridge.default();
   await settings.replace(newData);
 }

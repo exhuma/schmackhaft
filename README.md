@@ -15,9 +15,9 @@ not my strength.
 
 ## Description
 
-This extension allows the storage of bookmarks in a *non-hierarchical*
+This extension allows the storage of bookmarks in a _non-hierarchical_
 structure. Each bookmark is identified by the URL and has a collection of
-*tags*. They can then be browsed by filtering according to those tags.
+_tags_. They can then be browsed by filtering according to those tags.
 
 This in turn allows "drilling down" into tags without being forced to pick a
 specific tag as "first level". So whether you pick "Python" first and _then_
@@ -38,8 +38,8 @@ changed.
 
 Clicking on the tag-chips at the top will cycle their filtering state. By
 default they are "ignored" in filtering. Clicking once will set them to an
-"inclusive" state. This will show *only* links that have this tag. Clicking
-again will set them to an "exclusive" state. This will *hide* all links that
+"inclusive" state. This will show _only_ links that have this tag. Clicking
+again will set them to an "exclusive" state. This will _hide_ all links that
 have this tag.
 
 The state-transition is:
@@ -58,8 +58,8 @@ The bottom panel will show the links with the tag-states applied.
 
 The extension currently has two main options:
 
-* A list of external JSON URLs
-* An option to include browser-stored bookmarks in the UI or not.
+- A list of external JSON URLs
+- An option to include browser-stored bookmarks in the UI or not.
 
 Each JSON URL can store bookmarks in the format described below. To remove a
 URL, simply set it to the empty string.
@@ -69,7 +69,6 @@ automatic tag "browser bookmark" and each folder-name is used as additional
 tags.
 
 ![Preferences](docs/screenshots/options.png "Preferences")
-
 
 ## Bookmark Collections
 
@@ -87,22 +86,22 @@ requests are made. An example collection looks like this:
 ```javascript
 [
   {
-    "href": "https://www.google.com",
-    "tags": ["search", "google"],
-    "title": "Google Search",
-    "description": "An example description"
+    href: "https://www.google.com",
+    tags: ["search", "google"],
+    title: "Google Search",
+    description: "An example description",
   },
   {
-    "href": "https://news.ycombinator.com",
-    "tags": ["news", "it"],
+    href: "https://news.ycombinator.com",
+    tags: ["news", "it"],
   },
   {
-    "href": "https://duckduckgo.com",
-    "tags": ["search"]
+    href: "https://duckduckgo.com",
+    tags: ["search"],
   },
   {
-    "href": "https://bbc.com",
-    "tags": ["news", "world"]
+    href: "https://bbc.com",
+    tags: ["news", "world"],
   },
 ];
 ```
@@ -152,13 +151,12 @@ folder.
 1. Component Development
 
    For an easier development cycle, a lot of code is written in
-   [lit](https://lit.dev). This allows us to run a development server with `npm
-   run serve` and access `/demo/index.html` to try out the components. This
+   [lit](https://lit.dev). This allows us to run a development server with `npm run serve` and access `/demo/index.html` to try out the components. This
    makes it possible to have a develop/test cycle without the need to reload the
    browser extension. It also makes it a lot easier to use the browser
    development tools.
 
 1. Load the extension into the browser for testing
 
-   * [Mozilla: Installing](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Your_first_WebExtension#installing)
-   * [Chrome: Loading unpacked extensions](https://developer.chrome.com/docs/extensions/mv3/getstarted/#unpacked)
+   - [Mozilla: Installing](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Your_first_WebExtension#installing)
+   - [Chrome: Loading unpacked extensions](https://developer.chrome.com/docs/extensions/mv3/getstarted/#unpacked)

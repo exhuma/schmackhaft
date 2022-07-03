@@ -1,4 +1,4 @@
-import { Browser, Bookmark, BrowserBookmarkNode, IStorage } from "../../types";
+import { Bookmark, Browser, BrowserBookmarkNode, IStorage } from "../../types";
 import { Settings } from "../../model/settings";
 
 function visit(
@@ -39,8 +39,10 @@ export class BookmarkStorage implements IStorage {
 
   async getAll(): Promise<Bookmark[]> {
     if (this.browser === null) {
-      console.debug("Not running as browser-extension. Bookmark fetchin is disabled!");
-      return []
+      console.debug(
+        "Not running as browser-extension. Bookmark fetchin is disabled!"
+      );
+      return [];
     }
     let root = await this.browser.bookmarks.getTree();
     let all = [];

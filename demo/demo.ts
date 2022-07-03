@@ -18,7 +18,8 @@ settingsElementV2.addEventListener("change", (event) => {
 });
 
 settingsElementV1.settings = JSON.stringify({
-  remoteUrl: "https://raw.githubusercontent.com/exhuma/dotfiles/master/bookmarks.json",
+  remoteUrl:
+    "https://raw.githubusercontent.com/exhuma/dotfiles/master/bookmarks.json",
   version: 1,
 });
 
@@ -31,18 +32,17 @@ let settings = new Settings(
 bookmarksElement.settings = settings.toJson();
 
 function toggleDiv(evt) {
-  let enabledName = evt.target.dataset["div"]
-  document.querySelectorAll(".toggleable").forEach(element => {
+  let enabledName = evt.target.dataset["div"];
+  document.querySelectorAll(".toggleable").forEach((element) => {
     let currentName = element.id;
-    let displayValue = (enabledName === currentName ? "block" : "none");
+    let displayValue = enabledName === currentName ? "block" : "none";
     element.style.display = displayValue;
-  })
+  });
 }
 
-document.querySelectorAll(".clickable").forEach(element => {
-  element.addEventListener("click", toggleDiv)
+document.querySelectorAll(".clickable").forEach((element) => {
+  element.addEventListener("click", toggleDiv);
 });
-
 
 async function reloadJson(url) {
   if (url === undefined || url.trim() === "") {
@@ -50,7 +50,7 @@ async function reloadJson(url) {
   }
   let response = await fetch(url);
   if (!response.ok) {
-    console.error(`Unable to fetch ${url} (${response.statusText})`)
+    console.error(`Unable to fetch ${url} (${response.statusText})`);
     return;
   }
   let text = await response.text();
