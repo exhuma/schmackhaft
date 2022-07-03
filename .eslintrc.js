@@ -3,7 +3,7 @@ module.exports = {
     browser: true,
     es2021: true,
   },
-  extends: ["google"],
+  extends: ["prettier"],
   parser: "@typescript-eslint/parser",
   parserOptions: {
     ecmaVersion: "latest",
@@ -13,7 +13,5 @@ module.exports = {
   rules: {
     "no-console": "warn",
     "no-unused-vars": "warn",
-    quotes: ["error", "double"],
-    "quote-props": ["error", "as-needed"],
   },
 };

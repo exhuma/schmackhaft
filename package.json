@@ -18,7 +18,7 @@
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.30.4",
-    "eslint-config-google": "^0.14.0",
+    "eslint-config-prettier": "^8.5.0",
     "typescript": "^4.6.2",
     "vite": "^2.9.1",
     "web-ext": "^6.8.0",

@@ -5,8 +5,8 @@ import { HMRequest } from "../../types";
 function showHelp(): void {
   browser.tabs.create({
     active: true,
-    url: "/pages/README.html"
-  })
+    url: "/pages/README.html",
+  });
 }
 
 function refreshBookmarks(): void {

@@ -3,9 +3,13 @@ import { HttpStorage } from "./http";
 import { BookmarkStorage } from "./bookmarks";
 import { IStorage } from "../../types";
 import { Settings } from "../model/settings";
-import { Browser }  from "../types";
+import { Browser } from "../types";
 
-export function createStorage(settings: Settings, type: string, browser: Browser | null): IStorage {
+export function createStorage(
+  settings: Settings,
+  type: string,
+  browser: Browser | null
+): IStorage {
   if (type === "local") {
     return new LocalStorage(settings, browser);
   } else if (type === "http") {

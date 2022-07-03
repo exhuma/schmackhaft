@@ -13,7 +13,7 @@ import "material-icon-component/md-icon.js";
 import { classMap } from "lit/directives/class-map.js";
 import { Settings } from "../model/settings";
 import { Link } from "./model/link";
-import {createStorage} from "../core/storage/factory";
+import { createStorage } from "../core/storage/factory";
 
 @customElement("app-schmackhaft")
 export class Schmackhaft extends LitElement {
@@ -92,8 +92,8 @@ export class Schmackhaft extends LitElement {
   set settings(data: string) {
     let dataObject = Settings.fromJson(data);
     let storage = createStorage(dataObject, "http", null);
-    storage.getAll().then(result => {
-      let links = result.map(item => Link.fromObject(item));
+    storage.getAll().then((result) => {
+      let links = result.map((item) => Link.fromObject(item));
       this._links = new Links(links);
       this.requestUpdate();
     });
@@ -118,7 +118,7 @@ export class Schmackhaft extends LitElement {
   }
 
   onChipClicked(evt: { detail: string }) {
-    switch(evt.detail.direction) {
+    switch (evt.detail.direction) {
       case TagStateTransition.ADVANCE:
       default:
         this._links.advanceState(evt.detail.name);

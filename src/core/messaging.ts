@@ -8,7 +8,7 @@ const TARGET_COLLECTION = "local";
 
 async function getCollections(settings: SettingsBridge): Promise<string[]> {
   let enableBrowserBookmarks = await settings.get("enableBrowserBookmarks");
-  let output = ["local", "http"]
+  let output = ["local", "http"];
   if (enableBrowserBookmarks) {
     output.push("bookmarks");
   }
@@ -39,16 +39,15 @@ async function storeBookmark(bookmark: Bookmark): Promise<void> {
 }
 
 async function readAllStorages() {
-      let output = [];
-      let promises = collections.map(async (type) => {
-        let storage = createStorage(settings, type, browser);
-        console.info(`Requesting bookmarks from ${type}`);
-        let bookmarks = await storage.getAll();
-        output = [...output, ...bookmarks];
-      });
-      await Promise.all(promises);
-      return output;
-
+  let output = [];
+  let promises = collections.map(async (type) => {
+    let storage = createStorage(settings, type, browser);
+    console.info(`Requesting bookmarks from ${type}`);
+    let bookmarks = await storage.getAll();
+    output = [...output, ...bookmarks];
+  });
+  await Promise.all(promises);
+  return output;
 }
 
 export async function handleMessage(request: HMRequest, sender, sendResponse) {

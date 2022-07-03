@@ -2,7 +2,7 @@ import { css, html, LitElement } from "lit";
 import { property, customElement } from "lit/decorators.js";
 import { classMap } from "lit/directives/class-map.js";
 import { TagState, TagStateTransition } from "../../types";
-import 'material-icon-component/md-icon.js';
+import "material-icon-component/md-icon.js";
 
 @customElement("sh-chip")
 export class Chip extends LitElement {
@@ -42,16 +42,24 @@ export class Chip extends LitElement {
   @property({ type: Boolean })
   dense: boolean = false;
 
-  @property({type: TagState})
+  @property({ type: TagState })
   state: TagState = TagState.NEUTRAL;
 
   onClick(evt: Event) {
-    this.dispatchEvent(new CustomEvent("chipClicked", { detail: {name: this.name, direction: TagStateTransition.ADVANCE} }));
+    this.dispatchEvent(
+      new CustomEvent("chipClicked", {
+        detail: { name: this.name, direction: TagStateTransition.ADVANCE },
+      })
+    );
   }
 
   onAuxClick(evt: Event) {
     evt.preventDefault();
-    this.dispatchEvent(new CustomEvent("chipClicked", { detail: {name: this.name, direction: TagStateTransition.REVERSE} }));
+    this.dispatchEvent(
+      new CustomEvent("chipClicked", {
+        detail: { name: this.name, direction: TagStateTransition.REVERSE },
+      })
+    );
   }
 
   override render() {
@@ -65,16 +73,16 @@ export class Chip extends LitElement {
     let actionText;
     switch (this.state) {
       case TagState.INCLUDED:
-        label = html`<md-icon>label</md-icon>`
+        label = html`<md-icon>label</md-icon>`;
         actionText = "exclude links with this tag";
         break;
       case TagState.EXCLUDED:
-        label = html`<md-icon>label_off</md-icon>`
+        label = html`<md-icon>label_off</md-icon>`;
         actionText = "ignore this tag";
         break;
       case TagState.NEUTRAL:
       default:
-        label = html`<md-icon outlined>label</md-icon>`
+        label = html`<md-icon outlined>label</md-icon>`;
         actionText = "include only links with this tag";
         break;
     }

@@ -34,7 +34,7 @@ export class Link {
       data.title ?? "",
       data.img ?? "",
       data.description ?? ""
-    )
+    );
   }
 
   get tags() {

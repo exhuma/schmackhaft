@@ -7,12 +7,14 @@ export class LocalStorage implements IStorage {
 
   constructor(settings: Settings, browser: Browser | null) {
     this.settings = settings;
-    this.browser = browser
+    this.browser = browser;
   }
 
   async get(href: string): Promise<Bookmark | null> {
     if (this.browser === null) {
-      console.debug("Not running as browser-extension. Extension Storage is disabled!");
+      console.debug(
+        "Not running as browser-extension. Extension Storage is disabled!"
+      );
       return null;
     }
     let result = await this.browser.storage.local.get({ bookmarks: {} });
@@ -21,7 +23,9 @@ export class LocalStorage implements IStorage {
 
   async getAll(): Promise<Bookmark[]> {
     if (this.browser === null) {
-      console.debug("Not running as browser-extension. Extension Storage is disabled!");
+      console.debug(
+        "Not running as browser-extension. Extension Storage is disabled!"
+      );
       return [];
     }
     let result = await this.browser.storage.local.get({ bookmarks: {} });
@@ -30,7 +34,9 @@ export class LocalStorage implements IStorage {
 
   async put(data: Bookmark): Promise<void> {
     if (this.browser === null) {
-      console.debug("Not running as browser-extension. Extension Storage is disabled!");
+      console.debug(
+        "Not running as browser-extension. Extension Storage is disabled!"
+      );
       return;
     }
     let result = await this.browser.storage.local.get({ bookmarks: {} });
@@ -40,7 +46,9 @@ export class LocalStorage implements IStorage {
 
   async remove(href: string): Promise<void> {
     if (this.browser === null) {
-      console.debug("Not running as browser-extension. Extension Storage is disabled!");
+      console.debug(
+        "Not running as browser-extension. Extension Storage is disabled!"
+      );
       return;
     }
     let result = await this.browser.storage.local.get({ bookmarks: {} });
