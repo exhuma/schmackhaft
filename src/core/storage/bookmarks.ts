@@ -1,4 +1,4 @@
-import { Browser, Bookmark, BrowserBookmarkNode, IStorage } from "../../types";
+import { Bookmark, Browser, BrowserBookmarkNode, IStorage } from "../../types";
 import { Settings } from "../../model/settings";
 
 function visit(

@@ -1,7 +1,7 @@
 import "@material/mwc-textfield";
 import "@material/mwc-button";
-import { css, html, LitElement } from "lit";
-import { property, customElement, state } from "lit/decorators.js";
+import { LitElement, css, html } from "lit";
+import { customElement, property, state } from "lit/decorators.js";
 
 @customElement("sh-settings")
 export class SettingsBridge extends LitElement {

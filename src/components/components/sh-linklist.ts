@@ -1,7 +1,7 @@
-import { css, html, LitElement } from "lit";
-import { property, customElement } from "lit/decorators.js";
-import { Links } from "../core/links";
+import { LitElement, css, html } from "lit";
+import { customElement, property } from "lit/decorators.js";
 import { Link } from "../model/link";
+import { Links } from "../core/links";
 
 @customElement("sh-linklist")
 export class LinkList extends LitElement {

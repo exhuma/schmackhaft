@@ -22,3 +22,5 @@ repos:
         language: system
         files: \.[jt]s$
         types: [file]
+        args:
+          - "--fix"

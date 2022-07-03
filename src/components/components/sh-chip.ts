@@ -1,8 +1,8 @@
-import { css, html, LitElement } from "lit";
-import { property, customElement } from "lit/decorators.js";
-import { classMap } from "lit/directives/class-map.js";
-import { TagState, TagStateTransition } from "../../types";
 import "material-icon-component/md-icon.js";
+import { LitElement, css, html } from "lit";
+import { TagState, TagStateTransition } from "../../types";
+import { customElement, property } from "lit/decorators.js";
+import { classMap } from "lit/directives/class-map.js";
 
 @customElement("sh-chip")
 export class Chip extends LitElement {

@@ -1,7 +1,7 @@
-import { css, html, LitElement } from "lit";
-import { customElement } from "lit/decorators.js";
-import { createRef, ref } from "lit/directives/ref.js";
 import "material-icon-component/md-icon.js";
+import { LitElement, css, html } from "lit";
+import { createRef, ref } from "lit/directives/ref.js";
+import { customElement } from "lit/decorators.js";
 
 @customElement("layout-vsplit")
 export class Vsplit extends LitElement {

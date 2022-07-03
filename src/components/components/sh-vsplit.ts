@@ -1,5 +1,5 @@
-import { css, html, LitElement } from "lit";
-import { property, customElement } from "lit/decorators.js";
+import { LitElement, css, html } from "lit";
+import { customElement, property } from "lit/decorators.js";
 
 @customElement("sh-vsplit")
 class VSplit extends LitElement {

@@ -1,10 +1,8 @@
-import { css, html, LitElement } from "lit";
-import { property, customElement, state } from "lit/decorators.js";
-import { classMap } from "lit/directives/class-map.js";
-import { TagState } from "../../types";
+import { LitElement, css, html } from "lit";
+import { customElement, property } from "lit/decorators.js";
 import { Counter } from "../core/counter";
 import { Links } from "../core/links";
-import { Chip } from "./sh-chip";
+import { classMap } from "lit/directives/class-map.js";
 
 @customElement("sh-taglist")
 export class TagList extends LitElement {
