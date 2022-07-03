@@ -5,7 +5,6 @@
   "author": "Michel Albert <michel@albert.lu>",
   "license": "MIT",
   "dependencies": {
-    "@esm-bundle/chai": "^4.3.4-fix.0",
     "@material/mwc-button": "^0.25.3",
     "@material/mwc-textfield": "^0.25.3",
     "lit": "^2.1.2",
