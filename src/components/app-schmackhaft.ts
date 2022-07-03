@@ -74,7 +74,6 @@ export class Schmackhaft extends LitElement {
     }
   `;
 
-  _toastTimerId: number = 0;
   tagsRef: Ref<HTMLInputElement> = createRef();
   searchTextRef: Ref<HTMLInputElement> = createRef();
   linkListRef: Ref<LinkList> = createRef();
@@ -88,15 +87,13 @@ export class Schmackhaft extends LitElement {
   @state()
   private _busy = false;
 
+  @state()
+  private _settings = {};
+
   @property()
   set settings(data: string) {
-    let dataObject = Settings.fromJson(data);
-    let storage = createStorage(dataObject, "http", null);
-    storage.getAll().then((result) => {
-      let links = result.map((item) => Link.fromObject(item));
-      this._links = new Links(links);
-      this.requestUpdate();
-    });
+    this._settings = Settings.fromJson(data);
+    this._fetchBookmarks();
   }
 
   get refreshClasses() {
@@ -105,16 +102,20 @@ export class Schmackhaft extends LitElement {
     };
   }
 
-  showToast(message: string, timeout: number): void {
-    if (this._toastTimerId > 0) {
-      window.clearTimeout(this._toastTimerId);
-    }
-    this._busy = true;
-    this._toast = message;
-    this._toastTimerId = window.setTimeout(() => {
+  _fetchBookmarks() {
+    const timerId = window.setTimeout(() => {
+      this._busy = true;
+      this._toast = "Refreshing...";
+    }, 500);
+    let storage = createStorage(this._settings, "http", null);
+    storage.getAll().then((result) => {
+      let links = result.map((item) => Link.fromObject(item));
+      window.clearTimeout(timerId);
+      this._links = new Links(links);
       this._toast = "";
       this._busy = false;
-    }, timeout);
+      this.requestUpdate();
+    });
   }
 
   onChipClicked(evt: { detail: string }) {
@@ -133,7 +134,7 @@ export class Schmackhaft extends LitElement {
   }
 
   onRefreshClicked() {
-    this.showToast("refreshing...", 2000);
+    this._fetchBookmarks();
   }
 
   onSettingsClicked() {
