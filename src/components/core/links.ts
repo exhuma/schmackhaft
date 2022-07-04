@@ -1,4 +1,4 @@
-import { Link, JsonSchema as LinkSchema } from "../model/link";
+import { Link, JsonSchema as LinkSchema } from "../../model/link";
 import { TagState } from "../../types";
 
 function intersection(setA: Array<string>, setB: Array<string>) {

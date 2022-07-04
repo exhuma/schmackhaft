@@ -10,16 +10,16 @@ import { PageName, TagStateTransition } from "../types";
 import { Ref, createRef, ref } from "lit/directives/ref.js";
 import { customElement, property, state } from "lit/decorators.js";
 import { parse, setOptions } from "marked";
-import Readme from "../../README.md?raw";
-import hljs from "highlight.js";
-import hlstyle from "highlight.js/styles/monokai.css";
-import { Link } from "./model/link";
+import { Link } from "../model/link";
 import { LinkList } from "./components/sh-linklist";
 import { Links } from "./core/links";
+import Readme from "../../README.md?raw";
 import { Settings } from "../model/settings";
 import { TagList } from "./components/sh-taglist";
 import { classMap } from "lit/directives/class-map.js";
 import { createStorage } from "../core/storage/factory";
+import hljs from "highlight.js";
+import hlstyle from "highlight.js/styles/monokai.css";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 
 setOptions({
