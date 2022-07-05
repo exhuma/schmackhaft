@@ -5,16 +5,7 @@
 
 import { Link, JsonSchema as LinkSchema } from "../../model/link";
 import { TagState } from "../../types";
-
-function intersection(setA: Array<string>, setB: Array<string>) {
-  let _intersection = new Array();
-  for (let elem of setB) {
-    if (setA.includes(elem)) {
-      _intersection.push(elem);
-    }
-  }
-  return _intersection;
-}
+import { intersection } from "../../collections";
 
 /**
  * A colelction of links.
