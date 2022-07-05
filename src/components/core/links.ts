@@ -23,29 +23,13 @@ export class Links {
 
   static fromJson(data: string): Links {
     let parsed = JSON.parse(data);
-    let links = parsed.map((item: LinkSchema) => {
-      return new Link(
-        item["href"],
-        item["tags"],
-        item["title"],
-        item["image"],
-        item["description"]
-      );
-    });
+    let links = parsed.map((item: LinkSchema) => Link.fromObject);
     return new Links(links);
   }
 
   toJson(): string {
     return JSON.stringify(
-      this.links.map((item): LinkSchema => {
-        return {
-          href: item.href,
-          tags: item.tags,
-          title: item.title || "",
-          image: item.img || "",
-          description: item.description || "",
-        };
-      })
+      this.links.map((item): LinkSchema => item.toObject())
     );
   }
 
