@@ -1,7 +1,7 @@
 import "../src/components/views/sh-settings";
+import "../src/components/components/layout-vsplit";
 import { Settings } from "../src/model/settings";
 import { SettingsBridge } from "../src/components/views/sh-settings";
-import "../src/components/components/layout-vsplit";
 
 let settingsElementV1 = document.getElementById("SettingsV1") as SettingsBridge;
 let settingsElementV2 = document.getElementById("SettingsV2") as SettingsBridge;
