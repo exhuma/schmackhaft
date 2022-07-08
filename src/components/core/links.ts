@@ -36,7 +36,7 @@ export class Links {
    */
   static fromJson(data: string): Links {
     let parsed = JSON.parse(data);
-    let links = parsed.map((item: LinkSchema) => Link.fromObject);
+    let links = parsed.map(Link.fromObject);
     return new Links(links);
   }
 

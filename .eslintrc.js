@@ -11,8 +11,9 @@ module.exports = {
   },
   plugins: ["@typescript-eslint"],
   rules: {
-    "no-console": "warn",
+    "no-console": "off",
     "no-unused-vars": "warn",
     "sort-imports": "error",
+    "no-unused-vars": "off",
   },
 };
