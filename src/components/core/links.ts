@@ -42,6 +42,7 @@ export class Links {
 
   /**
    * Convert this collection of links to a JSON string
+   *
    * @returns A JSON string
    */
   toJson(): string {
@@ -70,6 +71,7 @@ export class Links {
   /**
    * Determines whether a user searching for the string stored in this "Links"
    * class should see the given link.
+   *
    * @param link The link we compare
    * @returns  Whether the link matches the string or not.
    */
@@ -85,6 +87,8 @@ export class Links {
   /**
    * Return all the searched tags that are currently "included" when filtering
    * using this "Links" class.
+   *
+   * @returns A list of tag names
    */
   get searchedTags() {
     let output: string[] = [];
@@ -99,6 +103,8 @@ export class Links {
   /**
    * Return all the searched tags that are currently "excluded" when filtering
    * using this "Links" class.
+   *
+   * @returns A list of tag names
    */
   get excludedTags() {
     let output: string[] = [];
@@ -157,6 +163,7 @@ export class Links {
    * Modify how a given tag affects the current search. This is multi-state and
    * this method will "move" the state in one direction. See "reverseState"
    * for the inverse operation.
+   *
    * @param tagName The tag we want to modify
    */
   advanceState(tagName: string) {
@@ -183,6 +190,7 @@ export class Links {
    * Modify how a given tag affects the current search. This is multi-state and
    * this method will "move" the state in the opposite direction of
    * "advanceState".
+   *
    * @param tagName The tag we want to modify
    */
   reverseState(tagName: string) {
@@ -207,6 +215,7 @@ export class Links {
 
   /**
    * Set the search-string of this collection
+   *
    * @param substring The search string
    */
   search(substring: string) {

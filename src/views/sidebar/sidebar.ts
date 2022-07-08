@@ -34,6 +34,7 @@ function refreshBookmarks(): void {
 
 /**
  * Process the response from the "getBookmarks" message
+ *
  * @param response A response message from the extension messaging system
  */
 function onBookmarksRetrieved(response: string): void {
@@ -56,6 +57,7 @@ function handleError(): void {
 
 /**
  * Handle any message from the browser extension spec
+ *
  * @param request See the browser extension spec
  * @param sender  See the browser extension spec
  * @param sendResponse  See the browser extension spec

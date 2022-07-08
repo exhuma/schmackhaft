@@ -2,6 +2,7 @@ import { SettingsBridge } from "../../core/settings";
 
 /**
  * Store settings in persistent storage
+ *
  * @param evt The browser event
  */
 async function saveSettings(evt): Promise<void> {
