@@ -1,7 +1,13 @@
+/**
+ * This file contains supporting JS code for the browser-extension sidebar
+ */
 import * as browser from "webextension-polyfill";
 import { Schmackhaft } from "../../components/app-schmackhaft";
 import { HMRequest } from "../../types";
 
+/**
+ * Open a new tab in the browser with the documentation
+ */
 function showHelp(): void {
   browser.tabs.create({
     active: true,
@@ -9,6 +15,10 @@ function showHelp(): void {
   });
 }
 
+/**
+ * Trigger a refresh of the bookmarks by sending a message to the extension
+ * backend
+ */
 function refreshBookmarks(): void {
   displayToast("Loading...");
   browser.runtime
@@ -22,6 +32,10 @@ function refreshBookmarks(): void {
     });
 }
 
+/**
+ * Process the response from the "getBookmarks" message
+ * @param response A response message from the extension messaging system
+ */
 function onBookmarksRetrieved(response: string): void {
   hideToast();
   displayTimedToast("done", 1000);
@@ -32,11 +46,20 @@ function onBookmarksRetrieved(response: string): void {
   element.links = JSON.stringify(response);
 }
 
+/**
+ * Handle an error retrieved from the extension messaging system
+ */
 function handleError(): void {
   hideToast();
   console.error({ error_args: arguments });
 }
 
+/**
+ * Handle any message from the browser extension spec
+ * @param request See the browser extension spec
+ * @param sender  See the browser extension spec
+ * @param sendResponse  See the browser extension spec
+ */
 function handleMessage(request: HMRequest, sender, sendResponse) {
   if (request.method === "bookmarksModified") {
     refreshBookmarks();

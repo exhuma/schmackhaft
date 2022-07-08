@@ -1,6 +1,17 @@
+/**
+ * A storage backend for Schmackhaft bookmarks which reads the entries from the
+ * current browser bookmarks
+ */
 import { Bookmark, Browser, BrowserBookmarkNode, IStorage } from "../../types";
 import { Settings } from "../../model/settings";
 
+/**
+ * Recursively fetch bookmarks from a single node from the browser bookmarks API
+ *
+ * @param node The browser-bookmark node to inspect
+ * @param parentFolderNames A list representing the path for this current node
+ * @returns A list of bookmarks in this node
+ */
 function visit(
   node: BrowserBookmarkNode,
   parentFolderNames: string[]

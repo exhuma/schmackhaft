@@ -1,3 +1,6 @@
+/**
+ * Central entry-point for browser-extension messaging handling
+ */
 import * as browser from "webextension-polyfill";
 
 import { createStorage } from "./storage/factory";
@@ -6,6 +9,11 @@ import { Bookmark, HMRequest } from "../types";
 
 const TARGET_COLLECTION = "local";
 
+/**
+ * Retrieve a list of storage backend names which contain the bookmarks
+ * @param settings An object providing access to the application settings.
+ * @returns A list of all enabled sources of bookmarks
+ */
 async function getCollections(settings: SettingsBridge): Promise<string[]> {
   let enableBrowserBookmarks = await settings.get("enableBrowserBookmarks");
   let output = ["local", "http"];
@@ -15,6 +23,10 @@ async function getCollections(settings: SettingsBridge): Promise<string[]> {
   return output;
 }
 
+/**
+ * Remove a single bookmark from each configured collection
+ * @param href The URL of the bookmark we want to remove
+ */
 async function removeBookmark(href: string): Promise<void> {
   let settings = await SettingsBridge.default();
   let collections = await getCollections(settings);
@@ -25,6 +37,10 @@ async function removeBookmark(href: string): Promise<void> {
   await Promise.all(promises);
 }
 
+/**
+ * Add a new bookmark to the default storage
+ * @param bookmark The bookmark to store
+ */
 async function storeBookmark(bookmark: Bookmark): Promise<void> {
   let settings = await SettingsBridge.default();
   let storage = createStorage(settings, TARGET_COLLECTION, browser);
@@ -38,7 +54,11 @@ async function storeBookmark(bookmark: Bookmark): Promise<void> {
   await storage.put(persistentItem);
 }
 
-async function readAllStorages() {
+/**
+ * Fetch all bookmarks from all the configured storage backends
+ * @returns A list of all bookmarks
+ */
+async function readAllStorages(): Promise<Bookmark[]> {
   let output = [];
   let promises = collections.map(async (type) => {
     let storage = createStorage(settings, type, browser);
@@ -50,6 +70,15 @@ async function readAllStorages() {
   return output;
 }
 
+/**
+ * Handle a single message from the browser extension. See the official spec for
+ * more information
+ *
+ * @param request See the browser extension spec
+ * @param sender See the browser extension spec
+ * @param sendResponse See the browser extension spec
+ * @returns See the browser extension spec
+ */
 export async function handleMessage(request: HMRequest, sender, sendResponse) {
   let settings = await SettingsBridge.default();
   let collections = await getCollections(settings);
