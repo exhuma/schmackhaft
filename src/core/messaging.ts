@@ -11,6 +11,7 @@ const TARGET_COLLECTION = "local";
 
 /**
  * Retrieve a list of storage backend names which contain the bookmarks
+ *
  * @param settings An object providing access to the application settings.
  * @returns A list of all enabled sources of bookmarks
  */
@@ -25,6 +26,7 @@ async function getCollections(settings: SettingsBridge): Promise<string[]> {
 
 /**
  * Remove a single bookmark from each configured collection
+ *
  * @param href The URL of the bookmark we want to remove
  */
 async function removeBookmark(href: string): Promise<void> {
@@ -39,6 +41,7 @@ async function removeBookmark(href: string): Promise<void> {
 
 /**
  * Add a new bookmark to the default storage
+ *
  * @param bookmark The bookmark to store
  */
 async function storeBookmark(bookmark: Bookmark): Promise<void> {
@@ -56,6 +59,7 @@ async function storeBookmark(bookmark: Bookmark): Promise<void> {
 
 /**
  * Fetch all bookmarks from all the configured storage backends
+ *
  * @returns A list of all bookmarks
  */
 async function readAllStorages(): Promise<Bookmark[]> {

@@ -3,7 +3,7 @@ module.exports = {
     browser: true,
     es2021: true,
   },
-  extends: ["prettier"],
+  extends: ["prettier", "plugin:jsdoc/recommended"],
   parser: "@typescript-eslint/parser",
   parserOptions: {
     ecmaVersion: "latest",
@@ -15,5 +15,7 @@ module.exports = {
     "no-unused-vars": "warn",
     "sort-imports": "error",
     "no-unused-vars": "off",
+    "jsdoc/require-returns-type": "off",
+    "jsdoc/require-param-type": "off",
   },
 };
