@@ -19,9 +19,9 @@ async function restoreSettings(): Promise<void> {
   let settingsElement = document.getElementById("Settings");
   if (!settingsElement) {
     console.error("Requred DOM ID 'Settings' not found!");
-    return;
+  } else {
+    settingsElement.settings = JSON.stringify(result);
   }
-  settingsElement.settings = JSON.stringify(result);
 }
 
 document.getElementById("Settings").addEventListener("change", saveSettings);
