@@ -3,9 +3,9 @@
  */
 import * as browser from "webextension-polyfill";
 
-import { createStorage } from "./storage/factory";
-import { SettingsBridge } from "./settings";
 import { Bookmark, HMRequest } from "../types";
+import { SettingsBridge } from "./settings";
+import { createStorage } from "./storage/factory";
 
 const TARGET_COLLECTION = "local";
 

@@ -1,9 +1,9 @@
-import { LocalStorage } from "./local";
-import { HttpStorage } from "./http";
 import { BookmarkStorage } from "./bookmarks";
-import { IStorage } from "../../types";
-import { Settings } from "../model/settings";
 import { Browser } from "../types";
+import { HttpStorage } from "./http";
+import { IStorage } from "../../types";
+import { LocalStorage } from "./local";
+import { Settings } from "../model/settings";
 
 /**
  * Create an instance of bookmarks storage.

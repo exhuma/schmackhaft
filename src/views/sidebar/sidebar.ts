@@ -2,8 +2,8 @@
  * This file contains supporting JS code for the browser-extension sidebar
  */
 import * as browser from "webextension-polyfill";
-import { Schmackhaft } from "../../components/app-schmackhaft";
 import { HMRequest } from "../../types";
+import { Schmackhaft } from "../../components/app-schmackhaft";
 
 /**
  * Open a new tab in the browser with the documentation
