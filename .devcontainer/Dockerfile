@@ -9,6 +9,9 @@ RUN apt update && \
     apt -y install \
         libnotify-bin \
         pandoc \
+        vim-nox \
+        python3-pip \
+        python3-venv \
         jq
 
 # [Optional] Uncomment if you want to install an additional version of node using nvm
