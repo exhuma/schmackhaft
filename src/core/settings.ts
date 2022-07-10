@@ -61,6 +61,12 @@ export class SettingsBridge {
     });
     return result.settings;
   }
+
+  setAll(settings: object) {
+    this.backend.set({
+      settings: settings,
+    });
+  }
 }
 
 class Migrator {
