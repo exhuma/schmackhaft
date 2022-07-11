@@ -230,5 +230,18 @@ extension. It also makes it a lot easier to use the browser development tools.
 
 ## Load the extension into the browser for testing
 
-- [Mozilla: Installing Web Extensions](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Your_first_WebExtension#installing)
-- [Chrome: Loading unpacked extensions](https://developer.chrome.com/docs/extensions/mv3/getstarted/#unpacked)
+* Chromium based browsers
+
+  Open the "extensions" page [chrome://extensions/](chrome://extensions/) and
+  drag/drop the generated `.zip` file onto that page
+
+  Alternatively, follow the instructions on
+  [Chrome: Loading unpacked
+  extensions](https://developer.chrome.com/docs/extensions/mv3/getstarted/#unpacked)
+  with the unzipped contents.
+
+* Mozilla based browsers
+
+  Either unzip the `.zip` file from the dist folder, or use the `dist/mozilla`
+  folder and follow the steps detailed on [Mozilla: Installing Web
+  Extensions](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Your_first_WebExtension#installing)
