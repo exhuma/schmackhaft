@@ -45,7 +45,7 @@ specific tag as "first level". So whether you pick "Python" first and _then_
 "Python".
 
 This reproduces a behaviour reminiscent to to https://del.icio.us from the early
-2000s which has since completely changed its behaviour and is - to the best of
+2000s which has since completely changed its behaviour and has - to the best of
 my knowledge - become effectively defunct.
 
 ## Screenshots
