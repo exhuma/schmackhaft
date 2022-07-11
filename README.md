@@ -15,7 +15,7 @@ not my strength.
 
 ## Installation
 
-Except for Edge, the extension must be manually be installed using [a release
+Except for Edge, the extension must be manually installed using [a release
 generated on GitHub](https://github.com/exhuma/schmackhaft/releases). For Edge,
 it should be available in the extension store.
 
