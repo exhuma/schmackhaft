@@ -13,6 +13,26 @@ The biggest shortcoming right now is the visual design and UX of the extension.
 As this is, for now, dogfood-ware, this might remain basic as UI/UX design is
 not my strength.
 
+## Installation
+
+Except for Edge, the extension must be manually be installed using [a release
+generated on GitHub](https://github.com/exhuma/schmackhaft/releases). For Edge,
+it should be available in the extension store.
+
+Extension publishing to the different browser stores is cumbersome and
+therefore, expect the extension to be available _only_ in Edge for now as this
+is the most forgiving:
+
+- The Mozilla store requires a simpler build process: The extension is manually
+  validated on the Mozilla store. This means, the build process must eliminate
+  human error to the best of its abilities. And this is currently not
+  guaranteed. Evidenced by the fact that I keep getting validation rejections
+  because the person validating it is not getting the correct build result.
+- The Chrome web store is not allowing submissions from Luxembourg (at the time
+  of this writing).
+- The Edge extension store has - so far - always verified and validated the
+  extension with no issue.
+
 ## Description
 
 This extension allows the storage of bookmarks in a _non-hierarchical_
@@ -70,10 +90,18 @@ tags.
 
 ![Preferences](docs/screenshots/options.png "Preferences")
 
+## Adding Bookmarks
+
+Currently it is _only_ possible to get bookmarks from an external JSON file. An
+example use-case is to load it from a GitHub repository.
+
+An option to add bookmarks directly via the extension will be added in the
+future.
+
 ## Bookmark Collections
 
 The extension aims to provide support for multiple collections from which to
-draw un when browsing the bookmarks. This currently (in version 0.3) this only
+draw un when browsing the bookmarks. This currently (in version 0.3) only
 supports external JSON files and the bookmarks stored in the browser.
 Collection support is flexible in the source code and additional collections can
 be added fairly easily.
