@@ -176,6 +176,11 @@ export class Schmackhaft extends LitElement {
 
   _onSettingsChanged(evt: { detail: { settings: string } }) {
     this.settings = evt.detail.settings;
+    this.dispatchEvent(
+      new CustomEvent("settingsChanged", {
+        detail: { settings: evt.detail.settings },
+      })
+    );
   }
 
   _renderBookmarks() {

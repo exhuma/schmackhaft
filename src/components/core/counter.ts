@@ -23,6 +23,7 @@ export class Counter<Type> {
 
   /**
    * Count the item once
+   *
    * @param item The item we want to count
    */
   addOne(item: Type): void {
@@ -45,6 +46,7 @@ export class Counter<Type> {
   /**
    * Decrease the count of a given item by 1. This never goes to negative
    * values. It stops decreasing at 0
+   *
    * @param item The item to be "removed"
    */
   removeOne(item: Type): void {
@@ -60,6 +62,7 @@ export class Counter<Type> {
 
   /**
    * Reduce the count of an element to 0
+   *
    * @param item The item to be removed
    */
   removeAll(item: Type): void {
@@ -69,6 +72,7 @@ export class Counter<Type> {
   /**
    * Return all entries we have in the counter, sorted by the number of times we
    * counted it.
+   *
    * @returns An array of tuples containing the item and its respective count
    */
   sortedEntries(): [Type, number][] {

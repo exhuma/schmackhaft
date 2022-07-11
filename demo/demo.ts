@@ -1,7 +1,7 @@
 import "../src/components/views/sh-settings";
+import "../src/components/components/layout-vsplit";
 import { Settings } from "../src/model/settings";
 import { SettingsBridge } from "../src/components/views/sh-settings";
-import "../src/components/components/layout-vsplit";
 
 let settingsElementV1 = document.getElementById("SettingsV1") as SettingsBridge;
 let settingsElementV2 = document.getElementById("SettingsV2") as SettingsBridge;
@@ -31,6 +31,11 @@ let settings = new Settings(
 );
 bookmarksElement.settings = settings.toJson();
 
+/**
+ * Ensure only the div related to the clicked link is visible
+ *
+ * @param evt A click-event from the browser
+ */
 function toggleDiv(evt) {
   let enabledName = evt.target.dataset["div"];
   document.querySelectorAll(".toggleable").forEach((element) => {
@@ -44,6 +49,11 @@ document.querySelectorAll(".clickable").forEach((element) => {
   element.addEventListener("click", toggleDiv);
 });
 
+/**
+ * Update bookmarks from an external JSON file
+ *
+ * @param url The URL from which to fetch the JSON
+ */
 async function reloadJson(url) {
   if (url === undefined || url.trim() === "") {
     return;

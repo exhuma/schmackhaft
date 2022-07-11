@@ -31,7 +31,7 @@ export class LinkList extends LitElement {
         title="${link.title}"
         description="${link.description}"
         href="${link.href}"
-        img="${link.img}"
+        img="${link.image}"
         .tags="${tagsWithStates}"
         dense="${this.dense}"
         @chipClicked="${this.onChipClicked}"

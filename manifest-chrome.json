@@ -10,19 +10,13 @@
     "96": "/assets/icon.svg",
     "128": "/assets/icon.svg"
   },
-  "options_ui": {
-    "page": "/src/views/options/index.html"
-  },
   "action": {
     "default_icon": {
       "128": "/assets/icon.png"
     },
     "default_title": "Schmackhaft",
     "show_matches": ["http://*/*", "https://*/*"],
-    "default_popup": "/src/views/sidebar/index.html"
-  },
-  "background": {
-    "service_worker": "/src/core/service-worker.es.js"
+    "default_popup": "/src/views/action_button/index.html"
   },
   "permissions": ["activeTab", "storage", "bookmarks"]
 }
