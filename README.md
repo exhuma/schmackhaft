@@ -153,47 +153,58 @@ used any time something in the container has changed.
    cd schmackhaft
    ```
 
-1. Build the development container
+1. Build
 
-   - VS-Code "Remote Containers" extension:
-     - Select "Remote-Containers: Rebuild Container" from the command-pallette
+   - With VS-Code using the "Remote Containers" extension
+
+     - Build the development container
+
+       Select "Remote-Containers: Rebuild Container" from the command-pallette
        (CTRL-SHIFT-P)
-   - Without VS-Code
-     ```
-     docker build -t schmackhaft-dev-container -f .devcontainer/Dockerfile .
-     ```
 
-1. Build the extension
+     - Build the extension
 
-   - VS-Code "Remote Containers" extension:
-     - Open a terminal inside VS-Code and run:
+       Open a terminal inside VS-Code and run:
+
        ```
        make dist
        ```
 
    - Without VS-Code
-     - Fetch required npm dependencies:
+
+     - Build the development container
+
        ```
-       docker run \
-         --rm \
-         -it \
-         -u $(id -u) \
-         -v $(pwd):/data \
-         -w /data \
-         schmackhaft-dev-container \
-         npm ci
+       docker build -t schmackhaft-dev-container -f .devcontainer/Dockerfile .
        ```
-     - Build the extension:
-       ```
-       docker run \
-         --rm \
-         -it \
-         -u $(id -u) \
-         -v $(pwd):/data \
-         -w /data \
-         schmackhaft-dev-container \
-         make dist
-       ```
+
+     - Build the extension
+
+       - Fetch required npm dependencies:
+
+         ```
+         docker run \
+           --rm \
+           -it \
+           -u $(id -u) \
+           -v $(pwd):/data \
+           -w /data \
+           schmackhaft-dev-container \
+           npm ci
+         ```
+
+       - Build the extension:
+
+         ```
+         docker run \
+           --rm \
+           -it \
+           -u $(id -u) \
+           -v $(pwd):/data \
+           -w /data \
+           schmackhaft-dev-container \
+           make dist
+         ```
 
    This will create the following artifacts:
 
