@@ -1,7 +1,17 @@
-import * as browser from "webextension-polyfill";
-import { Bookmark, BrowserBookmarkNode, IStorage } from "../../types";
-import { Settings } from "../settings";
+/**
+ * A storage backend for Schmackhaft bookmarks which reads the entries from the
+ * current browser bookmarks
+ */
+import { Bookmark, Browser, BrowserBookmarkNode, IStorage } from "../../types";
+import { Settings } from "../../model/settings";
 
+/**
+ * Recursively fetch bookmarks from a single node from the browser bookmarks API
+ *
+ * @param node The browser-bookmark node to inspect
+ * @param parentFolderNames A list representing the path for this current node
+ * @returns A list of bookmarks in this node
+ */
 function visit(
   node: BrowserBookmarkNode,
   parentFolderNames: string[]
@@ -26,8 +36,11 @@ function visit(
 
 export class BookmarkStorage implements IStorage {
   settings: Settings;
-  constructor(settings: Settings) {
+  browser: Browser | null;
+
+  constructor(settings: Settings, browser: Browser | null) {
     this.settings = settings;
+    this.browser = browser;
   }
 
   async get(href: string): Promise<Bookmark | null> {
@@ -36,7 +49,13 @@ export class BookmarkStorage implements IStorage {
   }
 
   async getAll(): Promise<Bookmark[]> {
-    let root = await browser.bookmarks.getTree();
+    if (this.browser === null) {
+      console.debug(
+        "Not running as browser-extension. Bookmark fetchin is disabled!"
+      );
+      return [];
+    }
+    let root = await this.browser.bookmarks.getTree();
     let all = [];
     root.forEach((item) => {
       let bookmarks = visit(item, ["Browser Bookmarks"]);

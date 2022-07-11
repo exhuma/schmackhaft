@@ -1,8 +1,8 @@
-import { css, html, LitElement } from "lit";
-import { property, customElement } from "lit/decorators.js";
-import { classMap } from "lit/directives/class-map.js";
-import { TagState } from "../../types";
 import "./sh-chip";
+import { LitElement, css, html } from "lit";
+import { customElement, property } from "lit/decorators.js";
+import { TagState } from "../../types";
+import { classMap } from "lit/directives/class-map.js";
 
 @customElement("sh-link")
 class Link extends LitElement {

@@ -1,11 +1,13 @@
-import { Bookmark, IStorage } from "../../types";
-import { Settings } from "../settings";
+import { Bookmark, Browser, IStorage } from "../../types";
+import { Settings } from "../model/settings";
 
 export class HttpStorage implements IStorage {
   settings: Settings;
+  browser: Browser | null;
 
-  constructor(settings: Settings) {
+  constructor(settings: Settings, browser: Browser | null) {
     this.settings = settings;
+    this.browser = browser;
   }
   async get(href: string): Promise<Bookmark | null> {
     let data = await this.getAll();
@@ -13,7 +15,7 @@ export class HttpStorage implements IStorage {
   }
 
   async getAll(): Promise<Bookmark[]> {
-    let remoteUrls = await this.settings.get("remoteUrls");
+    let remoteUrls = this.settings.remoteUrls;
     let output = [];
     let promises = remoteUrls.map(async (remoteUrl) => {
       if (!remoteUrl || remoteUrl === "") {
@@ -22,7 +24,7 @@ export class HttpStorage implements IStorage {
       let result = await fetch(remoteUrl);
       let data = await result.json();
       output = [...output, ...data];
-    })
+    });
     await Promise.all(promises);
     return output;
   }

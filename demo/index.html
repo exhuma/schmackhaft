@@ -1,56 +1,180 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Development Page</title>
     <script type="module" src="./demo"></script>
     <script type="module" src="../src/components/app-schmackhaft"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap"
+      rel="stylesheet"
+    />
     <style>
-        .clickable {
-            color: #00f;
-            cursor: pointer;
-            text-decoration: underline;
-        }
+      .clickable {
+        color: #00f;
+        cursor: pointer;
+        text-decoration: underline;
+      }
 
-        #Bookmarks {
-            width: 400px;
-            border: 1px solid black;
-        }
+      .toggleable {
+        display: none;
+      }
+
+      layout-vsplit {
+        padding: 1em;
+        border: 1px solid #ccc;
+        box-shadow: 2px 2px 2px;
+        margin: 1em;
+        height: 400px;
+      }
+
+      app-schmackhaft {
+        resize: both;
+        height: 100%;
+      }
+
+      DIV[slot="top"] {
+        border: 1px solid blue;
+        padding: 1em;
+      }
+
+      DIV[slot="bottom"] {
+        border: 1px solid blue;
+        padding: 1em;
+      }
+
+      #Page {
+        display: flex;
+        flex-direction: column;
+      }
+
+      #Menu {
+        flex-grow: 0;
+        margin-bottom: 1em;
+      }
+
+      #Content {
+        flex-grow: 1;
+      }
     </style>
-</head>
+  </head>
 
-<body>
+  <body>
+    <div id="Page">
+      <div id="Menu">
+        <a class="clickable" id="LayoutLink" data-div="Layout">Layout</a> |
+        <a class="clickable" id="BookmarksLink" data-div="Bookmarks"
+          >Bookmarks</a
+        >
+        |
+        <a class="clickable" id="SettingsLink" data-div="Settings">Settings</a>
+        | Load JSON file:
+        <input
+          type="text"
+          id="ExternalJsonFile"
+          placeholder="https://example.com/example.json"
+        />
+        <button id="ReloadJsonButton">Reload</button>
+      </div>
+      <div id="Content">
+        <div class="toggleable" id="Bookmarks">
+          <app-schmackhaft id="schmackhaft"></app-schmackhaft>
+        </div>
 
-    <a class="clickable" id="BookmarksLink" data-div="Bookmarks">Bookmarks</a> |
-    <a class="clickable" id="SettingsLink" data-div="Settings">Settings</a> |
-    Load JSON file: <input type="text" id="ExternalJsonFile" placeholder="https://example.com/example.json" />
-    <button id="ReloadJsonButton">Reload</button>
+        <div class="toggleable" id="Layout">
+          <layout-vsplit>
+            <div slot="top">
+              <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
+                commodo ante lorem, sit amet lacinia lectus pulvinar ut. Etiam
+                risus enim, dictum at posuere a, porttitor eget orci. Nam
+                aliquet velit eu purus pretium convallis. Maecenas lacinia felis
+                ante, ac facilisis nisl viverra id. Aenean dignissim commodo
+                hendrerit. Cras ut mauris quis metus auctor auctor in sed diam.
+                Vivamus suscipit, ex nec semper faucibus, quam tortor hendrerit
+                purus, id volutpat justo dolor a quam. Donec tempor tempus justo
+                sed finibus.
+              </p>
+              <p>
+                Donec tincidunt leo elementum, fringilla nisi a, semper velit.
+                Morbi hendrerit nisl eget purus suscipit efficitur id id nunc.
+                Vivamus fringilla, metus a varius faucibus, est ante suscipit
+                enim, at venenatis urna risus in ipsum. Suspendisse potenti.
+                Cras laoreet, ex in rutrum lobortis, ipsum urna efficitur dolor,
+                sed congue dolor magna at purus. Duis eu metus nec urna laoreet
+                pellentesque. Vestibulum pretium cursus tortor, quis vestibulum
+                massa.
+              </p>
+            </div>
+            <div slot="bottom">
+              <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
+                commodo ante lorem, sit amet lacinia lectus pulvinar ut. Etiam
+                risus enim, dictum at posuere a, porttitor eget orci. Nam
+                aliquet velit eu purus pretium convallis. Maecenas lacinia felis
+                ante, ac facilisis nisl viverra id. Aenean dignissim commodo
+                hendrerit. Cras ut mauris quis metus auctor auctor in sed diam.
+                Vivamus suscipit, ex nec semper faucibus, quam tortor hendrerit
+                purus, id volutpat justo dolor a quam. Donec tempor tempus justo
+                sed finibus.
+              </p>
+              <p>
+                Donec tincidunt leo elementum, fringilla nisi a, semper velit.
+                Morbi hendrerit nisl eget purus suscipit efficitur id id nunc.
+                Vivamus fringilla, metus a varius faucibus, est ante suscipit
+                enim, at venenatis urna risus in ipsum. Suspendisse potenti.
+                Cras laoreet, ex in rutrum lobortis, ipsum urna efficitur dolor,
+                sed congue dolor magna at purus. Duis eu metus nec urna laoreet
+                pellentesque. Vestibulum pretium cursus tortor, quis vestibulum
+                massa.
+              </p>
+            </div>
+          </layout-vsplit>
+        </div>
 
-    <hr>
-
-    <div class="toggleable" id="Bookmarks">
-        <app-schmackhaft id="schmackhaft"></app-schmackhaft>
-    </div>
-
-    <div class="toggleable" style="display: none;" id="Settings">
-        <div style="float: left; padding: 1rem; width: 400px; height: 500px; border: 1px solid black;">
+        <div class="toggleable" id="Settings">
+          <div
+            style="
+              float: left;
+              padding: 1rem;
+              width: 400px;
+              height: 500px;
+              border: 1px solid black;
+            "
+          >
             <h1>Settings V0 (empty)</h1>
             <sh-settings settings="{}"></sh-settings>
-        </div>
-        <div style="float: left; padding: 1rem; width: 400px; height: 500px; border: 1px solid black;">
+          </div>
+          <div
+            style="
+              float: left;
+              padding: 1rem;
+              width: 400px;
+              height: 500px;
+              border: 1px solid black;
+            "
+          >
             <h1>Settings V1</h1>
             <sh-settings id="SettingsV1" settings="{}"></sh-settings>
-        </div>
-        <div style="float: left; padding: 1rem; width: 400px; height: 500px; border: 1px solid black;">
+          </div>
+          <div
+            style="
+              float: left;
+              padding: 1rem;
+              width: 400px;
+              height: 500px;
+              border: 1px solid black;
+            "
+          >
             <h1>Settings V2</h1>
             <sh-settings id="SettingsV2" settings="{}"></sh-settings>
+          </div>
         </div>
+      </div>
     </div>
-
-
-</body>
-
+  </body>
 </html>

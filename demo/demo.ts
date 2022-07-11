@@ -1,12 +1,10 @@
 import "../src/components/views/sh-settings";
-import { Settings } from "../src/components/views/sh-settings";
-import { Links } from "../src/components/core/links";
-import { Link } from "../src/components/model/link";
-import exampleData from "../docs/examples/external-file.json";
+import "../src/components/components/layout-vsplit";
+import { Settings } from "../src/model/settings";
+import { SettingsBridge } from "../src/components/views/sh-settings";
 
-
-let settingsElementV1 = document.getElementById("SettingsV1") as Settings;
-let settingsElementV2 = document.getElementById("SettingsV2") as Settings;
+let settingsElementV1 = document.getElementById("SettingsV1") as SettingsBridge;
+let settingsElementV2 = document.getElementById("SettingsV2") as SettingsBridge;
 settingsElementV2.settings = JSON.stringify({
   remoteUrls: [
     "https://raw.githubusercontent.com/exhuma/dotfiles/master/bookmarks.json",
@@ -20,34 +18,49 @@ settingsElementV2.addEventListener("change", (event) => {
 });
 
 settingsElementV1.settings = JSON.stringify({
-  remoteUrl: "https://raw.githubusercontent.com/exhuma/dotfiles/master/bookmarks.json",
+  remoteUrl:
+    "https://raw.githubusercontent.com/exhuma/dotfiles/master/bookmarks.json",
   version: 1,
 });
 
 let bookmarksElement = document.getElementById("schmackhaft");
-bookmarksElement.links = JSON.stringify(exampleData);
+let settings = new Settings(
+  ["https://raw.githubusercontent.com/exhuma/dotfiles/master/bookmarks.json"],
+  true,
+  2
+);
+bookmarksElement.settings = settings.toJson();
 
+/**
+ * Ensure only the div related to the clicked link is visible
+ *
+ * @param evt A click-event from the browser
+ */
 function toggleDiv(evt) {
-  let enabledName = evt.target.dataset["div"]
-  document.querySelectorAll(".toggleable").forEach(element => {
+  let enabledName = evt.target.dataset["div"];
+  document.querySelectorAll(".toggleable").forEach((element) => {
     let currentName = element.id;
-    let displayValue = (enabledName === currentName ? "block" : "none");
+    let displayValue = enabledName === currentName ? "block" : "none";
     element.style.display = displayValue;
-  })
+  });
 }
 
-document.querySelectorAll(".clickable").forEach(element => {
-  element.addEventListener("click", toggleDiv)
+document.querySelectorAll(".clickable").forEach((element) => {
+  element.addEventListener("click", toggleDiv);
 });
 
-
+/**
+ * Update bookmarks from an external JSON file
+ *
+ * @param url The URL from which to fetch the JSON
+ */
 async function reloadJson(url) {
   if (url === undefined || url.trim() === "") {
     return;
   }
   let response = await fetch(url);
   if (!response.ok) {
-    console.error(`Unable to fetch ${url} (${response.statusText})`)
+    console.error(`Unable to fetch ${url} (${response.statusText})`);
     return;
   }
   let text = await response.text();
@@ -66,3 +79,5 @@ txtJsonFile.addEventListener("change", async (evt) => {
   let url = evt.target.value;
   reloadJson(url);
 });
+
+document.querySelector(".toggleable").style.display = "block";

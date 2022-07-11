@@ -1,0 +1,3 @@
+- Remove Toolbar from HTML files
+- Replace arrays with sets where possible
+- Centralise logging and update eslintrc config for no-console

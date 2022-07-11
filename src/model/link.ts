@@ -10,21 +10,41 @@ export class Link {
   title: string;
   description: string;
   href: string;
-  img: string;
+  image: string;
   _tags: Array<string>;
 
   constructor(
     href: string,
     tags: Array<string>,
     title: string = "",
-    img: string = "",
+    image: string = "",
     description: string = ""
   ) {
     this.href = href;
     this._tags = tags;
     this.title = title;
-    this.img = img;
+    this.image = image;
     this.description = description;
+  }
+
+  static fromObject(data: JsonSchema): Link {
+    return new Link(
+      data.href,
+      data.tags ?? [],
+      data.title ?? "",
+      data.image ?? "",
+      data.description ?? ""
+    );
+  }
+
+  toObject(): JsonSchema {
+    return {
+      href: this.href,
+      tags: this.tags,
+      title: this.title || "",
+      image: this.image || "",
+      description: this.description || "",
+    };
   }
 
   get tags() {

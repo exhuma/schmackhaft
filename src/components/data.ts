@@ -1,5 +1,5 @@
+import { Link } from "../model/link";
 import { Links } from "./core/links";
-import { Link } from "./model/link";
 
 export const demoLinks = new Links([
   new Link(

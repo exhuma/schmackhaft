@@ -4,19 +4,15 @@ CURRENT_VERSION = $(shell jq -r .version package.json)
 all: chrome mozilla
 	notify-send -u low -t 1000 Build done
 
-mozilla: pages serviceworker bundled_docs
+mozilla: pages bundled_docs
 	mkdir -p unpackaged/mozilla
 	cp -r build/pages/* unpackaged/mozilla/
 	sed -e 's/__version__/$(CURRENT_VERSION)/' \
 		manifest-mozilla.json > unpackaged/mozilla/manifest.json
 
-chrome: pages serviceworker bundled_docs
+chrome: pages bundled_docs
 	mkdir -p unpackaged/chrome/src/core
 	cp -r build/pages/* unpackaged/chrome/
-	cp \
-		build/serviceworker/service-worker.es.js \
-		build/serviceworker/service-worker.umd.js \
-		unpackaged/chrome/src/core
 	sed -e 's/__version__/$(CURRENT_VERSION)/' \
 		manifest-chrome.json > unpackaged/chrome/manifest.json
 
@@ -27,9 +23,6 @@ bundled_docs:
 	cp unpackaged/chrome/pages/README.html unpackaged/mozilla/pages/README.html
 	cp -r docs/screenshots unpackaged/chrome/pages/docs
 	cp -r docs/screenshots unpackaged/mozilla/pages/docs
-
-serviceworker:
-	npm run build -- --config vite-serviceworker.config.js
 
 pages:
 	npm run build -- --config vite-pages.config.js

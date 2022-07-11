@@ -1,4 +1,4 @@
-import { Settings } from "./core/settings";
+import { Settings } from "./model/settings";
 
 export enum TagState {
   NEUTRAL,
@@ -9,6 +9,12 @@ export enum TagState {
 export enum TagStateTransition {
   ADVANCE,
   REVERSE,
+}
+
+export enum PageName {
+  BOOKMARKS,
+  SETTINGS,
+  HELP,
 }
 
 export type Bookmark = {
@@ -31,6 +37,13 @@ export type BrowserBookmarkNode = {
 export type BrowserTab = {
   url: string;
   title: string;
+};
+
+export type Browser = {
+  storage: any;
+  tabs: any;
+  runtime: any;
+  bookmarks: any;
 };
 
 export interface IStorage {
