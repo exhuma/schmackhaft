@@ -13,8 +13,9 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: "16"
+      - run: sudo apt install pandoc
       - run: npm clean-install
-      - run: make
+      - run: make dist
       - name: Release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
