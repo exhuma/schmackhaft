@@ -138,12 +138,13 @@ requests are made. An example collection looks like this:
 
 Bug/Feature-tracker is over at [exhuma/schmackhaft](https://github.com/exhuma/schmackhaft).
 
-The project provides a definition for a VS-Code "development container". This
-is purely optional but makes developemnt easier because it comes with all the
-required dependencies. When not working directly with VS-Code (including the
+The project provides a VS-Code "development container". This is optional
+but provides a reproducible build environment with all required system
+dependencies. When working with VS-Code (including the
 `ms-vscode-remote.vscode-remote-extensionpack` extension) the development
-container can be buid manually using the Dockerfile inside the `.devcontainer`
-folder.
+container can be built manually by opening the command-pallette (CTRL-SHIFT-P)
+and selecting `Remote-Containers: Rebuild Container` command. This can also be
+used any time something in the container has changed.
 
 1. Clone the Repository
 
@@ -152,39 +153,71 @@ folder.
    cd schmackhaft
    ```
 
-1. Install all dependencies
+1. Build the development container
 
-   ```
-   npm ci
-   apt install pandoc
-   ```
+   - VS-Code "Remote Containers" extension:
+     - Select "Remote-Containers: Rebuild Container" from the command-pallette
+       (CTRL-SHIFT-P)
+   - Without VS-Code
+     ```
+     docker build -t schmackhaft-dev-container -f .devcontainer/Dockerfile .
+     ```
 
 1. Build the extension
 
-   The project provides a `Makefile` to abstract away browser differences. To
-   build, simply run:
+   - VS-Code "Remote Containers" extension:
+     - Open a terminal inside VS-Code and run:
+       ```
+       make dist
+       ```
 
-   ```
-   make
-   ```
+   - Without VS-Code
+     - Fetch required npm dependencies:
+       ```
+       docker run \
+         --rm \
+         -it \
+         -u $(id -u) \
+         -v $(pwd):/data \
+         -w /data \
+         schmackhaft-dev-container \
+         npm ci
+       ```
+     - Build the extension:
+       ```
+       docker run \
+         --rm \
+         -it \
+         -u $(id -u) \
+         -v $(pwd):/data \
+         -w /data \
+         schmackhaft-dev-container \
+         make dist
+       ```
 
-   This will create the subfolder `unpackaged/chrome` and `unpackaged/mozilla`
-   which should cover most browsers.
+   This will create the following artifacts:
 
-1. Preparing for distribution
+   - `dist/*.zip`
 
-   Running `make dist` will create a folder `dist` which will contain all the
-   required files to publish the extension to the web-store.
+     Zipped files, ready for distribution to the browser app stores
 
-1. Component Development
+   - `unpackaged/mozilla`
 
-   For an easier development cycle, a lot of code is written in
-   [lit](https://lit.dev). This allows us to run a development server with `npm run serve` and access `/demo/index.html` to try out the components. This
-   makes it possible to have a develop/test cycle without the need to reload the
-   browser extension. It also makes it a lot easier to use the browser
-   development tools.
+     The generated source-code for Mozilla based browsers
 
-1. Load the extension into the browser for testing
+   - `unpackaged/chrome`
 
-   - [Mozilla: Installing](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Your_first_WebExtension#installing)
-   - [Chrome: Loading unpacked extensions](https://developer.chrome.com/docs/extensions/mv3/getstarted/#unpacked)
+     The generated source-code for Chromium based browsers
+
+### Component Development
+
+For an easier development cycle, a lot of code is written in
+[lit](https://lit.dev). This allows us to run a development server with `npm run
+serve` and access `/demo/index.html` to try out the components. This makes it
+possible to have a develop/test cycle without the need to reload the browser
+extension. It also makes it a lot easier to use the browser development tools.
+
+## Load the extension into the browser for testing
+
+- [Mozilla: Installing Web Extensions](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Your_first_WebExtension#installing)
+- [Chrome: Loading unpacked extensions](https://developer.chrome.com/docs/extensions/mv3/getstarted/#unpacked)
