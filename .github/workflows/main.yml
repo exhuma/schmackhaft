@@ -20,4 +20,7 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/')
         with:
           draft: true
-          files: web-ext-artifacts/schmackhaft-*.zip
+          files: |
+            dist/chrome-*.zip
+            dist/mozilla-*.zip
+            dist/schmackhaft-*.zip
