@@ -10,9 +10,11 @@ RUN apt update && \
         libnotify-bin \
         pandoc \
         vim-nox \
+        python3 \
         python3-pip \
         python3-venv \
-        jq
+        jq && \
+    pip3 install pre-commit
 
 # [Optional] Uncomment if you want to install an additional version of node using nvm
 # ARG EXTRA_NODE_VERSION=10
