@@ -2,6 +2,7 @@ import "./components/layout-vsplit";
 import "./components/sh-link";
 import "./components/sh-linklist";
 import "./components/sh-taglist";
+import "./components/sh-toolbar";
 import "./views/sh-settings";
 import "@material/mwc-button";
 import "material-icon-component/md-icon.js";
@@ -16,7 +17,7 @@ import { Links } from "./core/links";
 import Readme from "../../README.md?raw";
 import { Settings } from "../model/settings";
 import { TagList } from "./components/sh-taglist";
-import { classMap } from "lit/directives/class-map.js";
+import { ToolbarAction } from "./components/sh-toolbar";
 import { createStorage } from "../core/storage/factory";
 import hljs from "highlight.js";
 import hlstyle from "highlight.js/styles/monokai.css";
@@ -47,49 +48,8 @@ export class Schmackhaft extends LitElement {
         font-family: "Fira Code", monospace;
       }
 
-      #Toolbar {
-        display: flex;
-        flex-direction: row;
-        margin-bottom: 0.5rem;
-      }
-
-      #Toast {
-        flex-grow: 1;
-      }
-
-      .action {
-        flex-grow: 0;
-        margin-left: 0.5em;
-        cursor: pointer;
-        border-radius: 100%;
-        width: 20px;
-        height: 20px;
-        text-align: center;
-      }
-
-      .action:hover {
-        background-color: #bdd5e4;
-        color: #4747d4;
-      }
-
       layout-vsplit {
         height: 100%;
-      }
-
-      @keyframes rotate {
-        from {
-          transform: rotate(0deg);
-        }
-        to {
-          transform: rotate(360deg);
-        }
-      }
-
-      .spinning {
-        animation-name: rotate;
-        animation-duration: 1s;
-        animation-timing-function: linear;
-        animation-iteration-count: infinite;
       }
     `,
   ];
@@ -117,12 +77,6 @@ export class Schmackhaft extends LitElement {
   set settings(data: string) {
     this._settings = Settings.fromJson(data);
     this._fetchBookmarks(); // TODO: Should we really always do this when the settings change?
-  }
-
-  get refreshClasses() {
-    return {
-      spinning: this._busy,
-    };
   }
 
   _fetchBookmarks() {
@@ -234,20 +188,29 @@ export class Schmackhaft extends LitElement {
     }
   }
 
+  _onToolbarButtonClick(evt) {
+    switch (evt.detail.name) {
+      case ToolbarAction.REFRESH:
+        this.onRefreshClicked();
+        break;
+      case ToolbarAction.SETTINGS:
+        this.onSettingsClicked();
+        break;
+      case ToolbarAction.HELP:
+        this.onHelpClicked();
+        break;
+      default:
+        throw new Error(`Unknown toolbar action name: ${evt.detail.name}`);
+    }
+  }
+
   override render() {
     return html`
-      <div id="Toolbar">
-        <div id="Toast">${this._toast}</div>
-        <div class="action" @click="${this.onRefreshClicked}">
-          <md-icon class=${classMap(this.refreshClasses)}>refresh</md-icon>
-        </div>
-        <div class="action" @click="${this.onSettingsClicked}">
-          <md-icon>settings</md-icon>
-        </div>
-        <div class="action" @click="${this.onHelpClicked}">
-          <md-icon>help</md-icon>
-        </div>
-      </div>
+      <sh-toolbar
+        ?busy=${this._busy}
+        toast=${this._toast}
+        @buttonClicked=${this._onToolbarButtonClick}
+      ></sh-toolbar>
       ${this._renderMainContent()}
     `;
   }
