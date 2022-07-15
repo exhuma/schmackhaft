@@ -21,6 +21,7 @@ import { ToolbarAction } from "./components/sh-toolbar";
 import { createStorage } from "../core/storage/factory";
 import hljs from "highlight.js";
 import hlstyle from "highlight.js/styles/monokai.css";
+import tailwind from "./tailwind.css";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 
 setOptions({
@@ -35,6 +36,7 @@ setOptions({
 export class Schmackhaft extends LitElement {
   static styles = [
     // @ts-ignore
+    css([tailwind]),
     css([hlstyle]),
     css`
       :host {
@@ -206,12 +208,14 @@ export class Schmackhaft extends LitElement {
 
   override render() {
     return html`
-      <sh-toolbar
-        ?busy=${this._busy}
-        toast=${this._toast}
-        @buttonClicked=${this._onToolbarButtonClick}
-      ></sh-toolbar>
-      ${this._renderMainContent()}
+      <div class="p-2">
+        <sh-toolbar
+          ?busy=${this._busy}
+          toast=${this._toast}
+          @buttonClicked=${this._onToolbarButtonClick}
+        ></sh-toolbar>
+        ${this._renderMainContent()}
+      </div>
     `;
   }
 }
