@@ -118,6 +118,10 @@ export class Schmackhaft extends LitElement {
     this._fetchBookmarks();
   }
 
+  onBookmarksClicked() {
+    this._view = PageName.BOOKMARKS;
+  }
+
   onSettingsClicked() {
     this._view = PageName.SETTINGS;
   }
@@ -167,9 +171,6 @@ export class Schmackhaft extends LitElement {
         @change="${this._onSettingsChanged}"
         settings="${this._settings.toJson()}"
       ></sh-settings>
-      <mwc-button raised @click="${() => this._switchView(PageName.BOOKMARKS)}"
-        >Close</mwc-button
-      >
     `;
   }
 
@@ -192,6 +193,9 @@ export class Schmackhaft extends LitElement {
 
   _onToolbarButtonClick(evt) {
     switch (evt.detail.name) {
+      case ToolbarAction.BOOKMARKS:
+        this.onBookmarksClicked();
+        break;
       case ToolbarAction.REFRESH:
         this.onRefreshClicked();
         break;

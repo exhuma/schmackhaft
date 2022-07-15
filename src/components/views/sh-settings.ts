@@ -2,25 +2,29 @@ import "@material/mwc-textfield";
 import "@material/mwc-button";
 import { LitElement, css, html } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
+import tailwind from "../tailwind.css";
 
 @customElement("sh-settings")
 export class SettingsBridge extends LitElement {
-  static styles = css`
-    #GridContainer {
-      display: grid;
-      grid-template-columns: 70% 30%;
-      grid-row-gap: 0.5rem;
-    }
-    #SaveButton {
-      grid-column-start: 2;
-    }
-    #ClearButton {
-      grid-column-start: 2;
-    }
-    .formField {
-      grid-column-start: span 2;
-    }
-  `;
+  static styles = [
+    css([tailwind]),
+    css`
+      #GridContainer {
+        display: grid;
+        grid-template-columns: 70% 30%;
+        grid-row-gap: 0.5rem;
+      }
+      #SaveButton {
+        grid-column-start: 2;
+      }
+      #ClearButton {
+        grid-column-start: 2;
+      }
+      .formField {
+        grid-column-start: span 2;
+      }
+    `,
+  ];
 
   private _settings = {};
 
@@ -95,16 +99,21 @@ export class SettingsBridge extends LitElement {
       return null;
     }
     let output = html`
-      <mwc-textfield
-        class="formField"
-        label="External JSON file"
-        placeholder="https://my.domain.tld/my-bookmarks.json"
-        helper="Set this to the empty string to remove it from the list"
-        helperPersistent
-        value="${url}"
-        data-url-index="${index}"
-        @change="${this.onTextFieldChanged}"
-      ></mwc-textfield>
+      <div class="mb-6 formField">
+        <label
+          class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+          >External JSON File</label
+        >
+        <input
+          type="text"
+          helper="Set this to the empty string to remove it from the list"
+          value="${url}"
+          data-url-index="${index}"
+          @change="${this.onTextFieldChanged}"
+          placeholder="https://my.domain.tld/my-bookmarks.json"
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        />
+      </div>
     `;
     return output;
   }
@@ -138,10 +147,18 @@ export class SettingsBridge extends LitElement {
     return html`
     <div id="GridContainer">
       ${remoteUrls.map(this._renderRemoteUrl, this)}
-      <mwc-textfield class="formField" label="External JSON file"
-      placeholder="https://my.domain.tld/my-bookmarks.json"
-      @change="${this.onNewItemChanged}"
-      ></mwc-textfield>
+      <div class="mb-6 formField">
+        <label
+          class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+          >External JSON File</label>
+        <input
+          type="text"
+          helper="Set this to the empty string to remove it from the list"
+          @change="${this.onNewItemChanged}"
+          placeholder="https://my.domain.tld/my-bookmarks.json"
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          >
+      </div>
       <div class="formField">
         <input @change="${
           this.onBrowserBookmarkToggled
@@ -150,12 +167,18 @@ export class SettingsBridge extends LitElement {
     }"></input>
         <label for="enableBrowserBookmarks">Include Browser Bookmarks (folders will be provided as tags)</label>
       </div>
-      <mwc-button id="SaveButton" raised @click="${
-        this.onSaveClick
-      }">Save</mwc-button>
-      <mwc-button id="ClearButton" @click="${
-        this.onClearClick
-      }">Clear all settings</mwc-button>
+      <button
+        type="button"
+        id="SaveButton"
+        @click="${this.onSaveClick}"
+        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+      >Save</button>
+      <button
+        type="button"
+        id="ClearButton"
+        @click="${this.onClearClick}"
+        class="text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900"
+      >Clear all Settings</button>
     </div>
     `;
   }
