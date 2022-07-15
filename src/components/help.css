@@ -1,0 +1,53 @@
+H1,
+H2,
+H3 {
+  @apply text-black;
+  @apply mt-3 font-sans;
+}
+
+H1 {
+  @apply text-2xl;
+}
+
+H2 {
+  @apply text-xl;
+}
+
+H3 {
+  @apply text-lg;
+}
+
+P {
+  @apply mt-2;
+}
+
+A {
+  @apply underline text-blue-900;
+}
+
+EM {
+  @apply italic;
+}
+
+PRE,
+CODE {
+  @apply font-mono bg-slate-100;
+}
+
+PRE {
+  @apply border border-slate-400 p-2 rounded-sm;
+}
+
+OL > LI {
+  @apply list-decimal ml-5;
+}
+
+UL > LI {
+  @apply list-disc ml-5;
+}
+
+#Help {
+  @apply text-slate-700;
+  max-width: 66ch;
+  text-align: justify;
+}

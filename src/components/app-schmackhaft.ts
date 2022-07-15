@@ -19,6 +19,7 @@ import { Settings } from "../model/settings";
 import { TagList } from "./components/sh-taglist";
 import { ToolbarAction } from "./components/sh-toolbar";
 import { createStorage } from "../core/storage/factory";
+import helpStyles from "./help.css";
 import hljs from "highlight.js";
 import hlstyle from "highlight.js/styles/monokai.css";
 import tailwind from "./tailwind.css";
@@ -38,6 +39,7 @@ export class Schmackhaft extends LitElement {
     // @ts-ignore
     css([tailwind]),
     css([hlstyle]),
+    css([helpStyles]),
     css`
       :host {
         display: block;
@@ -176,7 +178,7 @@ export class Schmackhaft extends LitElement {
 
   _renderHelp() {
     const content = parse(Readme);
-    return unsafeHTML(content);
+    return html` <div id="Help" class="mx-auto">${unsafeHTML(content)}</div> `;
   }
 
   _renderMainContent() {

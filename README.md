@@ -175,7 +175,9 @@ used any time something in the container has changed.
      - Build the development container
 
        ```
-       docker build -t schmackhaft-dev-container -f .devcontainer/Dockerfile .
+       docker build \
+         -t schmackhaft-dev-container \
+         -f .devcontainer/Dockerfile .
        ```
 
      - Build the extension
@@ -223,14 +225,13 @@ used any time something in the container has changed.
 ### Component Development
 
 For an easier development cycle, a lot of code is written in
-[lit](https://lit.dev). This allows us to run a development server with `npm run
-serve` and access `/demo/index.html` to try out the components. This makes it
+[lit](https://lit.dev). This allows us to run a development server with `npm run serve` and access `/demo/index.html` to try out the components. This makes it
 possible to have a develop/test cycle without the need to reload the browser
 extension. It also makes it a lot easier to use the browser development tools.
 
 ## Load the extension into the browser for testing
 
-* Chromium based browsers
+- Chromium based browsers
 
   Open the "extensions" page [chrome://extensions/](chrome://extensions/) and
   drag/drop the generated `.zip` file onto that page
@@ -240,7 +241,7 @@ extension. It also makes it a lot easier to use the browser development tools.
   extensions](https://developer.chrome.com/docs/extensions/mv3/getstarted/#unpacked)
   with the unzipped contents.
 
-* Mozilla based browsers
+- Mozilla based browsers
 
   Either unzip the `.zip` file from the dist folder, or use the `dist/mozilla`
   folder and follow the steps detailed on [Mozilla: Installing Web
