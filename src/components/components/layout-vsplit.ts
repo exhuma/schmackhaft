@@ -17,7 +17,7 @@ export class Vsplit extends LitElement {
       flex-shrink: 0;
       resize: vertical;
       overflow: auto;
-      height: 25%;
+      height: 100px;
       max-height: calc(100% - 0.5em);
       margin-bottom: 0.5em;
       padding-bottom: 0.5em;
