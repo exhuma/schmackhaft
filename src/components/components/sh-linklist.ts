@@ -33,7 +33,7 @@ export class LinkList extends LitElement {
         href="${link.href}"
         img="${link.image}"
         .tags="${tagsWithStates}"
-        dense="${this.dense}"
+        ?dense="${this.dense}"
         @chipClicked="${this.onChipClicked}"
       ></sh-link>
     `;
