@@ -3,38 +3,25 @@ import { LitElement, css, html } from "lit";
 import { TagState, TagStateTransition } from "../../types";
 import { customElement, property } from "lit/decorators.js";
 import { classMap } from "lit/directives/class-map.js";
+import tailwind from "../tailwind.css";
 
 @customElement("sh-chip")
 export class Chip extends LitElement {
-  static styles = css`
-    .chip {
-      border: 1px solid #9494bb;
-      background-color: #e0e0ee;
-      padding: 0 0.8rem;
-      border-radius: 1rem;
-      cursor: pointer;
-      white-space: nowrap;
-      display: inline-block;
-      margin-top: 0.2rem;
-    }
+  static styles = [
+    css([tailwind]),
+    css`
+      .chip.neutral {
+      }
 
-    .chip.dense {
-      border-radius: 2px;
-      padding: 0 0.2rem;
-    }
+      .chip.included {
+        background-color: #aaffaa;
+      }
 
-    .chip.neutral {
-      background-color: #e0e0ee;
-    }
-
-    .chip.included {
-      background-color: #aaffaa;
-    }
-
-    .chip.excluded {
-      background-color: #ffaaaa;
-    }
-  `;
+      .chip.excluded {
+        background-color: #ffaaaa;
+      }
+    `,
+  ];
 
   @property()
   name = "";
@@ -64,7 +51,6 @@ export class Chip extends LitElement {
 
   override render() {
     let dynamicClasses = {
-      dense: this.dense,
       neutral: this.state === TagState.NEUTRAL,
       included: this.state === TagState.INCLUDED,
       excluded: this.state === TagState.EXCLUDED,
@@ -86,13 +72,18 @@ export class Chip extends LitElement {
         actionText = "include only links with this tag";
         break;
     }
-    return html`<div
-      class="chip ${classMap(dynamicClasses)}"
-      @click="${this.onClick}"
-      @contextmenu="${this.onAuxClick}"
-      title="Click to ${actionText}"
-    >
-      ${label} ${this.name}
-    </div>`;
+    return html`
+      <div
+        @click="${this.onClick}"
+        @contextmenu="${this.onAuxClick}"
+        title="Click to ${actionText}"
+        class="chip border px-1 rounded-l cursor-pointer flex gap-1 flex-row flex-nowrap items-center ${classMap(
+          dynamicClasses
+        )}"
+      >
+        <div>${label}</div>
+        <div>${this.name}</div>
+      </div>
+    `;
   }
 }
