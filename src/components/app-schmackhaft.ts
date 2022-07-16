@@ -11,10 +11,10 @@ import { PageName, TagStateTransition } from "../types";
 import { Ref, createRef, ref } from "lit/directives/ref.js";
 import { customElement, property, state } from "lit/decorators.js";
 import { parse, setOptions } from "marked";
+import Help from "../help/help.md?raw";
 import { Link } from "../model/link";
 import { LinkList } from "./components/sh-linklist";
 import { Links } from "./core/links";
-import Readme from "../../README.md?raw";
 import { Settings } from "../model/settings";
 import { TagList } from "./components/sh-taglist";
 import { ToolbarAction } from "./components/sh-toolbar";
@@ -177,7 +177,7 @@ export class Schmackhaft extends LitElement {
   }
 
   _renderHelp() {
-    const content = parse(Readme);
+    const content = parse(Help);
     return html` <div id="Help" class="mx-auto">${unsafeHTML(content)}</div> `;
   }
 
