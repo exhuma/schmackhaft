@@ -36,7 +36,7 @@ export class HttpSettings extends LitElement {
 
   override render() {
     return html`
-      <div class="mb-6 formField">
+      <div>
         <label
           class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
           >External JSON File</label

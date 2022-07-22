@@ -84,6 +84,11 @@ export class Settings extends LitElement {
     ></sh-http-settings>`;
   }
 
+  _deleteBookmarkSource(index: number) {
+    this._settings.sources.splice(index, 1);
+    this.requestUpdate();
+  }
+
   _renderConfigBlock(type: string, settings: object, index: number) {
     const typeIndex = Object.values(BookmarkSource).indexOf(type);
     if (typeIndex < 0) {
@@ -91,12 +96,38 @@ export class Settings extends LitElement {
     }
     let typeName = Object.keys(BookmarkSource)[typeIndex];
     let sourceType = BookmarkSource[typeName];
+    let configBlock;
     switch (sourceType) {
       case BookmarkSource.HTTP:
-        return this._renderHttpSettings(settings, index);
+        configBlock = this._renderHttpSettings(settings, index);
+        break;
       default:
         throw new Error(`Settings UI for ${sourceType} is not yet implemented`);
     }
+
+    return html`<div class="justify-self-center">
+        <button
+          type="button"
+          title="Refresh all sources"
+          class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
+          @click=${() => this._deleteBookmarkSource(index)}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
+              clip-rule="evenodd"
+            />
+          </svg>
+          <span class="sr-only">Icon description</span>
+        </button>
+      </div>
+      <div class="border-l-4 border-slate-200 p-4">${configBlock}</div>`;
   }
 
   override render() {
@@ -118,7 +149,11 @@ export class Settings extends LitElement {
     );
     return html`
       <h1 class="text-2xl">Bookmark Sources</h1>
-      ${configBlocks}
+      <div
+        class="grid grid-cols-[100px_auto] justify-items-stretch items-center"
+      >
+        ${configBlocks}
+      </div>
       <button
         type="button"
         id="SaveButton"
