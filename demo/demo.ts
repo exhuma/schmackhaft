@@ -42,6 +42,14 @@ let settings = new Settings(
         url: "https://raw.githubusercontent.com/exhuma/schmackhaft/e6439061eedd24c50e00e8b2374ec50d376bc6e5/docs/examples/external-file.json",
       },
     },
+    {
+      type: BookmarkSource.BROWSER,
+      settings: {},
+    },
+    {
+      type: BookmarkSource.EXTENSION_STORAGE,
+      settings: {},
+    },
   ],
   3
 );

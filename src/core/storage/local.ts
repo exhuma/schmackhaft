@@ -2,14 +2,11 @@ import { Bookmark, Browser, IStorage } from "../../types";
 
 export class LocalStorage implements IStorage {
   settings: Settings;
-  browser: Browser;
+  browser: Browser | null;
 
-  constructor(settings: { browser: Browser }) {
+  constructor(settings: any, browser: Browser | null) {
     this.settings = settings;
-    if (!settings.browser) {
-      throw new Error("Settings object is missing the browser attribute");
-    }
-    this.browser = settings.browser;
+    this.browser = browser;
   }
 
   async get(href: string): Promise<Bookmark | null> {

@@ -88,11 +88,17 @@ export class Settings extends LitElement {
   }
 
   _renderBrowserSettings(settings: object, index: number) {
-    return html`browser-settings`;
+    return html` <div>
+      <h1 class="text-lg">Browser bookmarks</h1>
+      <em>No settings for this source</em>
+    </div>`;
   }
 
   _renderExtensionStorageSettings(settings: object, index: number) {
-    return html`extension-settings`;
+    return html` <div>
+      <h1 class="text-lg">Schmackhaft Internal Storage</h1>
+      <em>No settings for this source</em>
+    </div>`;
   }
 
   _deleteBookmarkSource(index: number) {
@@ -110,9 +116,11 @@ export class Settings extends LitElement {
     let configBlock;
     switch (sourceType) {
       case BookmarkSource.BROWSER:
-        return this._renderBrowserSettings(settings);
+        configBlock = this._renderBrowserSettings(settings);
+        break;
       case BookmarkSource.EXTENSION_STORAGE:
-        return this._renderExtensionStorageSettings(settings);
+        configBlock = this._renderExtensionStorageSettings(settings);
+        break;
       case BookmarkSource.HTTP:
         configBlock = this._renderHttpSettings(settings, index);
         break;
@@ -123,7 +131,7 @@ export class Settings extends LitElement {
     return html`<div class="justify-self-center">
         <button
           type="button"
-          title="Refresh all sources"
+          title="Delete this source"
           class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
           @click=${() => this._deleteBookmarkSource(index)}
         >

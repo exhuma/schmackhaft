@@ -6,8 +6,8 @@ import "./components/sh-toolbar";
 import "./views/sh-settings";
 import "@material/mwc-button";
 import "material-icon-component/md-icon.js";
+import { Browser, PageName, TagStateTransition } from "../types";
 import { LitElement, css, html } from "lit";
-import { PageName, TagStateTransition } from "../types";
 import { Ref, createRef, ref } from "lit/directives/ref.js";
 import { customElement, property, state } from "lit/decorators.js";
 import { parse, setOptions } from "marked";
@@ -89,8 +89,9 @@ export class Schmackhaft extends LitElement {
       this._toast = "Refreshing...";
     }, 500);
 
+    let browser: Browser | null = null; // TODO get this via injection from the outside
     let collectors = this._settings.sources.map((source) => {
-      let storage = createStorage(source.type, source.settings);
+      let storage = createStorage(source.type, source.settings, browser);
       return storage.getAll();
     });
     let items = (await Promise.all(collectors)).flat();
