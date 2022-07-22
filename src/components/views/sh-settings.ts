@@ -1,3 +1,4 @@
+import "../components/sh-sourcesetting";
 import "@material/mwc-textfield";
 import "@material/mwc-button";
 import { LitElement, css, html } from "lit";
@@ -144,6 +145,16 @@ export class Settings extends LitElement {
     );
   }
 
+  renderSourceSettings(source: any, idx: number) {
+    return html`<sh-source-settings
+      @typeChanged=${this._onSourceTypeChanged}
+      @settingsChanged=${this._onSourceSettingsChanged}
+      data-sourceId=${idx}
+      type=${source.type}
+      settings=${JSON.stringify(source.settings)}
+    ></sh-source-settings>`;
+  }
+
   override render() {
     if (!this._isVersionSupported) {
       return html`
@@ -158,6 +169,10 @@ export class Settings extends LitElement {
         <code> ${JSON.stringify(this._settings)} </code>
       `;
     }
+
+    return html`${this._settings.sources.map(
+      this.renderSourceSettings.bind(this)
+    )}`;
     let remoteUrls = this._settings.remoteUrls ?? [];
     return html`
     <div id="GridContainer">
