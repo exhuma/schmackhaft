@@ -8,7 +8,6 @@ export class HttpSettings extends LitElement {
   static styles = [
     // @ts-ignore
     css([tailwind]),
-    css``,
   ];
 
   @state()

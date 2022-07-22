@@ -31,6 +31,9 @@ export class Settings extends LitElement {
   private _settings: TSettings = { sources: [], version: 3 };
 
   @state()
+  private _newStorageType = "http";
+
+  @state()
   private _isVersionSupported = false;
 
   set settings(value: string) {
@@ -84,6 +87,14 @@ export class Settings extends LitElement {
     ></sh-http-settings>`;
   }
 
+  _renderBrowserSettings(settings: object, index: number) {
+    return html`browser-settings`;
+  }
+
+  _renderExtensionStorageSettings(settings: object, index: number) {
+    return html`extension-settings`;
+  }
+
   _deleteBookmarkSource(index: number) {
     this._settings.sources.splice(index, 1);
     this.requestUpdate();
@@ -98,6 +109,10 @@ export class Settings extends LitElement {
     let sourceType = BookmarkSource[typeName];
     let configBlock;
     switch (sourceType) {
+      case BookmarkSource.BROWSER:
+        return this._renderBrowserSettings(settings);
+      case BookmarkSource.EXTENSION_STORAGE:
+        return this._renderExtensionStorageSettings(settings);
       case BookmarkSource.HTTP:
         configBlock = this._renderHttpSettings(settings, index);
         break;
@@ -130,6 +145,15 @@ export class Settings extends LitElement {
       <div class="border-l-4 border-slate-200 p-4">${configBlock}</div>`;
   }
 
+  _onNewStorageTypeChanged(event) {
+    this._newStorageType = event.target.value;
+  }
+
+  _addStorage() {
+    this._settings.sources.push({ type: this._newStorageType, settings: {} });
+    this.requestUpdate();
+  }
+
   override render() {
     if (!this._isVersionSupported) {
       return html`
@@ -153,6 +177,14 @@ export class Settings extends LitElement {
         class="grid grid-cols-[100px_auto] justify-items-stretch items-center"
       >
         ${configBlocks}
+      </div>
+      <div>
+        <select @change=${this._onNewStorageTypeChanged}>
+          <option value="http" selected>Remote JSON file</option>
+          <option value="browser">Browser Bookmarks</option>
+          <option value="extension_storage">Extension Storage</option>
+        </select>
+        <button @click=${this._addStorage}>Add</button>
       </div>
       <button
         type="button"
