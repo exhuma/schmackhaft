@@ -1,5 +1,7 @@
 import "@material/mwc-textfield";
 import "@material/mwc-button";
+import "../components/sh-http-settings";
+import { BookmarkSource, TSettings } from "../../types";
 import { LitElement, css, html } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import tailwind from "../tailwind.css";
@@ -26,7 +28,7 @@ export class Settings extends LitElement {
     `,
   ];
 
-  private _settings = {};
+  private _settings: TSettings = { sources: [], version: 3 };
 
   @state()
   private _isVersionSupported = false;
@@ -43,37 +45,6 @@ export class Settings extends LitElement {
     return JSON.stringify(this._settings);
   }
 
-  onTextFieldChanged(evt) {
-    let urlIndex = evt.currentTarget.dataset["urlIndex"];
-    if (urlIndex) {
-      this._settings.remoteUrls[urlIndex] = evt.currentTarget.value;
-    }
-    this._settings.remoteUrls = this._settings.remoteUrls.filter(
-      (item) => item.trim() !== ""
-    );
-    this.requestUpdate();
-    this.dispatchEvent(
-      new CustomEvent("change", {
-        detail: {
-          settings: this.settings,
-        },
-      })
-    );
-  }
-
-  onNewItemChanged(evt) {
-    this._settings.remoteUrls.push(evt.currentTarget.value);
-    evt.currentTarget.value = "";
-    this.requestUpdate();
-    this.dispatchEvent(
-      new CustomEvent("change", {
-        detail: {
-          settings: this.settings,
-        },
-      })
-    );
-  }
-
   onSaveClick() {
     this.dispatchEvent(
       new CustomEvent("change", {
@@ -84,64 +55,48 @@ export class Settings extends LitElement {
     );
   }
 
-  onClearClick() {
-    this.dispatchEvent(
-      new CustomEvent("change", {
-        detail: {
-          settings: "{}",
-        },
-      })
-    );
-  }
-
-  private _renderRemoteUrl(url: string, index: number) {
-    if (url.trim() === "") {
-      return null;
+  onBlockSettingsChanged(event: {
+    target: HTMLElement;
+    detail: { settings: object };
+  }) {
+    let sourceIndexStr = event.target?.dataset?.sourceIndex;
+    if (sourceIndexStr === undefined) {
+      throw new Error(
+        `${event.target} did not contain a data-source-index attribute`
+      );
     }
-    let output = html`
-      <div class="mb-6 formField">
-        <label
-          class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-          >External JSON File</label
-        >
-        <input
-          type="text"
-          helper="Set this to the empty string to remove it from the list"
-          value="${url}"
-          data-url-index="${index}"
-          @change="${this.onTextFieldChanged}"
-          placeholder="https://my.domain.tld/my-bookmarks.json"
-          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-        />
-      </div>
-    `;
-    return output;
+    let sourceIndex = Number.parseInt(sourceIndexStr, 10);
+    this._settings.sources[sourceIndex].settings = event.detail.settings;
   }
 
-  _onSourceTypeChanged(event: { detail: any; target: any }) {
-    let sourceIndex = Number.parseInt(event.target.dataset["sourceid"], 10);
-    let source = this._settings.sources[sourceIndex];
-    source.type = event.detail.newValue;
-    this.dispatchEvent(
-      new CustomEvent("change", {
-        detail: {
-          settings: this.settings,
-        },
-      })
-    );
+  /**
+   * Render the settings UI for an HTTP bookmark source
+   *
+   * @param settings The local settings objec to this bookmark source.
+   * @param index The index of the source in the global settings object.
+   * @returns an HTML object to render the settings in
+   */
+  _renderHttpSettings(settings: object, index: number) {
+    return html`<sh-http-settings
+      data-source-index=${index}
+      @change=${this.onBlockSettingsChanged}
+      settings=${JSON.stringify(settings)}
+    ></sh-http-settings>`;
   }
 
-  _onSourceSettingsChanged(event: { detail: any; target: any }) {
-    let sourceIndex = Number.parseInt(event.target.dataset["sourceid"], 10);
-    let source = this._settings.sources[sourceIndex];
-    source.settings = event.detail.newValue;
-    this.dispatchEvent(
-      new CustomEvent("change", {
-        detail: {
-          settings: this.settings,
-        },
-      })
-    );
+  _renderConfigBlock(type: string, settings: object, index: number) {
+    const typeIndex = Object.values(BookmarkSource).indexOf(type);
+    if (typeIndex < 0) {
+      throw new Error(`Unknown bookmark source: ${type}`);
+    }
+    let typeName = Object.keys(BookmarkSource)[typeIndex];
+    let sourceType = BookmarkSource[typeName];
+    switch (sourceType) {
+      case BookmarkSource.HTTP:
+        return this._renderHttpSettings(settings, index);
+      default:
+        throw new Error(`Settings UI for ${sourceType} is not yet implemented`);
+    }
   }
 
   override render() {
@@ -158,43 +113,20 @@ export class Settings extends LitElement {
         <code> ${JSON.stringify(this._settings)} </code>
       `;
     }
-    let remoteUrls = this._settings.remoteUrls ?? [];
+    let configBlocks = this._settings.sources.map(({ type, settings }, index) =>
+      this._renderConfigBlock(type, settings, index)
+    );
     return html`
-    <div id="GridContainer">
-      ${remoteUrls.map(this._renderRemoteUrl, this)}
-      <div class="mb-6 formField">
-        <label
-          class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-          >External JSON File</label>
-        <input
-          type="text"
-          helper="Set this to the empty string to remove it from the list"
-          @change="${this.onNewItemChanged}"
-          placeholder="https://my.domain.tld/my-bookmarks.json"
-          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          >
-      </div>
-      <div class="formField">
-        <input @change="${
-          this.onBrowserBookmarkToggled
-        }" id="enableBrowserBookmarks" type="checkbox" ?checked="${
-      this._settings.enableBrowserBookmarks
-    }"></input>
-        <label for="enableBrowserBookmarks">Include Browser Bookmarks (folders will be provided as tags)</label>
-      </div>
+      <h1 class="text-2xl">Bookmark Sources</h1>
+      ${configBlocks}
       <button
         type="button"
         id="SaveButton"
         @click="${this.onSaveClick}"
         class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-      >Save</button>
-      <button
-        type="button"
-        id="ClearButton"
-        @click="${this.onClearClick}"
-        class="text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900"
-      >Clear all Settings</button>
-    </div>
+      >
+        Save
+      </button>
     `;
   }
 }

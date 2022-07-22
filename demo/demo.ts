@@ -46,7 +46,7 @@ let settings = new Settings(
   3
 );
 bookmarksElement.settings = settings.toJson();
-bookmarksElement?.addEventListener("change", (event) => {
+bookmarksElement?.addEventListener("settingsChanged", (event) => {
   console.log("Settings Changed to:");
   console.log(JSON.parse(event.detail["settings"]));
 });
