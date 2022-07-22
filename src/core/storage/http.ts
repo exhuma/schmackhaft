@@ -22,7 +22,14 @@ export class HttpStorage implements IStorage {
         return;
       }
       let result = await fetch(remoteUrl);
-      let data = await result.json();
+      let data = [];
+      if (result.ok) {
+        data = await result.json();
+      } else {
+        console.info(
+          `Error retrieving ${this.settings.url}: ${result.status} ${result.statusText}`
+        );
+      }
       output = [...output, ...data];
     });
     await Promise.all(promises);
