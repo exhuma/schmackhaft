@@ -1,7 +1,8 @@
 import "../src/components/views/sh-settings";
 import "../src/components/components/layout-vsplit";
+import { BookmarkSource } from "../src/types";
 import { Settings } from "../src/model/settings";
-import { SettingsBridge } from "../src/components/views/sh-settings";
+import { SettingsBridge } from "../src/core/settings";
 
 let settingsElementV1 = document.getElementById("SettingsV1") as SettingsBridge;
 let settingsElementV2 = document.getElementById("SettingsV2") as SettingsBridge;
@@ -24,12 +25,31 @@ settingsElementV1.settings = JSON.stringify({
 });
 
 let bookmarksElement = document.getElementById("schmackhaft");
+
+// We can't use the default settings bridge here, because this only works in a
+// browser-extension execution context.
 let settings = new Settings(
-  ["https://raw.githubusercontent.com/exhuma/dotfiles/master/bookmarks.json"],
-  true,
-  2
+  [
+    {
+      type: BookmarkSource.HTTP,
+      settings: {
+        url: "https://raw.githubusercontent.com/exhuma/dotfiles/master/bookmarks.json",
+      },
+    },
+    {
+      type: BookmarkSource.HTTP,
+      settings: {
+        url: "https://raw.githubusercontent.com/exhuma/schmackhaft/e6439061eedd24c50e00e8b2374ec50d376bc6e5/docs/examples/external-file.json",
+      },
+    },
+  ],
+  3
 );
 bookmarksElement.settings = settings.toJson();
+bookmarksElement?.addEventListener("change", (event) => {
+  console.log("Settings Changed to:");
+  console.log(JSON.parse(event.detail["settings"]));
+});
 
 /**
  * Ensure only the div related to the clicked link is visible

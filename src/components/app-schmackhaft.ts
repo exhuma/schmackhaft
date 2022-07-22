@@ -83,20 +83,23 @@ export class Schmackhaft extends LitElement {
     this._fetchBookmarks(); // TODO: Should we really always do this when the settings change?
   }
 
-  _fetchBookmarks() {
+  async _fetchBookmarks() {
     const timerId = window.setTimeout(() => {
       this._busy = true;
       this._toast = "Refreshing...";
     }, 500);
-    let storage = createStorage(this._settings, "http", null);
-    storage.getAll().then((result) => {
-      let links = result.map((item) => Link.fromObject(item));
-      window.clearTimeout(timerId);
-      this._links = new Links(links);
-      this._toast = "";
-      this._busy = false;
-      this.requestUpdate();
+
+    let collectors = this._settings.sources.map((source) => {
+      let storage = createStorage(source.type, source.settings);
+      return storage.getAll();
     });
+    let items = (await Promise.all(collectors)).flat();
+    let links = items.map((item) => Link.fromObject(item));
+    this._links = new Links(links);
+    window.clearTimeout(timerId);
+    this._toast = "";
+    this._busy = false;
+    this.requestUpdate();
   }
 
   onChipClicked(evt: {
