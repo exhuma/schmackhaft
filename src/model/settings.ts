@@ -1,15 +1,11 @@
+import { TBookmarkSource } from "../types";
+
 export class Settings {
-  remoteUrls: string[];
-  enableBrowserBookmarks: boolean;
+  sources: TBookmarkSource[];
   version: number;
 
-  constructor(
-    remoteUrls: string[] = [],
-    enableBrowserBookmarks: boolean = true,
-    version: number = 2
-  ) {
-    this.remoteUrls = remoteUrls;
-    this.enableBrowserBookmarks = enableBrowserBookmarks;
+  constructor(sources: TBookmarkSource[] = [], version: number = 3) {
+    this.sources = sources;
     this.version = version;
   }
 
@@ -19,10 +15,6 @@ export class Settings {
 
   static fromJson(data: string): Settings {
     let dataObject = JSON.parse(data);
-    return new Settings(
-      dataObject.remoteUrls,
-      dataObject.enableBrowserBookmarks,
-      dataObject.version
-    );
+    return new Settings(dataObject.sources, dataObject.version);
   }
 }

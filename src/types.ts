@@ -1,5 +1,3 @@
-import { Settings } from "./model/settings";
-
 export enum TagState {
   NEUTRAL,
   INCLUDED,
@@ -15,6 +13,12 @@ export enum PageName {
   BOOKMARKS,
   SETTINGS,
   HELP,
+}
+
+export enum BookmarkSource {
+  HTTP = "http",
+  BROWSER = "browser",
+  EXTENSION_STORAGE = "extension_storage",
 }
 
 export type Bookmark = {
@@ -47,7 +51,7 @@ export type Browser = {
 };
 
 export interface IStorage {
-  settings: Settings;
+  settings: any;
   get(href: string): Promise<Bookmark | null>;
   getAll(): Promise<Bookmark[]>;
   put(data: Bookmark): Promise<void>;
@@ -58,3 +62,13 @@ export interface IStorageBackend {
   set(data: object): Promise<void>;
   get(data: object): Promise<any | null>;
 }
+
+export type TBookmarkSource = {
+  type: BookmarkSource;
+  settings: object;
+};
+
+export type TSettings = {
+  sources: TBookmarkSource[];
+  version: number;
+};

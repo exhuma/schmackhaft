@@ -35,12 +35,15 @@ function visit(
 }
 
 export class BookmarkStorage implements IStorage {
-  settings: Settings;
-  browser: Browser | null;
+  settings: { browser: Browser };
+  browser: Browser;
 
-  constructor(settings: Settings, browser: Browser | null) {
+  constructor(settings: { browser: Browser }) {
+    if (!settings.browser) {
+      throw new Error("Settings object is missing the browser attribute");
+    }
     this.settings = settings;
-    this.browser = browser;
+    this.browser = settings.browser;
   }
 
   async get(href: string): Promise<Bookmark | null> {

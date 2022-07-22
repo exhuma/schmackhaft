@@ -33,7 +33,7 @@ export class Settings extends LitElement {
 
   set settings(value: string) {
     let data = JSON.parse(value);
-    this._isVersionSupported = data?.version === 2;
+    this._isVersionSupported = data?.version === 3;
     this._settings = data;
     this.requestUpdate();
   }
@@ -118,8 +118,23 @@ export class Settings extends LitElement {
     return output;
   }
 
-  onBrowserBookmarkToggled(evt) {
-    this._settings.enableBrowserBookmarks = evt.target.checked;
+  _onSourceTypeChanged(event: { detail: any; target: any }) {
+    let sourceIndex = Number.parseInt(event.target.dataset["sourceid"], 10);
+    let source = this._settings.sources[sourceIndex];
+    source.type = event.detail.newValue;
+    this.dispatchEvent(
+      new CustomEvent("change", {
+        detail: {
+          settings: this.settings,
+        },
+      })
+    );
+  }
+
+  _onSourceSettingsChanged(event: { detail: any; target: any }) {
+    let sourceIndex = Number.parseInt(event.target.dataset["sourceid"], 10);
+    let source = this._settings.sources[sourceIndex];
+    source.settings = event.detail.newValue;
     this.dispatchEvent(
       new CustomEvent("change", {
         detail: {
