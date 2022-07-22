@@ -5,7 +5,7 @@ import { customElement, property, state } from "lit/decorators.js";
 import tailwind from "../tailwind.css";
 
 @customElement("sh-settings")
-export class SettingsBridge extends LitElement {
+export class Settings extends LitElement {
   static styles = [
     css([tailwind]),
     css`
