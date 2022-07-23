@@ -3,7 +3,6 @@
  * current browser bookmarks
  */
 import { Bookmark, Browser, BrowserBookmarkNode, IStorage } from "../../types";
-import { Settings } from "../../model/settings";
 
 /**
  * Recursively fetch bookmarks from a single node from the browser bookmarks API

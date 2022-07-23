@@ -1,7 +1,7 @@
 import { Bookmark, Browser, IStorage } from "../../types";
 
 export class LocalStorage implements IStorage {
-  settings: Settings;
+  settings: object;
   browser: Browser | null;
 
   constructor(settings: any, browser: Browser | null) {
