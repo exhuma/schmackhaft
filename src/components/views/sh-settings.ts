@@ -157,7 +157,7 @@ export class Settings extends LitElement {
     this._newStorageType = event.target.value;
   }
 
-  _addStorage() {
+  _addSource() {
     this._settings.sources.push({ type: this._newStorageType, settings: {} });
     this.requestUpdate();
   }
@@ -186,22 +186,34 @@ export class Settings extends LitElement {
       >
         ${configBlocks}
       </div>
-      <div>
-        <select @change=${this._onNewStorageTypeChanged}>
+      <div class="pt-4 pb-4 border-t-2 border-b-2">
+        <select
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          @change=${this._onNewStorageTypeChanged}
+        >
           <option value="http" selected>Remote JSON file</option>
           <option value="browser">Browser Bookmarks</option>
           <option value="extension_storage">Extension Storage</option>
         </select>
-        <button @click=${this._addStorage}>Add</button>
+        <button
+          type="button"
+          class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+          title="Add new source"
+          @click=${this._addSource}
+        >
+          Add source
+        </button>
       </div>
-      <button
-        type="button"
-        id="SaveButton"
-        @click="${this.onSaveClick}"
-        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-      >
-        Save
-      </button>
+      <div class="mx-40 mt-8">
+        <button
+          type="button"
+          id="SaveButton"
+          @click="${this.onSaveClick}"
+          class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+        >
+          Save
+        </button>
+      </div>
     `;
   }
 }
