@@ -62,6 +62,7 @@ export class Schmackhaft extends LitElement {
   searchTextRef: Ref<HTMLInputElement> = createRef();
   linkListRef: Ref<LinkList> = createRef();
   tagListRef: Ref<TagList> = createRef();
+  browser: Browser | null = null;
 
   private _links: Links = new Links();
 
@@ -83,15 +84,28 @@ export class Schmackhaft extends LitElement {
     this._fetchBookmarks(); // TODO: Should we really always do this when the settings change?
   }
 
+  /**
+   * Provide concrete implementations for external dependencies used in the
+   * application.
+   *
+   * @param injections The objects that we want to replace
+   * @param injections.browser An object providing the API for browser
+   *   extensions
+   */
+  @property({ type: Object, attribute: false })
+  set injections(injections: { browser: Browser }) {
+    this.browser = injections.browser;
+    this._fetchBookmarks();
+  }
+
   async _fetchBookmarks() {
     const timerId = window.setTimeout(() => {
       this._busy = true;
       this._toast = "Refreshing...";
     }, 500);
 
-    let browser: Browser | null = null; // TODO get this via injection from the outside
     let collectors = this._settings.sources.map((source) => {
-      let storage = createStorage(source.type, source.settings, browser);
+      let storage = createStorage(source.type, source.settings, this.browser);
       return storage.getAll();
     });
     let items = (await Promise.all(collectors)).flat();
