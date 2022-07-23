@@ -1,6 +1,7 @@
 import "../src/components/views/sh-settings";
 import "../src/components/components/layout-vsplit";
 import { BookmarkSource } from "../src/types";
+import { FakeBrowser } from "./fake-browser";
 import { Settings } from "../src/model/settings";
 import { SettingsBridge } from "../src/core/settings";
 
@@ -58,6 +59,7 @@ bookmarksElement?.addEventListener("settingsChanged", (event) => {
   console.log("Settings Changed to:");
   console.log(JSON.parse(event.detail["settings"]));
 });
+bookmarksElement.injections = { browser: new FakeBrowser() };
 
 /**
  * Ensure only the div related to the clicked link is visible
