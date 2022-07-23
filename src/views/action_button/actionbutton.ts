@@ -1,5 +1,5 @@
 /**
- * This file contains supporting JS code for the browser-extension sidebar
+ * This file contains supporting JS code for the browser-extension action button
  */
 import { Schmackhaft } from "../../components/app-schmackhaft";
 import { SettingsBridge } from "../../core/settings";
