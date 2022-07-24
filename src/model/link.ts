@@ -1,10 +1,4 @@
-export type JsonSchema = {
-  href: string;
-  tags: string[];
-  title: string;
-  image: string;
-  description: string;
-};
+import { Bookmark } from "../types";
 
 export class Link {
   title: string;
@@ -27,7 +21,7 @@ export class Link {
     this.description = description;
   }
 
-  static fromObject(data: JsonSchema): Link {
+  static fromObject(data: Bookmark): Link {
     return new Link(
       data.href,
       data.tags ?? [],
@@ -37,7 +31,7 @@ export class Link {
     );
   }
 
-  toObject(): JsonSchema {
+  toObject(): Bookmark {
     return {
       href: this.href,
       tags: this.tags,

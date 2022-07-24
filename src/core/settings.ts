@@ -1,5 +1,22 @@
+// @ts-ignore
 import * as browser from "webextension-polyfill";
-import { IStorageBackend } from "../types";
+import { BookmarkSource, IStorageBackend, TSettings } from "../types";
+
+const DEFAULT_SETTINGS: TSettings = {
+  sources: [
+    {
+      type: BookmarkSource.HTTP,
+      settings: {
+        url: "https://raw.githubusercontent.com/exhuma/schmackhaft/c4bbbe94856a1bdb5f88812ca5679327dcbddadc/docs/examples/external-file.json",
+      },
+    },
+    {
+      type: BookmarkSource.BROWSER,
+      settings: {},
+    },
+  ],
+  version: 3,
+};
 
 /**
  * A bridge to a "storage" for application settings.
@@ -12,19 +29,15 @@ export class SettingsBridge {
     if (current.version === undefined) {
       // We have no settings yet. Let's start with a sensible default as
       // example.
-      await settings.replace({
-        remoteUrls: [
-          "https://raw.githubusercontent.com/exhuma/schmackhaft/c4bbbe94856a1bdb5f88812ca5679327dcbddadc/docs/examples/external-file.json",
-        ],
-        enableBrowserBookmarks: true,
-        version: 2,
-      });
+      await settings.replace(DEFAULT_SETTINGS);
       return settings;
     }
     // TODO ideally this would loop over all migrations and apply everything
     // that's necessary.
     let migrationName = `migrate_${current.version}_to_${current.version + 1}`;
     let migrator = new Migrator();
+
+    // @ts-ignore
     let migrationFunction = migrator[migrationName];
     if (migrationFunction) {
       await settings.replace(migrationFunction(current));
@@ -38,7 +51,7 @@ export class SettingsBridge {
     this.backend = backend;
   }
 
-  async replace(newObject) {
+  async replace(newObject: TSettings) {
     await this.backend.set({
       settings: newObject,
     });
@@ -82,5 +95,21 @@ class Migrator {
       version: 2,
     };
     return newData;
+  }
+
+  migrate_2_to_3(settings: any): any {
+    if (settings.version !== 2) {
+      throw new Error(
+        `Expected to version 2 for the migration to 3, but got ${settings.version} instead`
+      );
+    }
+    console.log(settings);
+    return settings;
+    // let newData = {
+    //   remoteUrls: [settings.remoteUrl],
+    //   enableBrowserBookmarks: true,
+    //   version: 2,
+    // };
+    // return newData;
   }
 }

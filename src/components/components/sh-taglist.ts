@@ -3,10 +3,12 @@ import { customElement, property } from "lit/decorators.js";
 import { Counter } from "../core/counter";
 import { Links } from "../core/links";
 import { classMap } from "lit/directives/class-map.js";
+// @ts-ignore
 import tailwind from "../tailwind.css";
 
 @customElement("sh-taglist")
 export class TagList extends LitElement {
+  // @ts-ignore
   static styles = css([tailwind]);
 
   @property({ type: Object })

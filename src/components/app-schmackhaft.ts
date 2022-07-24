@@ -6,11 +6,19 @@ import "./components/sh-toolbar";
 import "./views/sh-settings";
 import "@material/mwc-button";
 import "material-icon-component/md-icon.js";
+import {
+  BookmarkSource,
+  Browser,
+  PageName,
+  TBrowserFactory,
+  TagStateTransition,
+} from "../types";
 import { LitElement, css, html } from "lit";
-import { PageName, TagStateTransition } from "../types";
 import { Ref, createRef, ref } from "lit/directives/ref.js";
 import { customElement, property, state } from "lit/decorators.js";
+// @ts-ignore
 import { parse, setOptions } from "marked";
+// @ts-ignore
 import Help from "../help/help.md?raw";
 import { Link } from "../model/link";
 import { LinkList } from "./components/sh-linklist";
@@ -19,9 +27,12 @@ import { Settings } from "../model/settings";
 import { TagList } from "./components/sh-taglist";
 import { ToolbarAction } from "./components/sh-toolbar";
 import { createStorage } from "../core/storage/factory";
+// @ts-ignore
 import helpStyles from "./help.css";
 import hljs from "highlight.js";
+// @ts-ignore
 import hlstyle from "highlight.js/styles/monokai.css";
+// @ts-ignore
 import tailwind from "./tailwind.css";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 
@@ -38,7 +49,9 @@ export class Schmackhaft extends LitElement {
   static styles = [
     // @ts-ignore
     css([tailwind]),
+    // @ts-ignore
     css([hlstyle]),
+    // @ts-ignore
     css([helpStyles]),
     css`
       :host {
@@ -62,6 +75,7 @@ export class Schmackhaft extends LitElement {
   searchTextRef: Ref<HTMLInputElement> = createRef();
   linkListRef: Ref<LinkList> = createRef();
   tagListRef: Ref<TagList> = createRef();
+  getBrowser: TBrowserFactory = async () => null;
 
   private _links: Links = new Links();
 
@@ -83,20 +97,41 @@ export class Schmackhaft extends LitElement {
     this._fetchBookmarks(); // TODO: Should we really always do this when the settings change?
   }
 
-  _fetchBookmarks() {
+  /**
+   * Provide concrete implementations for external dependencies used in the
+   * application.
+   *
+   * @param injections The objects that we want to replace
+   * @param injections.getBrowser An factory method to build a reference to the
+   *   browser API following the polyfill provided by Mozilla
+   */
+  @property({ type: Object, attribute: false })
+  set injections(injections: { getBrowser: TBrowserFactory }) {
+    this.getBrowser = injections.getBrowser;
+    this._fetchBookmarks();
+  }
+
+  async _fetchBookmarks() {
     const timerId = window.setTimeout(() => {
       this._busy = true;
       this._toast = "Refreshing...";
     }, 500);
-    let storage = createStorage(this._settings, "http", null);
-    storage.getAll().then((result) => {
-      let links = result.map((item) => Link.fromObject(item));
-      window.clearTimeout(timerId);
-      this._links = new Links(links);
-      this._toast = "";
-      this._busy = false;
-      this.requestUpdate();
+
+    let collectors = this._settings.sources.map((source) => {
+      let storage = createStorage(
+        source.type,
+        source.settings,
+        this.getBrowser
+      );
+      return storage.getAll();
     });
+    let items = (await Promise.all(collectors)).flat();
+    let links = items.map((item) => Link.fromObject(item));
+    this._links = new Links(links);
+    window.clearTimeout(timerId);
+    this._toast = "";
+    this._busy = false;
+    this.requestUpdate();
   }
 
   onChipClicked(evt: {
@@ -193,7 +228,7 @@ export class Schmackhaft extends LitElement {
     }
   }
 
-  _onToolbarButtonClick(evt) {
+  _onToolbarButtonClick(evt: { detail: { name: ToolbarAction } }) {
     switch (evt.detail.name) {
       case ToolbarAction.BOOKMARKS:
         this.onBookmarksClicked();

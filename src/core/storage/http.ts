@@ -1,39 +1,33 @@
-import { Bookmark, Browser, IStorage } from "../../types";
-import { Settings } from "../model/settings";
+import { Bookmark, IStorage, TBrowserFactory } from "../../types";
 
 export class HttpStorage implements IStorage {
-  settings: Settings;
-  browser: Browser | null;
+  settings: any;
+  browserFactory: TBrowserFactory;
 
-  constructor(settings: Settings, browser: Browser | null) {
+  constructor(settings: any, browserFactory: TBrowserFactory) {
     this.settings = settings;
-    this.browser = browser;
+    this.browserFactory = browserFactory;
   }
+
   async get(href: string): Promise<Bookmark | null> {
     let data = await this.getAll();
     return data.find((item) => item.href === href) || null;
   }
 
   async getAll(): Promise<Bookmark[]> {
-    let remoteUrls = this.settings.remoteUrls;
-    let output = [];
-    let promises = remoteUrls.map(async (remoteUrl) => {
-      if (!remoteUrl || remoteUrl === "") {
-        return;
-      }
-      let result = await fetch(remoteUrl);
-      let data = [];
-      if (result.ok) {
-        data = await result.json();
-      } else {
-        console.info(
-          `Error retrieving ${this.settings.url}: ${result.status} ${result.statusText}`
-        );
-      }
-      output = [...output, ...data];
-    });
-    await Promise.all(promises);
-    return output;
+    if (!this.settings.url || this.settings.url === "") {
+      return [];
+    }
+    let result = await fetch(this.settings.url);
+    let data = [];
+    if (result.ok) {
+      data = await result.json();
+    } else {
+      console.info(
+        `Error retrieving ${this.settings.url}: ${result.status} ${result.statusText}`
+      );
+    }
+    return data;
   }
 
   async put(data: Bookmark): Promise<void> {

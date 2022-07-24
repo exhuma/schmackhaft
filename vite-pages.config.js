@@ -5,7 +5,7 @@ export default {
     outDir: "build/pages",
     rollupOptions: {
       input: {
-        sidebar: fileURLToPath(
+        action_button: fileURLToPath(
           new URL("./src/views/action_button/index.html", import.meta.url)
         ),
       },
