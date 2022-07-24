@@ -60,7 +60,9 @@ export class Schmackhaft extends LitElement {
       }
 
       layout-vsplit {
-        height: 100%;
+        /* TODO: This height should not be hard-coded. This is a
+         * "just-make-it-work-workaround" */
+        height: 85vh;
       }
     `,
   ];
