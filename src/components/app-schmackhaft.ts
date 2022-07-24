@@ -2,24 +2,32 @@ import "./components/layout-vsplit";
 import "./components/sh-link";
 import "./components/sh-linklist";
 import "./components/sh-taglist";
+import "./components/sh-toolbar";
 import "./views/sh-settings";
 import "@material/mwc-button";
 import "material-icon-component/md-icon.js";
 import { LitElement, css, html } from "lit";
-import { PageName, TagStateTransition } from "../types";
+import { PageName, TBrowserFactory, TagStateTransition } from "../types";
 import { Ref, createRef, ref } from "lit/directives/ref.js";
 import { customElement, property, state } from "lit/decorators.js";
+// @ts-ignore
 import { parse, setOptions } from "marked";
+// @ts-ignore
+import Help from "../help/help.md?raw";
 import { Link } from "../model/link";
 import { LinkList } from "./components/sh-linklist";
 import { Links } from "./core/links";
-import Readme from "../../README.md?raw";
 import { Settings } from "../model/settings";
 import { TagList } from "./components/sh-taglist";
-import { classMap } from "lit/directives/class-map.js";
+import { ToolbarAction } from "./components/sh-toolbar";
 import { createStorage } from "../core/storage/factory";
+// @ts-ignore
+import helpStyles from "./help.css";
 import hljs from "highlight.js";
+// @ts-ignore
 import hlstyle from "highlight.js/styles/monokai.css";
+// @ts-ignore
+import tailwind from "./tailwind.css";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 
 setOptions({
@@ -34,7 +42,11 @@ setOptions({
 export class Schmackhaft extends LitElement {
   static styles = [
     // @ts-ignore
+    css([tailwind]),
+    // @ts-ignore
     css([hlstyle]),
+    // @ts-ignore
+    css([helpStyles]),
     css`
       :host {
         display: block;
@@ -47,49 +59,10 @@ export class Schmackhaft extends LitElement {
         font-family: "Fira Code", monospace;
       }
 
-      #Toolbar {
-        display: flex;
-        flex-direction: row;
-        margin-bottom: 0.5rem;
-      }
-
-      #Toast {
-        flex-grow: 1;
-      }
-
-      .action {
-        flex-grow: 0;
-        margin-left: 0.5em;
-        cursor: pointer;
-        border-radius: 100%;
-        width: 20px;
-        height: 20px;
-        text-align: center;
-      }
-
-      .action:hover {
-        background-color: #bdd5e4;
-        color: #4747d4;
-      }
-
       layout-vsplit {
-        height: 100%;
-      }
-
-      @keyframes rotate {
-        from {
-          transform: rotate(0deg);
-        }
-        to {
-          transform: rotate(360deg);
-        }
-      }
-
-      .spinning {
-        animation-name: rotate;
-        animation-duration: 1s;
-        animation-timing-function: linear;
-        animation-iteration-count: infinite;
+        /* TODO: This height should not be hard-coded. This is a
+         * "just-make-it-work-workaround" */
+        height: 85vh;
       }
     `,
   ];
@@ -98,6 +71,7 @@ export class Schmackhaft extends LitElement {
   searchTextRef: Ref<HTMLInputElement> = createRef();
   linkListRef: Ref<LinkList> = createRef();
   tagListRef: Ref<TagList> = createRef();
+  getBrowser: TBrowserFactory = async () => null;
 
   private _links: Links = new Links();
 
@@ -119,26 +93,41 @@ export class Schmackhaft extends LitElement {
     this._fetchBookmarks(); // TODO: Should we really always do this when the settings change?
   }
 
-  get refreshClasses() {
-    return {
-      spinning: this._busy,
-    };
+  /**
+   * Provide concrete implementations for external dependencies used in the
+   * application.
+   *
+   * @param injections The objects that we want to replace
+   * @param injections.getBrowser An factory method to build a reference to the
+   *   browser API following the polyfill provided by Mozilla
+   */
+  @property({ type: Object, attribute: false })
+  set injections(injections: { getBrowser: TBrowserFactory }) {
+    this.getBrowser = injections.getBrowser;
+    this._fetchBookmarks();
   }
 
-  _fetchBookmarks() {
+  async _fetchBookmarks() {
     const timerId = window.setTimeout(() => {
       this._busy = true;
       this._toast = "Refreshing...";
     }, 500);
-    let storage = createStorage(this._settings, "http", null);
-    storage.getAll().then((result) => {
-      let links = result.map((item) => Link.fromObject(item));
-      window.clearTimeout(timerId);
-      this._links = new Links(links);
-      this._toast = "";
-      this._busy = false;
-      this.requestUpdate();
+
+    let collectors = this._settings.sources.map((source) => {
+      let storage = createStorage(
+        source.type,
+        source.settings,
+        this.getBrowser
+      );
+      return storage.getAll();
     });
+    let items = (await Promise.all(collectors)).flat();
+    let links = items.map((item) => Link.fromObject(item));
+    this._links = new Links(links);
+    window.clearTimeout(timerId);
+    this._toast = "";
+    this._busy = false;
+    this.requestUpdate();
   }
 
   onChipClicked(evt: {
@@ -162,16 +151,16 @@ export class Schmackhaft extends LitElement {
     this._fetchBookmarks();
   }
 
+  onBookmarksClicked() {
+    this._view = PageName.BOOKMARKS;
+  }
+
   onSettingsClicked() {
     this._view = PageName.SETTINGS;
   }
 
   onHelpClicked() {
     this._view = PageName.HELP;
-  }
-
-  _switchView(pageName: PageName): void {
-    this._view = pageName;
   }
 
   _onSettingsChanged(evt: { detail: { settings: string } }) {
@@ -184,6 +173,13 @@ export class Schmackhaft extends LitElement {
   }
 
   _renderBookmarks() {
+    if (this._links.isEmpty) {
+      return html` <strong>No links found.</strong>
+        This could mean that you have no sources configured, or none of the
+        sources contains any bookmarks. Please
+        <a href="#" @click=${this.onSettingsClicked}>open the settings</a> and
+        add one or more sources.`;
+    }
     return html`
       <layout-vsplit>
         <sh-taglist
@@ -211,15 +207,12 @@ export class Schmackhaft extends LitElement {
         @change="${this._onSettingsChanged}"
         settings="${this._settings.toJson()}"
       ></sh-settings>
-      <mwc-button raised @click="${() => this._switchView(PageName.BOOKMARKS)}"
-        >Close</mwc-button
-      >
     `;
   }
 
   _renderHelp() {
-    const content = parse(Readme);
-    return unsafeHTML(content);
+    const content = parse(Help);
+    return html` <div id="Help" class="mx-auto">${unsafeHTML(content)}</div> `;
   }
 
   _renderMainContent() {
@@ -234,21 +227,45 @@ export class Schmackhaft extends LitElement {
     }
   }
 
+  _onSearchChanged(evt: { detail: { searchText: string } }) {
+    // TODO: lit does not detect any changes deep inside the "this._links"
+    // object and we need to manually trigger the update. This is error-prone
+    // and should be improved.
+    this._links.search(evt.detail.searchText);
+    this.linkListRef.value?.requestUpdate();
+    this.tagListRef.value?.requestUpdate();
+  }
+
+  _onToolbarButtonClick(evt: { detail: { name: ToolbarAction } }) {
+    switch (evt.detail.name) {
+      case ToolbarAction.BOOKMARKS:
+        this.onBookmarksClicked();
+        break;
+      case ToolbarAction.REFRESH:
+        this.onRefreshClicked();
+        break;
+      case ToolbarAction.SETTINGS:
+        this.onSettingsClicked();
+        break;
+      case ToolbarAction.HELP:
+        this.onHelpClicked();
+        break;
+      default:
+        throw new Error(`Unknown toolbar action name: ${evt.detail.name}`);
+    }
+  }
+
   override render() {
     return html`
-      <div id="Toolbar">
-        <div id="Toast">${this._toast}</div>
-        <div class="action" @click="${this.onRefreshClicked}">
-          <md-icon class=${classMap(this.refreshClasses)}>refresh</md-icon>
-        </div>
-        <div class="action" @click="${this.onSettingsClicked}">
-          <md-icon>settings</md-icon>
-        </div>
-        <div class="action" @click="${this.onHelpClicked}">
-          <md-icon>help</md-icon>
-        </div>
+      <div class="p-2 dark:bg-slate-800 dark:text-white">
+        <sh-toolbar
+          ?busy=${this._busy}
+          toast=${this._toast}
+          @buttonClicked=${this._onToolbarButtonClick}
+          @searchTextChange=${this._onSearchChanged}
+        ></sh-toolbar>
+        ${this._renderMainContent()}
       </div>
-      ${this._renderMainContent()}
     `;
   }
 }

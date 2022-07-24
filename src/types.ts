@@ -1,4 +1,32 @@
-import { Settings } from "./model/settings";
+/**
+ * Convert a naive value into a proper enum value.
+ *
+ * For example given that the "Foo" enum has a key "BAR" with value "bar", this
+ * function converts "bar" into Foo.BAR
+ *
+ * Example:
+ *
+ * ```
+ * enum Foo {
+ *   BAR = "bar"
+ * }
+ *
+ * let output = getEnumByValue(Foo, "bar")
+ * // output is now `Foo.BAR`
+ * ```
+ *
+ * @param cls The type of enum
+ * @param value The value we want to convert
+ * @returns the enum value
+ */
+export function getEnumByValue(cls: any, value: string): any {
+  const typeIndex = Object.values(cls).indexOf(value);
+  if (typeIndex < 0) {
+    throw new Error(`Unknown enum value: ${value} for enum ${cls}`);
+  }
+  let typeName = Object.keys(cls)[typeIndex];
+  return cls[typeName];
+}
 
 export enum TagState {
   NEUTRAL,
@@ -17,10 +45,18 @@ export enum PageName {
   HELP,
 }
 
+export enum BookmarkSource {
+  HTTP = "http",
+  BROWSER = "browser",
+  EXTENSION_STORAGE = "extension_storage",
+}
+
 export type Bookmark = {
   title: string;
   tags: string[];
   href: string;
+  image: string;
+  description: string;
 };
 
 export type HMRequest = {
@@ -47,7 +83,7 @@ export type Browser = {
 };
 
 export interface IStorage {
-  settings: Settings;
+  settings: any;
   get(href: string): Promise<Bookmark | null>;
   getAll(): Promise<Bookmark[]>;
   put(data: Bookmark): Promise<void>;
@@ -58,3 +94,15 @@ export interface IStorageBackend {
   set(data: object): Promise<void>;
   get(data: object): Promise<any | null>;
 }
+
+export type TBookmarkSource = {
+  type: BookmarkSource;
+  settings: object;
+};
+
+export type TSettings = {
+  sources: TBookmarkSource[];
+  version: number;
+};
+
+export type TBrowserFactory = () => Promise<Browser | null>;

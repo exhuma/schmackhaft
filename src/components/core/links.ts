@@ -3,8 +3,8 @@
  * provides implementations for searching links on various conditions.
  */
 
-import { Link, JsonSchema as LinkSchema } from "../../model/link";
-import { TagState } from "../../types";
+import { Bookmark, TagState } from "../../types";
+import { Link } from "../../model/link";
 import { intersection } from "../../collections";
 
 /**
@@ -23,6 +23,13 @@ export class Links {
   constructor(links: Array<Link> = []) {
     this.links = links;
     this.states = {};
+  }
+
+  /**
+   * Return whether this collection is empty or not
+   */
+  get isEmpty() {
+    return this.links.length === 0;
   }
 
   /**
@@ -46,9 +53,7 @@ export class Links {
    * @returns A JSON string
    */
   toJson(): string {
-    return JSON.stringify(
-      this.links.map((item): LinkSchema => item.toObject())
-    );
+    return JSON.stringify(this.links.map((item): Bookmark => item.toObject()));
   }
 
   /**
@@ -57,6 +62,7 @@ export class Links {
    * argument
    *
    * @todo Is it not possible to make objects comparable in JS? It should be?
+   * @returns Return only links matching the current filters
    */
   get filtered() {
     const output = this.links.filter((link) => {
@@ -77,10 +83,13 @@ export class Links {
    */
   isMatchingOnSearchString(link: Link) {
     const regex = new RegExp(this.searchString, "i");
+    let tagMatch = link.tags.map((value) => value.search(regex) !== -1);
+    let anyTagMatches = tagMatch.reduce((a, b) => a || b, false);
     return (
       link.title.search(regex) !== -1 ||
       link.description.search(regex) !== -1 ||
-      link.href.search(regex) !== -1
+      link.href.search(regex) !== -1 ||
+      anyTagMatches
     );
   }
 

@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.chip.included {
+  @apply bg-lime-300 dark:bg-lime-700;
+}
+
+.chip.neutral {
+}
+
+.chip.excluded {
+  @apply bg-red-300 dark:bg-red-700;
+}

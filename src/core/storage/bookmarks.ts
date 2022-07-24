@@ -2,8 +2,12 @@
  * A storage backend for Schmackhaft bookmarks which reads the entries from the
  * current browser bookmarks
  */
-import { Bookmark, Browser, BrowserBookmarkNode, IStorage } from "../../types";
-import { Settings } from "../../model/settings";
+import {
+  Bookmark,
+  BrowserBookmarkNode,
+  IStorage,
+  TBrowserFactory,
+} from "../../types";
 
 /**
  * Recursively fetch bookmarks from a single node from the browser bookmarks API
@@ -17,7 +21,7 @@ function visit(
   parentFolderNames: string[]
 ): Bookmark[] {
   parentFolderNames = parentFolderNames || [];
-  let output = [];
+  let output: Bookmark[] = [];
   if (node.children) {
     node.children.forEach((item) => {
       let subitems = visit(item, [item.title, ...parentFolderNames]);
@@ -29,18 +33,20 @@ function visit(
       href: node.url,
       title: node.title,
       tags: parentFolderNames,
+      image: "", // TODO: Can we get an image from somewhere?
+      description: "", // TODO: Can we get a description from somewhere?
     });
   }
   return output;
 }
 
 export class BookmarkStorage implements IStorage {
-  settings: Settings;
-  browser: Browser | null;
+  settings: {};
+  browserFactory: TBrowserFactory;
 
-  constructor(settings: Settings, browser: Browser | null) {
+  constructor(settings: any, browserFactory: TBrowserFactory) {
     this.settings = settings;
-    this.browser = browser;
+    this.browserFactory = browserFactory;
   }
 
   async get(href: string): Promise<Bookmark | null> {
@@ -49,15 +55,16 @@ export class BookmarkStorage implements IStorage {
   }
 
   async getAll(): Promise<Bookmark[]> {
-    if (this.browser === null) {
+    let browser = await this.browserFactory();
+    if (browser === null) {
       console.debug(
         "Not running as browser-extension. Bookmark fetchin is disabled!"
       );
       return [];
     }
-    let root = await this.browser.bookmarks.getTree();
-    let all = [];
-    root.forEach((item) => {
+    let root = await browser.bookmarks.getTree();
+    let all: Bookmark[] = [];
+    root.forEach((item: BrowserBookmarkNode) => {
       let bookmarks = visit(item, ["Browser Bookmarks"]);
       all = [...bookmarks, ...all];
     });
