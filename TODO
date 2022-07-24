@@ -1,6 +1,7 @@
-- Remove Toolbar from HTML files
+- Add a text-search for bookmarks
+- Allow sources to be enabled/disabled
+- Add default tags per source
 - Replace arrays with sets where possible
-- Centralise logging and update eslintrc config for no-console
-- Add a name to each browser-source
-- Add default tags to each browser-source
+- Add a name to each source
+- Add default tags to each source
 - Deduplicate bookmarks (if more than one source has the same bookmark, it is added with duplicates)
