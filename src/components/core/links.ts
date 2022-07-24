@@ -76,10 +76,13 @@ export class Links {
    */
   isMatchingOnSearchString(link: Link) {
     const regex = new RegExp(this.searchString, "i");
+    let tagMatch = link.tags.map((value) => value.search(regex) !== -1);
+    let anyTagMatches = tagMatch.reduce((a, b) => a || b, false);
     return (
       link.title.search(regex) !== -1 ||
       link.description.search(regex) !== -1 ||
-      link.href.search(regex) !== -1
+      link.href.search(regex) !== -1 ||
+      anyTagMatches
     );
   }
 
