@@ -6,14 +6,8 @@ import "./components/sh-toolbar";
 import "./views/sh-settings";
 import "@material/mwc-button";
 import "material-icon-component/md-icon.js";
-import {
-  BookmarkSource,
-  Browser,
-  PageName,
-  TBrowserFactory,
-  TagStateTransition,
-} from "../types";
 import { LitElement, css, html } from "lit";
+import { PageName, TBrowserFactory, TagStateTransition } from "../types";
 import { Ref, createRef, ref } from "lit/directives/ref.js";
 import { customElement, property, state } from "lit/decorators.js";
 // @ts-ignore
