@@ -26,6 +26,13 @@ export class Links {
   }
 
   /**
+   * Return whether this collection is empty or not
+   */
+  get isEmpty() {
+    return this.links.length === 0;
+  }
+
+  /**
    * Instantiate a collection of links from a JSON string.
    *
    * The JSON string must have a top-level list of items. Each item is loaded

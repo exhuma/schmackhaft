@@ -173,6 +173,13 @@ export class Schmackhaft extends LitElement {
   }
 
   _renderBookmarks() {
+    if (this._links.isEmpty) {
+      return html` <strong>No links found.</strong>
+        This could mean that you have no sources configured, or none of the
+        sources contains any bookmarks. Please
+        <a href="#" @click=${this.onSettingsClicked}>open the settings</a> and
+        add one or more sources.`;
+    }
     return html`
       <layout-vsplit>
         <sh-taglist
