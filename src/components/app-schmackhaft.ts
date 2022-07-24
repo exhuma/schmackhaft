@@ -163,10 +163,6 @@ export class Schmackhaft extends LitElement {
     this._view = PageName.HELP;
   }
 
-  _switchView(pageName: PageName): void {
-    this._view = pageName;
-  }
-
   _onSettingsChanged(evt: { detail: { settings: string } }) {
     this.settings = evt.detail.settings;
     this.dispatchEvent(
