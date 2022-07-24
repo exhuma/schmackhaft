@@ -61,8 +61,8 @@ export class BookmarkStorage implements IStorage {
       return [];
     }
     let root = await browser.bookmarks.getTree();
-    let all = [];
-    root.forEach((item) => {
+    let all: Bookmark[] = [];
+    root.forEach((item: BrowserBookmarkNode) => {
       let bookmarks = visit(item, ["Browser Bookmarks"]);
       all = [...bookmarks, ...all];
     });
