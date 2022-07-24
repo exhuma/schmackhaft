@@ -228,6 +228,15 @@ export class Schmackhaft extends LitElement {
     }
   }
 
+  _onSearchChanged(evt: { detail: { searchText: string } }) {
+    // TODO: lit does not detect any changes deep inside the "this._links"
+    // object and we need to manually trigger the update. This is error-prone
+    // and should be improved.
+    this._links.search(evt.detail.searchText);
+    this.linkListRef.value?.requestUpdate();
+    this.tagListRef.value?.requestUpdate();
+  }
+
   _onToolbarButtonClick(evt: { detail: { name: ToolbarAction } }) {
     switch (evt.detail.name) {
       case ToolbarAction.BOOKMARKS:
@@ -254,6 +263,7 @@ export class Schmackhaft extends LitElement {
           ?busy=${this._busy}
           toast=${this._toast}
           @buttonClicked=${this._onToolbarButtonClick}
+          @searchTextChange=${this._onSearchChanged}
         ></sh-toolbar>
         ${this._renderMainContent()}
       </div>
