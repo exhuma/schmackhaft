@@ -60,7 +60,9 @@ export class Schmackhaft extends LitElement {
       }
 
       layout-vsplit {
-        height: 100%;
+        /* TODO: This height should not be hard-coded. This is a
+         * "just-make-it-work-workaround" */
+        height: 85vh;
       }
     `,
   ];
@@ -161,10 +163,6 @@ export class Schmackhaft extends LitElement {
     this._view = PageName.HELP;
   }
 
-  _switchView(pageName: PageName): void {
-    this._view = pageName;
-  }
-
   _onSettingsChanged(evt: { detail: { settings: string } }) {
     this.settings = evt.detail.settings;
     this.dispatchEvent(
@@ -175,6 +173,13 @@ export class Schmackhaft extends LitElement {
   }
 
   _renderBookmarks() {
+    if (this._links.isEmpty) {
+      return html` <strong>No links found.</strong>
+        This could mean that you have no sources configured, or none of the
+        sources contains any bookmarks. Please
+        <a href="#" @click=${this.onSettingsClicked}>open the settings</a> and
+        add one or more sources.`;
+    }
     return html`
       <layout-vsplit>
         <sh-taglist
