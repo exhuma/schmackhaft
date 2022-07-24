@@ -51,7 +51,7 @@ export class SettingsBridge {
     this.backend = backend;
   }
 
-  async replace(newObject) {
+  async replace(newObject: TSettings) {
     await this.backend.set({
       settings: newObject,
     });

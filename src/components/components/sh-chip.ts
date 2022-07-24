@@ -3,11 +3,13 @@ import { LitElement, css, html } from "lit";
 import { TagState, TagStateTransition } from "../../types";
 import { customElement, property } from "lit/decorators.js";
 import { classMap } from "lit/directives/class-map.js";
+// @ts-ignore
 import tailwind from "../tailwind.css";
 
 @customElement("sh-chip")
 export class Chip extends LitElement {
   static styles = [
+    // @ts-ignore
     css([tailwind]),
     css`
       .chip.neutral {

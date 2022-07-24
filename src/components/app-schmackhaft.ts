@@ -7,6 +7,7 @@ import "./views/sh-settings";
 import "@material/mwc-button";
 import "material-icon-component/md-icon.js";
 import {
+  BookmarkSource,
   Browser,
   PageName,
   TBrowserFactory,
@@ -227,7 +228,7 @@ export class Schmackhaft extends LitElement {
     }
   }
 
-  _onToolbarButtonClick(evt) {
+  _onToolbarButtonClick(evt: { detail: { name: ToolbarAction } }) {
     switch (evt.detail.name) {
       case ToolbarAction.BOOKMARKS:
         this.onBookmarksClicked();

@@ -21,7 +21,7 @@ function visit(
   parentFolderNames: string[]
 ): Bookmark[] {
   parentFolderNames = parentFolderNames || [];
-  let output = [];
+  let output: Bookmark[] = [];
   if (node.children) {
     node.children.forEach((item) => {
       let subitems = visit(item, [item.title, ...parentFolderNames]);
@@ -33,6 +33,8 @@ function visit(
       href: node.url,
       title: node.title,
       tags: parentFolderNames,
+      image: "", // TODO: Can we get an image from somewhere?
+      description: "", // TODO: Can we get a description from somewhere?
     });
   }
   return output;

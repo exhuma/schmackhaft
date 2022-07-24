@@ -1,3 +1,33 @@
+/**
+ * Convert a naive value into a proper enum value.
+ *
+ * For example given that the "Foo" enum has a key "BAR" with value "bar", this
+ * function converts "bar" into Foo.BAR
+ *
+ * Example:
+ *
+ * ```
+ * enum Foo {
+ *   BAR = "bar"
+ * }
+ *
+ * let output = getEnumByValue(Foo, "bar")
+ * // output is now `Foo.BAR`
+ * ```
+ *
+ * @param cls The type of enum
+ * @param value The value we want to convert
+ * @returns the enum value
+ */
+export function getEnumByValue(cls: any, value: string): any {
+  const typeIndex = Object.values(cls).indexOf(value);
+  if (typeIndex < 0) {
+    throw new Error(`Unknown enum value: ${value} for enum ${cls}`);
+  }
+  let typeName = Object.keys(cls)[typeIndex];
+  return cls[typeName];
+}
+
 export enum TagState {
   NEUTRAL,
   INCLUDED,
@@ -25,6 +55,8 @@ export type Bookmark = {
   title: string;
   tags: string[];
   href: string;
+  image: string;
+  description: string;
 };
 
 export type HMRequest = {

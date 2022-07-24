@@ -1,14 +1,16 @@
 import "@material/mwc-textfield";
 import "@material/mwc-button";
 import "../components/sh-http-settings";
-import { BookmarkSource, TSettings } from "../../types";
+import { BookmarkSource, TSettings, getEnumByValue } from "../../types";
 import { LitElement, css, html } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
+// @ts-ignore
 import tailwind from "../tailwind.css";
 
 @customElement("sh-settings")
 export class Settings extends LitElement {
   static styles = [
+    // @ts-ignore
     css([tailwind]),
     css`
       #GridContainer {
@@ -107,19 +109,14 @@ export class Settings extends LitElement {
   }
 
   _renderConfigBlock(type: string, settings: object, index: number) {
-    const typeIndex = Object.values(BookmarkSource).indexOf(type);
-    if (typeIndex < 0) {
-      throw new Error(`Unknown bookmark source: ${type}`);
-    }
-    let typeName = Object.keys(BookmarkSource)[typeIndex];
-    let sourceType = BookmarkSource[typeName];
+    let sourceType = getEnumByValue(BookmarkSource, type);
     let configBlock;
     switch (sourceType) {
       case BookmarkSource.BROWSER:
-        configBlock = this._renderBrowserSettings(settings);
+        configBlock = this._renderBrowserSettings(settings, index);
         break;
       case BookmarkSource.EXTENSION_STORAGE:
-        configBlock = this._renderExtensionStorageSettings(settings);
+        configBlock = this._renderExtensionStorageSettings(settings, index);
         break;
       case BookmarkSource.HTTP:
         configBlock = this._renderHttpSettings(settings, index);
@@ -153,12 +150,13 @@ export class Settings extends LitElement {
       <div class="border-l-4 border-slate-200 p-4">${configBlock}</div>`;
   }
 
-  _onNewStorageTypeChanged(event) {
+  _onNewStorageTypeChanged(event: { target: { value: string } }) {
     this._newStorageType = event.target.value;
   }
 
   _addSource() {
-    this._settings.sources.push({ type: this._newStorageType, settings: {} });
+    let enumValue = getEnumByValue(BookmarkSource, this._newStorageType);
+    this._settings.sources.push({ type: enumValue, settings: {} });
     this.requestUpdate();
   }
 

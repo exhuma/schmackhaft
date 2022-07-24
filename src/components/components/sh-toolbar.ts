@@ -1,6 +1,7 @@
 import { LitElement, css, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { classMap } from "lit/directives/class-map.js";
+// @ts-ignore
 import tailwind from "./sh-toolbar.css";
 
 export enum ToolbarAction {
@@ -13,6 +14,7 @@ export enum ToolbarAction {
 @customElement("sh-toolbar")
 export class Toolbar extends LitElement {
   static styles = [
+    // @ts-ignore
     css([tailwind]),
     css`
       #Toolbar {
