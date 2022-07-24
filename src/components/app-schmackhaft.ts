@@ -6,7 +6,12 @@ import "./components/sh-toolbar";
 import "./views/sh-settings";
 import "@material/mwc-button";
 import "material-icon-component/md-icon.js";
-import { Browser, PageName, TagStateTransition } from "../types";
+import {
+  Browser,
+  PageName,
+  TBrowserFactory,
+  TagStateTransition,
+} from "../types";
 import { LitElement, css, html } from "lit";
 import { Ref, createRef, ref } from "lit/directives/ref.js";
 import { customElement, property, state } from "lit/decorators.js";
@@ -62,7 +67,7 @@ export class Schmackhaft extends LitElement {
   searchTextRef: Ref<HTMLInputElement> = createRef();
   linkListRef: Ref<LinkList> = createRef();
   tagListRef: Ref<TagList> = createRef();
-  browser: Browser | null = null;
+  getBrowser: TBrowserFactory = async () => null;
 
   private _links: Links = new Links();
 
@@ -89,12 +94,12 @@ export class Schmackhaft extends LitElement {
    * application.
    *
    * @param injections The objects that we want to replace
-   * @param injections.browser An object providing the API for browser
-   *   extensions
+   * @param injections.getBrowser An factory method to build a reference to the
+   *   browser API following the polyfill provided by Mozilla
    */
   @property({ type: Object, attribute: false })
-  set injections(injections: { browser: Browser }) {
-    this.browser = injections.browser;
+  set injections(injections: { getBrowser: TBrowserFactory }) {
+    this.getBrowser = injections.getBrowser;
     this._fetchBookmarks();
   }
 
@@ -105,7 +110,11 @@ export class Schmackhaft extends LitElement {
     }, 500);
 
     let collectors = this._settings.sources.map((source) => {
-      let storage = createStorage(source.type, source.settings, this.browser);
+      let storage = createStorage(
+        source.type,
+        source.settings,
+        this.getBrowser
+      );
       return storage.getAll();
     });
     let items = (await Promise.all(collectors)).flat();

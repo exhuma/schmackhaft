@@ -1,13 +1,14 @@
-import { Bookmark, Browser, IStorage } from "../../types";
+import { Bookmark, IStorage, TBrowserFactory } from "../../types";
 
 export class HttpStorage implements IStorage {
   settings: any;
-  browser: Browser | null;
+  browserFactory: TBrowserFactory;
 
-  constructor(settings: any, browser: Browser | null) {
+  constructor(settings: any, browserFactory: TBrowserFactory) {
     this.settings = settings;
-    this.browser = browser;
+    this.browserFactory = browserFactory;
   }
+
   async get(href: string): Promise<Bookmark | null> {
     let data = await this.getAll();
     return data.find((item) => item.href === href) || null;

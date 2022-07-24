@@ -2,7 +2,12 @@
  * A storage backend for Schmackhaft bookmarks which reads the entries from the
  * current browser bookmarks
  */
-import { Bookmark, Browser, BrowserBookmarkNode, IStorage } from "../../types";
+import {
+  Bookmark,
+  BrowserBookmarkNode,
+  IStorage,
+  TBrowserFactory,
+} from "../../types";
 
 /**
  * Recursively fetch bookmarks from a single node from the browser bookmarks API
@@ -35,11 +40,11 @@ function visit(
 
 export class BookmarkStorage implements IStorage {
   settings: {};
-  browser: Browser | null;
+  browserFactory: TBrowserFactory;
 
-  constructor(settings: any, browser: Browser | null) {
+  constructor(settings: any, browserFactory: TBrowserFactory) {
     this.settings = settings;
-    this.browser = browser;
+    this.browserFactory = browserFactory;
   }
 
   async get(href: string): Promise<Bookmark | null> {
@@ -48,13 +53,14 @@ export class BookmarkStorage implements IStorage {
   }
 
   async getAll(): Promise<Bookmark[]> {
-    if (this.browser === null) {
+    let browser = await this.browserFactory();
+    if (browser === null) {
       console.debug(
         "Not running as browser-extension. Bookmark fetchin is disabled!"
       );
       return [];
     }
-    let root = await this.browser.bookmarks.getTree();
+    let root = await browser.bookmarks.getTree();
     let all = [];
     root.forEach((item) => {
       let bookmarks = visit(item, ["Browser Bookmarks"]);

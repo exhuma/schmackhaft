@@ -59,7 +59,7 @@ bookmarksElement?.addEventListener("settingsChanged", (event) => {
   console.log("Settings Changed to:");
   console.log(JSON.parse(event.detail["settings"]));
 });
-bookmarksElement.injections = { browser: new FakeBrowser() };
+bookmarksElement.injections = { getBrowser: async () => new FakeBrowser() };
 
 /**
  * Ensure only the div related to the clicked link is visible

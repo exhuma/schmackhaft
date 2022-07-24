@@ -1,57 +1,61 @@
-import { Bookmark, Browser, IStorage } from "../../types";
+import { Bookmark, IStorage, TBrowserFactory } from "../../types";
 
 export class LocalStorage implements IStorage {
   settings: object;
-  browser: Browser | null;
+  browserFactory: TBrowserFactory;
 
-  constructor(settings: any, browser: Browser | null) {
+  constructor(settings: any, browserFactory: TBrowserFactory) {
     this.settings = settings;
-    this.browser = browser;
+    this.browserFactory = browserFactory;
   }
 
   async get(href: string): Promise<Bookmark | null> {
-    if (this.browser === null) {
+    let browser = await this.browserFactory();
+    if (browser === null) {
       console.debug(
         "Not running as browser-extension. Extension Storage is disabled!"
       );
       return null;
     }
-    let result = await this.browser.storage.local.get({ bookmarks: {} });
+    let result = await browser.storage.local.get({ bookmarks: {} });
     return result.bookmarks[href] || null;
   }
 
   async getAll(): Promise<Bookmark[]> {
-    if (this.browser === null) {
+    let browser = await this.browserFactory();
+    if (browser === null) {
       console.debug(
         "Not running as browser-extension. Extension Storage is disabled!"
       );
       return [];
     }
-    let result = await this.browser.storage.local.get({ bookmarks: {} });
+    let result = await browser.storage.local.get({ bookmarks: {} });
     return Object.values(result.bookmarks);
   }
 
   async put(data: Bookmark): Promise<void> {
-    if (this.browser === null) {
+    let browser = await this.browserFactory();
+    if (browser === null) {
       console.debug(
         "Not running as browser-extension. Extension Storage is disabled!"
       );
       return;
     }
-    let result = await this.browser.storage.local.get({ bookmarks: {} });
+    let result = await browser.storage.local.get({ bookmarks: {} });
     result.bookmarks[data.href] = data;
-    await this.browser.storage.local.set({ bookmarks: result.bookmarks });
+    await browser.storage.local.set({ bookmarks: result.bookmarks });
   }
 
   async remove(href: string): Promise<void> {
-    if (this.browser === null) {
+    let browser = await this.browserFactory();
+    if (browser === null) {
       console.debug(
         "Not running as browser-extension. Extension Storage is disabled!"
       );
       return;
     }
-    let result = await this.browser.storage.local.get({ bookmarks: {} });
+    let result = await browser.storage.local.get({ bookmarks: {} });
     delete result.bookmarks[href];
-    await this.browser.storage.local.set({ bookmarks: result.bookmarks });
+    await browser.storage.local.set({ bookmarks: result.bookmarks });
   }
 }

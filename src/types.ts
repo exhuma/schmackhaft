@@ -72,3 +72,5 @@ export type TSettings = {
   sources: TBookmarkSource[];
   version: number;
 };
+
+export type TBrowserFactory = () => Promise<Browser | null>;

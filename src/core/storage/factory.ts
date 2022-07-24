@@ -1,4 +1,4 @@
-import { BookmarkSource, Browser, IStorage } from "../../types";
+import { BookmarkSource, IStorage, TBrowserFactory } from "../../types";
 import { BookmarkStorage } from "./bookmarks";
 import { HttpStorage } from "./http";
 import { LocalStorage } from "./local";
@@ -11,21 +11,22 @@ import { LocalStorage } from "./local";
  *
  * @param type The type of storage we want to create
  * @param settings A user-settings object
- * @param browser
+ * @param browserFactory A factory method to get a reference to the
+ *   browser-extension API
  * @returns A storage instance
  */
 export function createStorage(
   type: BookmarkSource,
   settings: any,
-  browser: Browser | null
+  browserFactory: TBrowserFactory
 ): IStorage {
   switch (type) {
     case BookmarkSource.EXTENSION_STORAGE:
-      return new LocalStorage(settings, browser);
+      return new LocalStorage(settings, browserFactory);
     case BookmarkSource.HTTP:
-      return new HttpStorage(settings, browser);
+      return new HttpStorage(settings, browserFactory);
     case BookmarkSource.BROWSER:
-      return new BookmarkStorage(settings, browser);
+      return new BookmarkStorage(settings, browserFactory);
     default:
       throw new Error(`Unsupported storage type: ${type}`);
   }
