@@ -34,7 +34,7 @@ function visit(
 }
 
 export class BookmarkStorage implements IStorage {
-  settings: { browser: Browser };
+  settings: {};
   browser: Browser | null;
 
   constructor(settings: any, browser: Browser | null) {
