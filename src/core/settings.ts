@@ -1,6 +1,11 @@
 // @ts-ignore
 import * as browser from "webextension-polyfill";
-import { BookmarkSource, IStorageBackend, TSettings } from "../types";
+import {
+  BookmarkSource,
+  IStorageBackend,
+  TBookmarkSource,
+  TSettings,
+} from "../types";
 
 const DEFAULT_SETTINGS: TSettings = {
   sources: [
@@ -103,13 +108,25 @@ class Migrator {
         `Expected to version 2 for the migration to 3, but got ${settings.version} instead`
       );
     }
-    console.log(settings);
-    return settings;
-    // let newData = {
-    //   remoteUrls: [settings.remoteUrl],
-    //   enableBrowserBookmarks: true,
-    //   version: 2,
-    // };
-    // return newData;
+    let sources: TBookmarkSource[] = [];
+    if (settings.enableBrowserBookmarks) {
+      sources.push({
+        type: BookmarkSource.BROWSER,
+        settings: {},
+      });
+    }
+    settings.remoteUrls.forEach((item: string) => {
+      sources.push({
+        type: BookmarkSource.HTTP,
+        settings: {
+          url: item,
+        },
+      });
+    });
+    let newData: TSettings = {
+      sources: sources,
+      version: 3,
+    };
+    return newData;
   }
 }
