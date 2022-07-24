@@ -39,7 +39,8 @@ export class TagList extends LitElement {
             name="${tag[0]}"
             ?dense="${this.dense}"
           ></sh-chip
-          ><span class="border-r border-t border-b rounded-r px-1"
+          ><span
+            class="border-r border-t border-b rounded-r px-1 dark:border-slate-500"
             >${tag[1]}</span
           >
         </div>

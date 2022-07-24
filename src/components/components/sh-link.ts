@@ -91,7 +91,7 @@ class Link extends LitElement {
 
   override render() {
     let title = html`<a
-      class="underline text-blue-900"
+      class="underline text-blue-900 dark:text-blue-100"
       href="${this.href}"
       target="_blank"
       >${this.title || this.href}</a

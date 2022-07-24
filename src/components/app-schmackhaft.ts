@@ -258,7 +258,7 @@ export class Schmackhaft extends LitElement {
 
   override render() {
     return html`
-      <div class="p-2">
+      <div class="p-2 dark:bg-slate-800 dark:text-white">
         <sh-toolbar
           ?busy=${this._busy}
           toast=${this._toast}

@@ -11,18 +11,6 @@ export class Chip extends LitElement {
   static styles = [
     // @ts-ignore
     css([tailwind]),
-    css`
-      .chip.neutral {
-      }
-
-      .chip.included {
-        background-color: #aaffaa;
-      }
-
-      .chip.excluded {
-        background-color: #ffaaaa;
-      }
-    `,
   ];
 
   @property()
@@ -79,7 +67,7 @@ export class Chip extends LitElement {
         @click="${this.onClick}"
         @contextmenu="${this.onAuxClick}"
         title="Click to ${actionText}"
-        class="chip border px-1 rounded-l cursor-pointer flex gap-1 flex-row flex-nowrap items-center ${classMap(
+        class="chip border dark:border-slate-500 px-1 rounded-l cursor-pointer flex gap-1 flex-row flex-nowrap items-center ${classMap(
           dynamicClasses
         )}"
       >
