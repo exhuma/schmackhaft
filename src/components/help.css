@@ -1,7 +1,7 @@
 H1,
 H2,
 H3 {
-  @apply text-black;
+  @apply text-black dark:text-white;
   @apply mt-3 font-sans;
 }
 
@@ -22,7 +22,7 @@ P {
 }
 
 A {
-  @apply underline text-blue-900;
+  @apply underline text-blue-900 dark:text-blue-100;
 }
 
 EM {
@@ -47,7 +47,7 @@ UL > LI {
 }
 
 #Help {
-  @apply text-slate-700;
+  @apply text-slate-700 dark:text-white mx-2;
   max-width: 66ch;
   text-align: justify;
 }
