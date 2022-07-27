@@ -6,9 +6,9 @@
   "author": "Michel Albert",
   "homepage_url": "https://github.com/exhuma/schmackhaft",
   "icons": {
-    "48": "/assets/icon.svg",
-    "96": "/assets/icon.svg",
-    "128": "/assets/icon.svg"
+    "48": "/assets/icon48.png",
+    "96": "/assets/icon96.png",
+    "128": "/assets/icon128.png"
   },
   "action": {
     "default_icon": {
