@@ -13,6 +13,12 @@ mozilla: pages bundled_docs
 chrome: pages bundled_docs
 	mkdir -p unpackaged/chrome/src/core
 	cp -r build/pages/* unpackaged/chrome/
+	inkscape -w 48 -h 48 public/assets/icon.svg \
+		-o unpackaged/chrome/assets/icon48.png
+	inkscape -w 96 -h 96 public/assets/icon.svg \
+		-o unpackaged/chrome/assets/icon96.png
+	inkscape -w 128 -h 128 public/assets/icon.svg \
+		-o unpackaged/chrome/assets/icon128.png
 	sed -e 's/__version__/$(CURRENT_VERSION)/' \
 		manifest-chrome.json > unpackaged/chrome/manifest.json
 

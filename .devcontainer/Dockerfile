@@ -7,12 +7,13 @@ FROM mcr.microsoft.com/vscode/devcontainers/javascript-node:0-${VARIANT}
 RUN apt update && \
     DEBIAN_FRONTEND=noninteractive \
     apt -y install \
+        inkscape \
         libnotify-bin \
         pandoc \
-        vim-nox \
         python3 \
         python3-pip \
         python3-venv \
+        vim-nox \
         jq && \
     pip3 install pre-commit
 
