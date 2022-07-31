@@ -6,8 +6,14 @@ import "./components/sh-toolbar";
 import "./views/sh-settings";
 import "@material/mwc-button";
 import "material-icon-component/md-icon.js";
+import {
+  Bookmark,
+  PageName,
+  TBookmarkSource,
+  TBrowserFactory,
+  TagStateTransition,
+} from "../types";
 import { LitElement, css, html } from "lit";
-import { PageName, TBrowserFactory, TagStateTransition } from "../types";
 import { Ref, createRef, ref } from "lit/directives/ref.js";
 import { customElement, property, state } from "lit/decorators.js";
 // @ts-ignore
@@ -80,6 +86,8 @@ export class Schmackhaft extends LitElement {
   @state()
   private _settings: Settings = new Settings();
 
+  private errors: { source: TBookmarkSource; errorMessage: string }[] = [];
+
   @property()
   set settings(data: string) {
     this._settings = Settings.fromJson(data);
@@ -106,13 +114,23 @@ export class Schmackhaft extends LitElement {
       this._toast = "Refreshing...";
     }, 500);
 
-    let collectors = this._settings.sources.map((source) => {
+    let collectors = this._settings.sources.map(async (source) => {
       let storage = createStorage(
         source.type,
         source.settings,
         this.getBrowser
       );
-      return storage.getAll();
+      let output: Bookmark[];
+      try {
+        output = await storage.getAll();
+      } catch (error) {
+        this.errors.push({
+          source: source,
+          errorMessage: `${error}`,
+        });
+        output = [];
+      }
+      return output;
     });
     let items = (await Promise.all(collectors)).flat();
     let links = items.map((item) => Link.fromObject(item));
@@ -225,6 +243,15 @@ export class Schmackhaft extends LitElement {
     }
   }
 
+  _renderError(error: { source: TBookmarkSource; errorMessage: string }) {
+    return html`<div class="border border-red-800 bg-red-200 rounded p-2">
+      <strong>Error:</strong> <em>${error.errorMessage}</em><br />
+      <strong>Source Type:</strong> ${error.source.type}<br />
+      <strong>Source Settings:</strong>
+      <pre class="overflow-auto">${JSON.stringify(error.source.settings)}</pre>
+    </div> `;
+  }
+
   _onSearchChanged(evt: { detail: { searchText: string } }) {
     // TODO: lit does not detect any changes deep inside the "this._links"
     // object and we need to manually trigger the update. This is error-prone
@@ -263,6 +290,7 @@ export class Schmackhaft extends LitElement {
           @searchTextChange=${this._onSearchChanged}
         ></sh-toolbar>
         ${this._renderMainContent()}
+        ${this.errors.map((error) => this._renderError(error))}
       </div>
     `;
   }
