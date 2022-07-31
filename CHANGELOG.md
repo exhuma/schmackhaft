@@ -1,3 +1,13 @@
+# 1.1.0
+
+- Fix scrolling issue in the settings & help page
+- Make favicons optional (& use the Google Favicon Service). This can be
+  enabled in the settings view.
+
+# 1.0.0
+
+- First "presentable" release
+
 # 0.4
 
 - Add possibility to _hide_ links with certain tags. Tags are now "tri-state":

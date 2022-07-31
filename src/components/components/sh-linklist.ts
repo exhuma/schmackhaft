@@ -16,6 +16,9 @@ export class LinkList extends LitElement {
   @property({ type: Boolean })
   dense: boolean = false;
 
+  @property()
+  favIconTemplate = "";
+
   _renderTag(tagName: string, component: any) {
     return html`<sh-chip name="${tagName}" data-tag="${tagName}"
       >${tagName}</sh-chip
@@ -32,6 +35,7 @@ export class LinkList extends LitElement {
         description="${link.description}"
         href="${link.href}"
         img="${link.image}"
+        favIconTemplate="${this.favIconTemplate}"
         .tags="${tagsWithStates}"
         ?dense="${this.dense}"
         @chipClicked="${this.onChipClicked}"

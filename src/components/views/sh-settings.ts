@@ -154,6 +154,22 @@ export class Settings extends LitElement {
     this._newStorageType = event.target.value;
   }
 
+  _onGoogleFaviconToggled(event: { target: { checked: boolean } }) {
+    if (event.target.checked) {
+      this._settings.favIconTemplate =
+        "https://www.google.com/s2/favicons?domain={domain}&sz=32";
+    } else {
+      this._settings.favIconTemplate = "";
+    }
+    this.dispatchEvent(
+      new CustomEvent("change", {
+        detail: {
+          settings: this.settings,
+        },
+      })
+    );
+  }
+
   _addSource() {
     let enumValue = getEnumByValue(BookmarkSource, this._newStorageType);
     this._settings.sources.push({ type: enumValue, settings: {} });
@@ -178,6 +194,12 @@ export class Settings extends LitElement {
       this._renderConfigBlock(type, settings, index)
     );
     return html`
+      <input
+        type="checkbox"
+        ?checked=${this._settings.favIconTemplate !== ""}
+        @change=${this._onGoogleFaviconToggled}
+      />
+      Use Google Favicon service
       <h1 class="text-2xl">Bookmark Sources</h1>
       <div
         class="grid grid-cols-[100px_auto] justify-items-stretch items-center"
@@ -202,7 +224,7 @@ export class Settings extends LitElement {
           Add source
         </button>
       </div>
-      <div class="mx-40 mt-8">
+      <div class="mx-20 mt-8">
         <button
           type="button"
           id="SaveButton"

@@ -5,6 +5,7 @@ import { TagState } from "../../types";
 import { classMap } from "lit/directives/class-map.js";
 // @ts-ignore
 import tailwind from "./sh-link.css";
+import { until } from "lit/directives/until.js";
 
 @customElement("sh-link")
 class Link extends LitElement {
@@ -60,6 +61,9 @@ class Link extends LitElement {
   @property()
   img = "";
 
+  @property()
+  favIconTemplate = "";
+
   @property({ type: Boolean })
   dense: boolean = false;
 
@@ -76,9 +80,14 @@ class Link extends LitElement {
     ></sh-chip>`;
   }
 
-  getFavicon(href: string): string {
+  async getFavicon(href: string) {
     let url = new URL(href);
-    return `${url.origin}/favicon.ico`;
+    let imageUrl = this.favIconTemplate.replace("{domain}", url.host);
+    let output = html``;
+    if (imageUrl !== "") {
+      output = html`<img src="${imageUrl}" width="20" height="20"></img>`;
+    }
+    return output;
   }
 
   get dynamicClasses() {
@@ -104,12 +113,7 @@ class Link extends LitElement {
     let image = html`<img class="screenshot" src="${this.img}" />`;
     let tags = html`<div class="tags">${this.tags.map(this._chip, this)}</div>`;
     if (this.dense) {
-      let favIcon = this.getFavicon(this.href);
-      if (favIcon !== "") {
-        image = html`<img src="${favIcon}" width="20" height="20"></img>`;
-      } else {
-        image = html``;
-      }
+      image = until(this.getFavicon(this.href), html``);
       tags = html``;
     }
     return html`

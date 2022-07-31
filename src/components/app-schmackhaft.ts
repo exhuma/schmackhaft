@@ -6,8 +6,14 @@ import "./components/sh-toolbar";
 import "./views/sh-settings";
 import "@material/mwc-button";
 import "material-icon-component/md-icon.js";
+import {
+  Bookmark,
+  PageName,
+  TBookmarkSource,
+  TBrowserFactory,
+  TagStateTransition,
+} from "../types";
 import { LitElement, css, html } from "lit";
-import { PageName, TBrowserFactory, TagStateTransition } from "../types";
 import { Ref, createRef, ref } from "lit/directives/ref.js";
 import { customElement, property, state } from "lit/decorators.js";
 // @ts-ignore
@@ -50,19 +56,12 @@ export class Schmackhaft extends LitElement {
     css`
       :host {
         display: block;
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-          Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-        font-size: 16px;
+        font-size: 14px;
+        height: 100%;
       }
 
       PRE CODE {
         font-family: "Fira Code", monospace;
-      }
-
-      layout-vsplit {
-        /* TODO: This height should not be hard-coded. This is a
-         * "just-make-it-work-workaround" */
-        height: 85vh;
       }
     `,
   ];
@@ -86,6 +85,8 @@ export class Schmackhaft extends LitElement {
 
   @state()
   private _settings: Settings = new Settings();
+
+  private errors: { source: TBookmarkSource; errorMessage: string }[] = [];
 
   @property()
   set settings(data: string) {
@@ -113,13 +114,23 @@ export class Schmackhaft extends LitElement {
       this._toast = "Refreshing...";
     }, 500);
 
-    let collectors = this._settings.sources.map((source) => {
+    let collectors = this._settings.sources.map(async (source) => {
       let storage = createStorage(
         source.type,
         source.settings,
         this.getBrowser
       );
-      return storage.getAll();
+      let output: Bookmark[];
+      try {
+        output = await storage.getAll();
+      } catch (error) {
+        this.errors.push({
+          source: source,
+          errorMessage: `${error}`,
+        });
+        output = [];
+      }
+      return output;
     });
     let items = (await Promise.all(collectors)).flat();
     let links = items.map((item) => Link.fromObject(item));
@@ -194,6 +205,7 @@ export class Schmackhaft extends LitElement {
           ${ref(this.linkListRef)}
           .links=${this._links}
           .renderSearchedTags="${false}"
+          favIconTemplate=${this._settings.favIconTemplate}
           @chipClicked="${this.onChipClicked}"
           dense
         ></sh-linklist>
@@ -204,6 +216,7 @@ export class Schmackhaft extends LitElement {
   _renderSettings() {
     return html`
       <sh-settings
+        class="overflow-auto"
         @change="${this._onSettingsChanged}"
         settings="${this._settings.toJson()}"
       ></sh-settings>
@@ -212,7 +225,11 @@ export class Schmackhaft extends LitElement {
 
   _renderHelp() {
     const content = parse(Help);
-    return html` <div id="Help" class="mx-auto">${unsafeHTML(content)}</div> `;
+    return html`
+      <div id="Help" class="mx-auto pr-4 overflow-auto">
+        ${unsafeHTML(content)}
+      </div>
+    `;
   }
 
   _renderMainContent() {
@@ -225,6 +242,15 @@ export class Schmackhaft extends LitElement {
       case PageName.HELP:
         return this._renderHelp();
     }
+  }
+
+  _renderError(error: { source: TBookmarkSource; errorMessage: string }) {
+    return html`<div class="border border-red-800 bg-red-200 rounded p-2">
+      <strong>Error:</strong> <em>${error.errorMessage}</em><br />
+      <strong>Source Type:</strong> ${error.source.type}<br />
+      <strong>Source Settings:</strong>
+      <pre class="overflow-auto">${JSON.stringify(error.source.settings)}</pre>
+    </div> `;
   }
 
   _onSearchChanged(evt: { detail: { searchText: string } }) {
@@ -257,7 +283,7 @@ export class Schmackhaft extends LitElement {
 
   override render() {
     return html`
-      <div class="p-2 dark:bg-slate-800 dark:text-white">
+      <div class="p-2 h-full flex flex-col dark:bg-slate-800 dark:text-white">
         <sh-toolbar
           ?busy=${this._busy}
           toast=${this._toast}
@@ -265,6 +291,7 @@ export class Schmackhaft extends LitElement {
           @searchTextChange=${this._onSearchChanged}
         ></sh-toolbar>
         ${this._renderMainContent()}
+        ${this.errors.map((error) => this._renderError(error))}
       </div>
     `;
   }
