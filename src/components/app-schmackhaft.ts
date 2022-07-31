@@ -58,12 +58,6 @@ export class Schmackhaft extends LitElement {
       PRE CODE {
         font-family: "Fira Code", monospace;
       }
-
-      layout-vsplit {
-        /* TODO: This height should not be hard-coded. This is a
-         * "just-make-it-work-workaround" */
-        height: 85vh;
-      }
     `,
   ];
 
@@ -204,6 +198,7 @@ export class Schmackhaft extends LitElement {
   _renderSettings() {
     return html`
       <sh-settings
+        class="overflow-auto"
         @change="${this._onSettingsChanged}"
         settings="${this._settings.toJson()}"
       ></sh-settings>
@@ -212,7 +207,9 @@ export class Schmackhaft extends LitElement {
 
   _renderHelp() {
     const content = parse(Help);
-    return html` <div id="Help" class="mx-auto">${unsafeHTML(content)}</div> `;
+    return html`
+      <div id="Help" class="mx-auto overflow-auto">${unsafeHTML(content)}</div>
+    `;
   }
 
   _renderMainContent() {
@@ -257,7 +254,7 @@ export class Schmackhaft extends LitElement {
 
   override render() {
     return html`
-      <div class="p-2 dark:bg-slate-800 dark:text-white">
+      <div class="p-2 h-full flex flex-col dark:bg-slate-800 dark:text-white">
         <sh-toolbar
           ?busy=${this._busy}
           toast=${this._toast}
