@@ -80,9 +80,14 @@ class Link extends LitElement {
     ></sh-chip>`;
   }
 
-  getFavicon(href: string): string {
+  async getFavicon(href: string) {
     let url = new URL(href);
-    return this.favIconTemplate.replace("{domain}", url.origin);
+    let imageUrl = this.favIconTemplate.replace("{domain}", url.host);
+    let output = html``;
+    if (imageUrl !== "") {
+      output = html`<img src="${imageUrl}" width="20" height="20"></img>`;
+    }
+    return output;
   }
 
   get dynamicClasses() {
@@ -108,12 +113,7 @@ class Link extends LitElement {
     let image = html`<img class="screenshot" src="${this.img}" />`;
     let tags = html`<div class="tags">${this.tags.map(this._chip, this)}</div>`;
     if (this.dense) {
-      let favIcon = this.getFavicon(this.href);
-      if (favIcon !== "") {
-        image = html`<img src="${favIcon}" width="20" height="20"></img>`;
-      } else {
-        image = html``;
-      }
+      image = until(this.getFavicon(this.href), html``);
       tags = html``;
     }
     return html`
