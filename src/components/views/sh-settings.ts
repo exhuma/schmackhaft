@@ -202,7 +202,7 @@ export class Settings extends LitElement {
           Add source
         </button>
       </div>
-      <div class="mx-40 mt-8">
+      <div class="mx-20 mt-8">
         <button
           type="button"
           id="SaveButton"

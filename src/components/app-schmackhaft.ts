@@ -50,9 +50,8 @@ export class Schmackhaft extends LitElement {
     css`
       :host {
         display: block;
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-          Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-        font-size: 16px;
+        font-size: 14px;
+        height: 100%;
       }
 
       PRE CODE {
@@ -208,7 +207,9 @@ export class Schmackhaft extends LitElement {
   _renderHelp() {
     const content = parse(Help);
     return html`
-      <div id="Help" class="mx-auto overflow-auto">${unsafeHTML(content)}</div>
+      <div id="Help" class="mx-auto pr-4 overflow-auto">
+        ${unsafeHTML(content)}
+      </div>
     `;
   }
 
