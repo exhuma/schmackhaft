@@ -13,7 +13,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: "16"
-      - run: sudo apt install pandoc
+      - run: sudo apt install pandoc inkscape
       - run: npm clean-install
       - run: make dist
       - name: Release
