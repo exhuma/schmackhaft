@@ -5,6 +5,7 @@ import { TagState } from "../../types";
 import { classMap } from "lit/directives/class-map.js";
 // @ts-ignore
 import tailwind from "./sh-link.css";
+import { until } from "lit/directives/until.js";
 
 @customElement("sh-link")
 class Link extends LitElement {
@@ -60,6 +61,9 @@ class Link extends LitElement {
   @property()
   img = "";
 
+  @property()
+  favIconTemplate = "";
+
   @property({ type: Boolean })
   dense: boolean = false;
 
@@ -78,7 +82,7 @@ class Link extends LitElement {
 
   getFavicon(href: string): string {
     let url = new URL(href);
-    return `${url.origin}/favicon.ico`;
+    return this.favIconTemplate.replace("{domain}", url.origin);
   }
 
   get dynamicClasses() {

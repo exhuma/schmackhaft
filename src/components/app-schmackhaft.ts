@@ -205,6 +205,7 @@ export class Schmackhaft extends LitElement {
           ${ref(this.linkListRef)}
           .links=${this._links}
           .renderSearchedTags="${false}"
+          favIconTemplate=${this._settings.favIconTemplate}
           @chipClicked="${this.onChipClicked}"
           dense
         ></sh-linklist>
