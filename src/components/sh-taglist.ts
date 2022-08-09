@@ -1,7 +1,7 @@
 import { LitElement, css, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { Counter } from "../core/counter";
-import { Links } from "../core/links";
+import { Links } from "../model/link-collection";
 import { classMap } from "lit/directives/class-map.js";
 // @ts-ignore
 import tailwind from "../tailwind.css";

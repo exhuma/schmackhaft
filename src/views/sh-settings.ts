@@ -1,7 +1,7 @@
 import "@material/mwc-textfield";
 import "@material/mwc-button";
 import "../components/sh-http-settings";
-import { BookmarkSource, TSettings, getEnumByValue } from "../../types";
+import { BookmarkSource, TSettings, getEnumByValue } from "../types";
 import { LitElement, css, html } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 // @ts-ignore

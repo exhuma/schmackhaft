@@ -12,23 +12,23 @@ import {
   TBookmarkSource,
   TBrowserFactory,
   TagStateTransition,
-} from "../types";
+} from "./types";
 import { LitElement, css, html } from "lit";
 import { Ref, createRef, ref } from "lit/directives/ref.js";
 import { customElement, property, state } from "lit/decorators.js";
 // @ts-ignore
 import { parse, setOptions } from "marked";
 // @ts-ignore
-import Help from "../help/help.md?raw";
-import { Link } from "../model/link";
+import Help from "./help/help.md?raw";
+import { Link } from "./model/link";
 import { LinkList } from "./components/sh-linklist";
-import { Links } from "./core/links";
-import { Settings } from "../model/settings";
+import { Links } from "./model/link-collection";
+import { Settings } from "./model/settings";
 import { TagList } from "./components/sh-taglist";
 import { ToolbarAction } from "./components/sh-toolbar";
-import { createStorage } from "../core/storage/factory";
+import { createStorage } from "./core/storage/factory";
 // @ts-ignore
-import helpStyles from "./help.css";
+import helpStyles from "./help/help.css";
 import hljs from "highlight.js";
 // @ts-ignore
 import hlstyle from "highlight.js/styles/monokai.css";

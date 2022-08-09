@@ -1,5 +1,5 @@
-import "../src/components/views/sh-settings";
-import "../src/components/components/layout-vsplit";
+import "../src/views/sh-settings";
+import "../src/components/layout-vsplit";
 import { BookmarkSource } from "../src/types";
 import { FakeBrowser } from "./fake-browser";
 import { Settings } from "../src/model/settings";

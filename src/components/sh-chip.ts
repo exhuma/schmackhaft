@@ -1,7 +1,9 @@
 import "material-icon-component/md-icon.js";
 import { LitElement, css, html } from "lit";
-import { TagState, TagStateTransition } from "../../types";
+import { TagState, TagStateTransition } from "../types";
 import { customElement, property } from "lit/decorators.js";
+// @ts-ignore
+import chipStyles from "./sh-chip.css";
 import { classMap } from "lit/directives/class-map.js";
 // @ts-ignore
 import tailwind from "../tailwind.css";
@@ -11,6 +13,8 @@ export class Chip extends LitElement {
   static styles = [
     // @ts-ignore
     css([tailwind]),
+    // @ts-ignore
+    css([chipStyles]),
   ];
 
   @property()
