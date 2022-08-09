@@ -1,7 +1,7 @@
 import "./sh-chip";
 import { LitElement, css, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
-import { TagState } from "../../types";
+import { TagState } from "../types";
 import { classMap } from "lit/directives/class-map.js";
 // @ts-ignore
 import tailwind from "./sh-link.css";

@@ -3,9 +3,9 @@
  * provides implementations for searching links on various conditions.
  */
 
-import { Bookmark, TagState } from "../../types";
-import { Link } from "../../model/link";
-import { intersection } from "../../collections";
+import { Bookmark, TagState } from "../types";
+import { Link } from "../model/link";
+import { intersection } from "../collections";
 
 /**
  * A colelction of links.
@@ -26,7 +26,7 @@ export class Links {
   }
 
   /**
-   * Return whether this collection is empty or not
+   * @returns whether this collection is empty or not
    */
   get isEmpty() {
     return this.links.length === 0;
