@@ -192,6 +192,12 @@ export class Schmackhaft extends LitElement {
         add one or more sources.`;
     }
     return html`
+      <input
+        @keyup=${this._onSearchTextEdited}
+        type="search"
+        class="block p-1 mb-1 w-full text-xs text-gray-900 bg-gray-50 rounded border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        placeholder="Quicksearch (tags and details)"
+      />
       <layout-vsplit>
         <sh-taglist
           slot="top"
@@ -253,11 +259,11 @@ export class Schmackhaft extends LitElement {
     </div> `;
   }
 
-  _onSearchChanged(evt: { detail: { searchText: string } }) {
+  _onSearchTextEdited(evt: { target: { value: string } }) {
     // TODO: lit does not detect any changes deep inside the "this._links"
     // object and we need to manually trigger the update. This is error-prone
     // and should be improved.
-    this._links.search(evt.detail.searchText);
+    this._links.search(evt.target.value);
     this.linkListRef.value?.requestUpdate();
     this.tagListRef.value?.requestUpdate();
   }
@@ -288,7 +294,6 @@ export class Schmackhaft extends LitElement {
           ?busy=${this._busy}
           toast=${this._toast}
           @buttonClicked=${this._onToolbarButtonClick}
-          @searchTextChange=${this._onSearchChanged}
         ></sh-toolbar>
         ${this._renderMainContent()}
         ${this.errors.map((error) => this._renderError(error))}
