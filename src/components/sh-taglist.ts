@@ -35,7 +35,6 @@ export class TagList extends LitElement {
           <sh-chip
             .state="${state}"
             @chipClicked="${this.onChipClicked}"
-            class="tagName"
             name="${tag[0]}"
             ?dense="${this.dense}"
           ></sh-chip
