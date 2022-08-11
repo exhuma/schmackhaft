@@ -20,6 +20,9 @@ export class Chip extends LitElement {
   @property()
   name = "";
 
+  @property()
+  count = 0;
+
   @property({ type: Boolean })
   dense: boolean = false;
 
@@ -48,6 +51,8 @@ export class Chip extends LitElement {
       neutral: this.state === TagState.NEUTRAL,
       included: this.state === TagState.INCLUDED,
       excluded: this.state === TagState.EXCLUDED,
+      ["rounded-l"]: this.state === TagState.NEUTRAL,
+      ["rounded"]: this.state !== TagState.NEUTRAL,
     };
     let label;
     let actionText;
@@ -66,17 +71,30 @@ export class Chip extends LitElement {
         actionText = "include only links with this tag";
         break;
     }
+    let countBox = html``;
+    if (this.state === TagState.NEUTRAL) {
+      countBox = html`
+        <div
+          class="border-r border-t border-b rounded-r px-1 dark:border-slate-500"
+        >
+          ${this.count}
+        </div>
+      `;
+    }
     return html`
-      <div
-        @click="${this.onClick}"
-        @contextmenu="${this.onAuxClick}"
-        title="Click to ${actionText}"
-        class="chip border dark:border-slate-500 px-1 rounded-l cursor-pointer flex gap-1 flex-row flex-nowrap items-center ${classMap(
-          dynamicClasses
-        )}"
-      >
-        <div>${label}</div>
-        <div>${this.name}</div>
+      <div class="flex flex-row flex-nowrap gap-0">
+        <div
+          @click="${this.onClick}"
+          @contextmenu="${this.onAuxClick}"
+          title="Click to ${actionText}"
+          class="chip border dark:border-slate-500 px-1 cursor-pointer flex gap-1 flex-row flex-nowrap items-center ${classMap(
+            dynamicClasses
+          )}"
+        >
+          <div>${label}</div>
+          <div>${this.name}</div>
+        </div>
+        ${countBox}
       </div>
     `;
   }

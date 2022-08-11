@@ -26,24 +26,14 @@ export class TagList extends LitElement {
       return null;
     }
     let state = this.links.getState(tag[0]);
-    let dynamicClasses = { dense: this.dense };
     return html`
-      <div class="inline-block mb-1">
-        <div
-          class="flex flex-row flex-nowrap gap-0 ${classMap(dynamicClasses)}"
-        >
-          <sh-chip
-            .state="${state}"
-            @chipClicked="${this.onChipClicked}"
-            name="${tag[0]}"
-            ?dense="${this.dense}"
-          ></sh-chip
-          ><span
-            class="border-r border-t border-b rounded-r px-1 dark:border-slate-500"
-            >${tag[1]}</span
-          >
-        </div>
-      </div>
+      <sh-chip
+        .state="${state}"
+        @chipClicked="${this.onChipClicked}"
+        name="${tag[0]}"
+        count="${tag[1]}"
+        ?dense="${this.dense}"
+      ></sh-chip>
     `;
   }
 
