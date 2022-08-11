@@ -31,6 +31,9 @@ class FakeStorage {
 }
 
 export class FakeBrowser {
+  tabs: any;
+  runtime: any;
+
   get bookmarks() {
     return new BookmarkTree();
   }
