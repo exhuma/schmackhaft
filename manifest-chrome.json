@@ -18,5 +18,5 @@
     "show_matches": ["http://*/*", "https://*/*"],
     "default_popup": "/src/views/action_button/index.html"
   },
-  "permissions": ["activeTab", "storage", "bookmarks"]
+  "permissions": ["tabs", "activeTab", "storage", "bookmarks"]
 }

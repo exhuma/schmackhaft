@@ -3,5 +3,5 @@
 - Add default tags per source
 - Replace arrays with sets where possible
 - Add a name to each source
-- Add default tags to each source
 - Deduplicate bookmarks (if more than one source has the same bookmark, it is added with duplicates)
+- Is "postcss" still needed?

@@ -30,7 +30,16 @@ class FakeStorage {
   }
 }
 
+class FakeTabs {
+  create(createProperties: { url: string }) {
+    console.info(`Would open a new tab to the URL ${createProperties.url}`);
+  }
+}
+
 export class FakeBrowser {
+  tabs: FakeTabs = new FakeTabs();
+  runtime: any;
+
   get bookmarks() {
     return new BookmarkTree();
   }

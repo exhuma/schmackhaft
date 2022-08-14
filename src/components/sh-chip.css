@@ -1,6 +1,6 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+:host {
+  @apply inline-block mb-1;
+}
 
 .chip.included {
   @apply bg-lime-300 dark:bg-lime-700;

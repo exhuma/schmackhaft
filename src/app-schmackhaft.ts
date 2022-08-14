@@ -1,4 +1,5 @@
 import "./components/layout-vsplit";
+import "./components/sh-bookmarklist";
 import "./components/sh-link";
 import "./components/sh-linklist";
 import "./components/sh-taglist";
@@ -6,29 +7,21 @@ import "./components/sh-toolbar";
 import "./views/sh-settings";
 import "@material/mwc-button";
 import "material-icon-component/md-icon.js";
-import {
-  Bookmark,
-  PageName,
-  TBookmarkSource,
-  TBrowserFactory,
-  TagStateTransition,
-} from "../types";
+import { Bookmark, PageName, TBookmarkSource, TBrowserFactory } from "./types";
 import { LitElement, css, html } from "lit";
 import { Ref, createRef, ref } from "lit/directives/ref.js";
 import { customElement, property, state } from "lit/decorators.js";
 // @ts-ignore
 import { parse, setOptions } from "marked";
 // @ts-ignore
-import Help from "../help/help.md?raw";
-import { Link } from "../model/link";
-import { LinkList } from "./components/sh-linklist";
-import { Links } from "./core/links";
-import { Settings } from "../model/settings";
-import { TagList } from "./components/sh-taglist";
+import Help from "./help/help.md?raw";
+import { Link } from "./model/link";
+import { Links } from "./model/link-collection";
+import { Settings } from "./model/settings";
 import { ToolbarAction } from "./components/sh-toolbar";
-import { createStorage } from "../core/storage/factory";
+import { createStorage } from "./core/storage/factory";
 // @ts-ignore
-import helpStyles from "./help.css";
+import helpStyles from "./help/help.css";
 import hljs from "highlight.js";
 // @ts-ignore
 import hlstyle from "highlight.js/styles/monokai.css";
@@ -68,8 +61,6 @@ export class Schmackhaft extends LitElement {
 
   tagsRef: Ref<HTMLInputElement> = createRef();
   searchTextRef: Ref<HTMLInputElement> = createRef();
-  linkListRef: Ref<LinkList> = createRef();
-  tagListRef: Ref<TagList> = createRef();
   getBrowser: TBrowserFactory = async () => null;
 
   private _links: Links = new Links();
@@ -141,23 +132,6 @@ export class Schmackhaft extends LitElement {
     this.requestUpdate();
   }
 
-  onChipClicked(evt: {
-    detail: { direction: TagStateTransition; name: string };
-  }) {
-    switch (evt.detail.direction) {
-      case TagStateTransition.ADVANCE:
-      default:
-        this._links.advanceState(evt.detail.name);
-        break;
-      case TagStateTransition.REVERSE:
-        this._links.reverseState(evt.detail.name);
-        break;
-    }
-    this.requestUpdate();
-    this.linkListRef.value?.requestUpdate();
-    this.tagListRef.value?.requestUpdate();
-  }
-
   onRefreshClicked() {
     this._fetchBookmarks();
   }
@@ -183,6 +157,12 @@ export class Schmackhaft extends LitElement {
     );
   }
 
+  async _onLinkActivated(evt: { detail: { link: Link } }) {
+    let browser = await this.getBrowser();
+    browser?.tabs.create({ url: evt.detail.link.href });
+    window.close();
+  }
+
   _renderBookmarks() {
     if (this._links.isEmpty) {
       return html` <strong>No links found.</strong>
@@ -191,26 +171,10 @@ export class Schmackhaft extends LitElement {
         <a href="#" @click=${this.onSettingsClicked}>open the settings</a> and
         add one or more sources.`;
     }
-    return html`
-      <layout-vsplit>
-        <sh-taglist
-          slot="top"
-          ${ref(this.tagListRef)}
-          @chipClicked="${this.onChipClicked}"
-          .links="${this._links}"
-          dense
-        ></sh-taglist>
-        <sh-linklist
-          slot="bottom"
-          ${ref(this.linkListRef)}
-          .links=${this._links}
-          .renderSearchedTags="${false}"
-          favIconTemplate=${this._settings.favIconTemplate}
-          @chipClicked="${this.onChipClicked}"
-          dense
-        ></sh-linklist>
-      </layout-vsplit>
-    `;
+    return html`<sh-bookmarklist
+      @linkActivated=${this._onLinkActivated}
+      .links=${this._links}
+    ></sh-bookmarklist>`;
   }
 
   _renderSettings() {
@@ -253,15 +217,6 @@ export class Schmackhaft extends LitElement {
     </div> `;
   }
 
-  _onSearchChanged(evt: { detail: { searchText: string } }) {
-    // TODO: lit does not detect any changes deep inside the "this._links"
-    // object and we need to manually trigger the update. This is error-prone
-    // and should be improved.
-    this._links.search(evt.detail.searchText);
-    this.linkListRef.value?.requestUpdate();
-    this.tagListRef.value?.requestUpdate();
-  }
-
   _onToolbarButtonClick(evt: { detail: { name: ToolbarAction } }) {
     switch (evt.detail.name) {
       case ToolbarAction.BOOKMARKS:
@@ -288,7 +243,6 @@ export class Schmackhaft extends LitElement {
           ?busy=${this._busy}
           toast=${this._toast}
           @buttonClicked=${this._onToolbarButtonClick}
-          @searchTextChange=${this._onSearchChanged}
         ></sh-toolbar>
         ${this._renderMainContent()}
         ${this.errors.map((error) => this._renderError(error))}
