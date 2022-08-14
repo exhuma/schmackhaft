@@ -1,5 +1,5 @@
 import "material-icon-component/md-icon.js";
-import { LitElement, css, html } from "lit";
+import { LitElement, PropertyValueMap, css, html } from "lit";
 import { Ref, createRef, ref } from "lit/directives/ref.js";
 import { customElement, property } from "lit/decorators.js";
 import { LinkList } from "./sh-linklist";
@@ -35,6 +35,7 @@ export class Bookmarks extends LitElement {
 
   tagListRef: Ref<TagList> = createRef();
   linkListRef: Ref<LinkList> = createRef();
+  quickSearchRef: Ref<HTMLInputElement> = createRef();
 
   _onSearchTextEdited(evt: { target: { value: string } }) {
     // TODO: lit does not detect any changes deep inside the "this.links"
@@ -62,10 +63,17 @@ export class Bookmarks extends LitElement {
     this.tagListRef.value?.requestUpdate();
   }
 
+  protected firstUpdated(
+    _changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>
+  ): void {
+    this.quickSearchRef.value?.focus();
+  }
+
   override render() {
     return html`
       <input
         @keyup=${this._onSearchTextEdited}
+        ${ref(this.quickSearchRef)}
         type="search"
         class="block p-1 mb-1 w-full text-xs text-gray-900 bg-gray-50 rounded border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
         placeholder="Quicksearch (tags and details)"
