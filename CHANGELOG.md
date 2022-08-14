@@ -1,3 +1,8 @@
+# 1.2.0
+
+- Auto-Focus the "quicksearch" field
+- Provide keyboard shortcuts to navigate links when using the quicksearch.
+
 # 1.1.0
 
 - Fix scrolling issue in the settings & help page
