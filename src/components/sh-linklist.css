@@ -1,0 +1,9 @@
+.selected {
+  @apply border rounded mr-5;
+  @apply bg-slate-200 border-slate-300;
+  @apply dark:bg-slate-700 dark:border-slate-600;
+}
+
+.non-selected {
+  @apply border rounded border-transparent;
+}

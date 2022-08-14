@@ -37,13 +37,31 @@ export class Bookmarks extends LitElement {
   linkListRef: Ref<LinkList> = createRef();
   quickSearchRef: Ref<HTMLInputElement> = createRef();
 
-  _onSearchTextEdited(evt: { target: { value: string } }) {
-    // TODO: lit does not detect any changes deep inside the "this.links"
-    // object and we need to manually trigger the update. This is error-prone
-    // and should be improved.
-    this.links.search(evt.target.value);
-    this.linkListRef.value?.requestUpdate();
-    this.tagListRef.value?.requestUpdate();
+  _onKeyUp(evt: { target: { value: string }; key: string }) {
+    switch (evt.key) {
+      case "Enter":
+        let link = this.linkListRef?.value?.focussedLink;
+        if (link !== undefined && link !== null) {
+          this.dispatchEvent(
+            new CustomEvent("linkActivated", { detail: { link } })
+          );
+        }
+        break;
+      case "ArrowDown":
+        this.linkListRef.value?.focusNextLink();
+        break;
+      case "ArrowUp":
+        this.linkListRef.value?.focusPreviousLink();
+        break;
+      default:
+        // TODO: lit does not detect any changes deep inside the "this.links"
+        // object and we need to manually trigger the update. This is error-prone
+        // and should be improved.
+        this.links.search(evt.target.value);
+        this.linkListRef.value?.requestUpdate();
+        this.tagListRef.value?.requestUpdate();
+        this.linkListRef.value?.focusLink(0);
+    }
   }
 
   _onChipClicked(evt: {
@@ -72,7 +90,7 @@ export class Bookmarks extends LitElement {
   override render() {
     return html`
       <input
-        @keyup=${this._onSearchTextEdited}
+        @keyup=${this._onKeyUp}
         ${ref(this.quickSearchRef)}
         type="search"
         class="block p-1 mb-1 w-full text-xs text-gray-900 bg-gray-50 rounded border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"

@@ -57,6 +57,12 @@ To quickly "include" a tag, simply click on it if it is neutral.
 
 To quickly "exclude" a tag, simply right-click on it if it is neutral.
 
+### Keyboard Navigation
+
+While the quicksearch field is in focus, the up-/down-arrow keys can be used to
+focus a specific link. Pressing "Enter" on the keyboard will then open the
+selected link.
+
 ## Toolbar
 
 There is a toolbar above the tag- and bookmark-list providing additional "management" options. It allows you to:

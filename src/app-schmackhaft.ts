@@ -157,6 +157,12 @@ export class Schmackhaft extends LitElement {
     );
   }
 
+  async _onLinkActivated(evt: { detail: { link: Link } }) {
+    let browser = await this.getBrowser();
+    browser?.tabs.create({ url: evt.detail.link.href });
+    window.close();
+  }
+
   _renderBookmarks() {
     if (this._links.isEmpty) {
       return html` <strong>No links found.</strong>
@@ -165,7 +171,10 @@ export class Schmackhaft extends LitElement {
         <a href="#" @click=${this.onSettingsClicked}>open the settings</a> and
         add one or more sources.`;
     }
-    return html`<sh-bookmarklist .links=${this._links}></sh-bookmarklist>`;
+    return html`<sh-bookmarklist
+      @linkActivated=${this._onLinkActivated}
+      .links=${this._links}
+    ></sh-bookmarklist>`;
   }
 
   _renderSettings() {

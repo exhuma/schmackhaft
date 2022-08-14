@@ -13,6 +13,9 @@ class Link extends LitElement {
     // @ts-ignore
     css([tailwind]),
     css`
+      :host {
+        display: block;
+      }
       .screenshot {
         width: 64px;
         height: 64px;
