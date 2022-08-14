@@ -1,4 +1,5 @@
 import "./components/layout-vsplit";
+import "./components/sh-bookmarklist";
 import "./components/sh-link";
 import "./components/sh-linklist";
 import "./components/sh-taglist";
@@ -6,13 +7,7 @@ import "./components/sh-toolbar";
 import "./views/sh-settings";
 import "@material/mwc-button";
 import "material-icon-component/md-icon.js";
-import {
-  Bookmark,
-  PageName,
-  TBookmarkSource,
-  TBrowserFactory,
-  TagStateTransition,
-} from "./types";
+import { Bookmark, PageName, TBookmarkSource, TBrowserFactory } from "./types";
 import { LitElement, css, html } from "lit";
 import { Ref, createRef, ref } from "lit/directives/ref.js";
 import { customElement, property, state } from "lit/decorators.js";
@@ -21,10 +16,8 @@ import { parse, setOptions } from "marked";
 // @ts-ignore
 import Help from "./help/help.md?raw";
 import { Link } from "./model/link";
-import { LinkList } from "./components/sh-linklist";
 import { Links } from "./model/link-collection";
 import { Settings } from "./model/settings";
-import { TagList } from "./components/sh-taglist";
 import { ToolbarAction } from "./components/sh-toolbar";
 import { createStorage } from "./core/storage/factory";
 // @ts-ignore
@@ -68,8 +61,6 @@ export class Schmackhaft extends LitElement {
 
   tagsRef: Ref<HTMLInputElement> = createRef();
   searchTextRef: Ref<HTMLInputElement> = createRef();
-  linkListRef: Ref<LinkList> = createRef();
-  tagListRef: Ref<TagList> = createRef();
   getBrowser: TBrowserFactory = async () => null;
 
   private _links: Links = new Links();
@@ -141,23 +132,6 @@ export class Schmackhaft extends LitElement {
     this.requestUpdate();
   }
 
-  onChipClicked(evt: {
-    detail: { direction: TagStateTransition; name: string };
-  }) {
-    switch (evt.detail.direction) {
-      case TagStateTransition.ADVANCE:
-      default:
-        this._links.advanceState(evt.detail.name);
-        break;
-      case TagStateTransition.REVERSE:
-        this._links.reverseState(evt.detail.name);
-        break;
-    }
-    this.requestUpdate();
-    this.linkListRef.value?.requestUpdate();
-    this.tagListRef.value?.requestUpdate();
-  }
-
   onRefreshClicked() {
     this._fetchBookmarks();
   }
@@ -191,32 +165,7 @@ export class Schmackhaft extends LitElement {
         <a href="#" @click=${this.onSettingsClicked}>open the settings</a> and
         add one or more sources.`;
     }
-    return html`
-      <input
-        @keyup=${this._onSearchTextEdited}
-        type="search"
-        class="block p-1 mb-1 w-full text-xs text-gray-900 bg-gray-50 rounded border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-        placeholder="Quicksearch (tags and details)"
-      />
-      <layout-vsplit>
-        <sh-taglist
-          slot="top"
-          ${ref(this.tagListRef)}
-          @chipClicked="${this.onChipClicked}"
-          .links="${this._links}"
-          dense
-        ></sh-taglist>
-        <sh-linklist
-          slot="bottom"
-          ${ref(this.linkListRef)}
-          .links=${this._links}
-          .renderSearchedTags="${false}"
-          favIconTemplate=${this._settings.favIconTemplate}
-          @chipClicked="${this.onChipClicked}"
-          dense
-        ></sh-linklist>
-      </layout-vsplit>
-    `;
+    return html`<sh-bookmarklist .links=${this._links}></sh-bookmarklist>`;
   }
 
   _renderSettings() {
@@ -257,15 +206,6 @@ export class Schmackhaft extends LitElement {
       <strong>Source Settings:</strong>
       <pre class="overflow-auto">${JSON.stringify(error.source.settings)}</pre>
     </div> `;
-  }
-
-  _onSearchTextEdited(evt: { target: { value: string } }) {
-    // TODO: lit does not detect any changes deep inside the "this._links"
-    // object and we need to manually trigger the update. This is error-prone
-    // and should be improved.
-    this._links.search(evt.target.value);
-    this.linkListRef.value?.requestUpdate();
-    this.tagListRef.value?.requestUpdate();
   }
 
   _onToolbarButtonClick(evt: { detail: { name: ToolbarAction } }) {

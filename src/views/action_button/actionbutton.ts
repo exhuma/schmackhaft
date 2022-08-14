@@ -2,7 +2,7 @@
  * This file contains supporting JS code for the browser-extension action button
  */
 import { Browser } from "../../types";
-import { Schmackhaft } from "../../components/app-schmackhaft";
+import { Schmackhaft } from "../../app-schmackhaft";
 import { SettingsBridge } from "../../core/settings";
 
 /**
