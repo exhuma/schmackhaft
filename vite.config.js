@@ -1,13 +1,11 @@
-import { fileURLToPath } from "url";
+const isProduction = process.env.NODE_ENV === "production";
 export default {
   build: {
-    sourcemap: true,
+    sourcemap: !isProduction,
     outDir: "build",
     rollupOptions: {
       input: {
-        action_button: fileURLToPath(
-          new URL("./src/views/action_button/index.html", import.meta.url)
-        ),
+        action_button: "./src/views/action_button/index.html",
       },
     },
   },
