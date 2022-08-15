@@ -13,7 +13,7 @@
   "browser_action": {
     "default_title": "Schmackhaft",
     "default_popup": "/src/views/action_button/index.html",
-    "default_icon": "/assets/icon.png"
+    "default_icon": "/assets/icon.svg"
   },
   "permissions": ["<all_urls>", "tabs", "storage", "bookmarks"],
   "browser_specific_settings": {
