@@ -20,5 +20,16 @@
     "gecko": {
       "id": "{a4621edc-b7f8-4dda-97de-e184bce99be8}"
     }
+  },
+  "background": {
+    "scripts": ["/background.js"]
+  },
+  "commands": {
+    "open-popup": {
+      "suggested_key": {
+        "default": "Ctrl+Alt+S"
+      },
+      "description": "Open Schmackhaft Popup"
+    }
   }
 }
