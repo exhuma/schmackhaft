@@ -5,26 +5,26 @@ all: chrome mozilla
 	notify-send -u low -t 1000 Build done
 
 mozilla: pages bundled_docs
-	mkdir -p unpackaged/mozilla
-	cp -r build/pages/* unpackaged/mozilla/
+	mkdir -p unpackaged/mozilla/assets
+	cp assets/icon.svg unpackaged/mozilla/assets
+	cp -r build/* unpackaged/mozilla/
 	sed -e 's/__version__/$(CURRENT_VERSION)/' \
 		manifest-mozilla.json > unpackaged/mozilla/manifest.json
 
-chrome: pages bundled_docs
-	mkdir -p unpackaged/chrome/src/core
-	cp -r build/pages/* unpackaged/chrome/
+icons:
+	mkdir -p unpackaged/chrome/assets
 	inkscape -w 48 -h 48 assets/icon.svg \
-		-o unpackaged/chrome/assets/icon48.png || \
-		inkscape -w 48 -h 48 assets/icon.svg \
-			-e unpackaged/chrome/assets/icon48.png
+		-o unpackaged/chrome/assets/icon48.png \
+		2>/dev/null
 	inkscape -w 96 -h 96 assets/icon.svg \
-		-o unpackaged/chrome/assets/icon96.png || \
-		inkscape -w 96 -h 96 assets/icon.svg \
-			-e unpackaged/chrome/assets/icon96.png
+		-o unpackaged/chrome/assets/icon96.png \
+		2>/dev/null
 	inkscape -w 128 -h 128 assets/icon.svg \
-		-o unpackaged/chrome/assets/icon128.png || \
-		inkscape -w 128 -h 128 assets/icon.svg \
-			-e unpackaged/chrome/assets/icon128.png
+		-o unpackaged/chrome/assets/icon128.png \
+		2>/dev/null
+
+chrome: pages bundled_docs icons
+	cp -r build/* unpackaged/chrome/
 	sed -e 's/__version__/$(CURRENT_VERSION)/' \
 		manifest-chrome.json > unpackaged/chrome/manifest.json
 
@@ -37,7 +37,7 @@ bundled_docs:
 	cp -r docs/screenshots unpackaged/mozilla/pages/docs
 
 pages:
-	npm run build -- --config vite-pages.config.js
+	npm run build -- --config vite.config.js
 
 dist: mozilla chrome
 	mkdir -p dist
