@@ -1,3 +1,9 @@
+# 1.2.1
+
+- Reduced build size
+- Fixed missing icon for Firefox
+- Add shortcut for Firefox
+
 # 1.2.0
 
 - Auto-Focus the "quicksearch" field
