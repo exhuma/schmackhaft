@@ -7,7 +7,7 @@ all: chrome mozilla
 mozilla: pages bundled_docs
 	mkdir -p unpackaged/mozilla/assets
 	cp assets/icon.svg unpackaged/mozilla/assets
-	cp -r build/pages/* unpackaged/mozilla/
+	cp -r build/* unpackaged/mozilla/
 	sed -e 's/__version__/$(CURRENT_VERSION)/' \
 		manifest-mozilla.json > unpackaged/mozilla/manifest.json
 
@@ -24,7 +24,7 @@ icons:
 		2>/dev/null
 
 chrome: pages bundled_docs icons
-	cp -r build/pages/* unpackaged/chrome/
+	cp -r build/* unpackaged/chrome/
 	sed -e 's/__version__/$(CURRENT_VERSION)/' \
 		manifest-chrome.json > unpackaged/chrome/manifest.json
 
@@ -37,7 +37,7 @@ bundled_docs:
 	cp -r docs/screenshots unpackaged/mozilla/pages/docs
 
 pages:
-	npm run build -- --config vite-pages.config.js
+	npm run build -- --config vite.config.js
 
 dist: mozilla chrome
 	mkdir -p dist

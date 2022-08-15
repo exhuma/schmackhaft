@@ -2,7 +2,7 @@ import { fileURLToPath } from "url";
 export default {
   build: {
     sourcemap: true,
-    outDir: "build/pages",
+    outDir: "build",
     rollupOptions: {
       input: {
         action_button: fileURLToPath(
