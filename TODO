@@ -1,7 +1,7 @@
-- Add a text-search for bookmarks
-- Allow sources to be enabled/disabled
-- Add default tags per source
-- Replace arrays with sets where possible
-- Add a name to each source
 - Deduplicate bookmarks (if more than one source has the same bookmark, it is added with duplicates)
+- New Source Settings
+    - Allow sources to be enabled/disabled
+    - Add default tags per source
+    - Add a name to each source
+- Replace arrays with sets where possible
 - Is "postcss" still needed?
