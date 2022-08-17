@@ -1,14 +1,15 @@
 import "@material/mwc-textfield";
 import "@material/mwc-button";
 import "../components/sh-http-settings";
-import { BookmarkSource, TSettings, getEnumByValue } from "../types";
+import { BookmarkSource, getEnumByValue } from "../types";
 import { LitElement, css, html } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
+import { Settings } from "../model/settings";
 // @ts-ignore
 import tailwind from "../tailwind.css";
 
 @customElement("sh-settings")
-export class Settings extends LitElement {
+export class SettingsElement extends LitElement {
   static styles = [
     // @ts-ignore
     css([tailwind]),
@@ -30,7 +31,7 @@ export class Settings extends LitElement {
     `,
   ];
 
-  private _settings: TSettings = { sources: [], version: 3 };
+  private _settings: Settings = new Settings();
 
   @state()
   private _newStorageType = "http";
@@ -39,15 +40,14 @@ export class Settings extends LitElement {
   private _isVersionSupported = false;
 
   set settings(value: string) {
-    let data = JSON.parse(value);
-    this._isVersionSupported = data?.version === 3;
-    this._settings = data;
+    this._settings = Settings.fromJson(value);
+    this._isVersionSupported = this._settings.version === 3;
     this.requestUpdate();
   }
 
   @property({ type: String })
   get settings() {
-    return JSON.stringify(this._settings);
+    return this._settings.toJson();
   }
 
   onSaveClick() {
