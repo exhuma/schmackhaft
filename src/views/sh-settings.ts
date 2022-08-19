@@ -36,12 +36,10 @@ export class SettingsElement extends LitElement {
   @state()
   private _newStorageType = "http";
 
-  @state()
-  private _isVersionSupported = false;
+  private supportedVersion = 3;
 
   set settings(value: string) {
     this._settings = Settings.fromJson(value);
-    this._isVersionSupported = this._settings.version === 3;
     this.requestUpdate();
   }
 
@@ -177,14 +175,15 @@ export class SettingsElement extends LitElement {
   }
 
   override render() {
-    if (!this._isVersionSupported) {
+    if (this._settings.version !== this.supportedVersion) {
       return html`
         <p>Settings version is not supported</p>
         <p>
           The current version of the settings
           (<tt>${this._settings?.version}</tt>) is not supported by the settings
-          editor. This <em>should</em> have been automatically handled. If the
-          problem persists please open a bug-report, including (if possible your
+          editor (expected version ${this.supportedVersion}). This
+          <em>should</em> have been automatically handled. If the problem
+          persists please open a bug-report, including (if possible your
           settings object shown below). Your current settings object:
         </p>
         <code> ${JSON.stringify(this._settings)} </code>
