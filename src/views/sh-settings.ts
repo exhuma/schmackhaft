@@ -193,6 +193,7 @@ export class SettingsElement extends LitElement {
       this._renderConfigBlock(type, settings, index)
     );
     return html`
+      <h1 class="text-2xl">Global Settings</h1>
       <input
         type="checkbox"
         ?checked=${this._settings.favIconTemplate !== ""}
