@@ -17,6 +17,9 @@ function initSettingsUI() {
   let settingsElementV2 = document.getElementById(
     "SettingsV2"
   ) as SettingsElement;
+  let settingsElementV3 = document.getElementById(
+    "SettingsV3"
+  ) as SettingsElement;
   settingsElementV2.settings = JSON.stringify({
     remoteUrls: [
       "https://raw.githubusercontent.com/exhuma/dotfiles/master/bookmarks.json",
@@ -24,6 +27,10 @@ function initSettingsUI() {
     ],
     enableBrowserBookmarks: true,
     version: 2,
+  });
+  settingsElementV3.settings = JSON.stringify({
+    sources: [],
+    version: 3,
   });
   settingsElementV2.addEventListener("change", (event) => {
     let evt = event as CustomEvent;
