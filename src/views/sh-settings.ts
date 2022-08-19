@@ -142,7 +142,7 @@ export class SettingsElement extends LitElement {
               clip-rule="evenodd"
             />
           </svg>
-          <span class="sr-only">Icon description</span>
+          <span class="sr-only">Delete this source</span>
         </button>
       </div>
       <div class="border-l-4 border-slate-200 p-4">${configBlock}</div>`;
