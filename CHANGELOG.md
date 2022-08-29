@@ -1,3 +1,7 @@
+# 1.2.2
+
+- Fix default icon for Chromium based browsers (edge, chrome, ...)
+
 # 1.2.1
 
 - Reduced build size
