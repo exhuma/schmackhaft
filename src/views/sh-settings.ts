@@ -1,7 +1,7 @@
 import "@material/mwc-textfield";
 import "@material/mwc-button";
 import "../components/sh-http-settings";
-import { BookmarkSource, getEnumByValue } from "../types";
+import { BookmarkSource, TBookmarkSource, getEnumByValue } from "../types";
 import { LitElement, css, html } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import { Settings } from "../model/settings";
@@ -36,7 +36,7 @@ export class SettingsElement extends LitElement {
   @state()
   private _newStorageType = "http";
 
-  private supportedVersion = 3;
+  private supportedVersion = 4;
 
   set settings(value: string) {
     this._settings = Settings.fromJson(value);
@@ -75,28 +75,31 @@ export class SettingsElement extends LitElement {
   /**
    * Render the settings UI for an HTTP bookmark source
    *
-   * @param settings The local settings objec to this bookmark source.
+   * @param source The configuration of the source block
    * @param index The index of the source in the global settings object.
    * @returns an HTML object to render the settings in
    */
-  _renderHttpSettings(settings: object, index: number) {
-    return html`<sh-http-settings
-      data-source-index=${index}
-      @change=${this.onBlockSettingsChanged}
-      settings=${JSON.stringify(settings)}
-    ></sh-http-settings>`;
+  _renderHttpSettings(source: TBookmarkSource, index: number) {
+    return html` <div>
+      <h1 class="text-lg">${source.name}</h1>
+      <sh-http-settings
+        data-source-index=${index}
+        @change=${this.onBlockSettingsChanged}
+        settings=${JSON.stringify(source.settings)}
+      ></sh-http-settings>
+    </div>`;
   }
 
-  _renderBrowserSettings(settings: object, index: number) {
+  _renderBrowserSettings(source: TBookmarkSource, index: number) {
     return html` <div>
-      <h1 class="text-lg">Browser bookmarks</h1>
+      <h1 class="text-lg">${source.name}</h1>
       <em>No settings for this source</em>
     </div>`;
   }
 
-  _renderExtensionStorageSettings(settings: object, index: number) {
+  _renderExtensionStorageSettings(source: TBookmarkSource, index: number) {
     return html` <div>
-      <h1 class="text-lg">Schmackhaft Internal Storage</h1>
+      <h1 class="text-lg">${source.name}</h1>
       <em>No settings for this source</em>
     </div>`;
   }
@@ -106,18 +109,18 @@ export class SettingsElement extends LitElement {
     this.requestUpdate();
   }
 
-  _renderConfigBlock(type: string, settings: object, index: number) {
-    let sourceType = getEnumByValue(BookmarkSource, type);
+  _renderConfigBlock(source: TBookmarkSource, index: number) {
+    let sourceType = getEnumByValue(BookmarkSource, source.type);
     let configBlock;
     switch (sourceType) {
       case BookmarkSource.BROWSER:
-        configBlock = this._renderBrowserSettings(settings, index);
+        configBlock = this._renderBrowserSettings(source, index);
         break;
       case BookmarkSource.EXTENSION_STORAGE:
-        configBlock = this._renderExtensionStorageSettings(settings, index);
+        configBlock = this._renderExtensionStorageSettings(source, index);
         break;
       case BookmarkSource.HTTP:
-        configBlock = this._renderHttpSettings(settings, index);
+        configBlock = this._renderHttpSettings(source, index);
         break;
       default:
         throw new Error(`Settings UI for ${sourceType} is not yet implemented`);
@@ -170,7 +173,15 @@ export class SettingsElement extends LitElement {
 
   _addSource() {
     let enumValue = getEnumByValue(BookmarkSource, this._newStorageType);
-    this._settings.sources.push({ type: enumValue, settings: {} });
+    this._settings.sources.push({
+      type: enumValue,
+      settings: {},
+      name: `Unknown ${enumValue} source`,
+      defaultTags: [],
+      isEnabled: true,
+      hasFaviconsEnabled: true,
+      favIconTemplateURL: "",
+    });
     this.requestUpdate();
   }
 
@@ -189,8 +200,8 @@ export class SettingsElement extends LitElement {
         <code> ${JSON.stringify(this._settings)} </code>
       `;
     }
-    let configBlocks = this._settings.sources.map(({ type, settings }, index) =>
-      this._renderConfigBlock(type, settings, index)
+    let configBlocks = this._settings.sources.map((source, index) =>
+      this._renderConfigBlock(source, index)
     );
     return html`
       <h1 class="text-2xl">Global Settings</h1>

@@ -1,6 +1,6 @@
 import { BookmarkSource, TBookmarkSource, TSettings } from "../types";
 
-const LATEST_VERSION = 3;
+const LATEST_VERSION = 4;
 
 /**
  * A simple data-class representing application settings.
@@ -99,6 +99,11 @@ class Migrator {
       sources.push({
         type: BookmarkSource.BROWSER,
         settings: {},
+        name: "Browser Bookmarks",
+        defaultTags: ["browser-bookmarks"],
+        isEnabled: true,
+        hasFaviconsEnabled: true,
+        favIconTemplateURL: "",
       });
     }
     settings.remoteUrls.forEach((item: string) => {
@@ -107,11 +112,52 @@ class Migrator {
         settings: {
           url: item,
         },
+        name: `Remote JSON: ${item}`,
+        defaultTags: [],
+        isEnabled: true,
+        hasFaviconsEnabled: true,
+        favIconTemplateURL: "",
       });
     });
     let newData: TSettings = {
       sources: sources,
       version: 3,
+    };
+    return newData;
+  }
+
+  static migrate_3_to_4(settings: any): any {
+    if (settings.version !== 3) {
+      throw new Error(
+        `Expected to version 3 for the migration to 4, but got ${settings.version} instead`
+      );
+    }
+    let newSources = settings.sources.map((item: any): TBookmarkSource => {
+      let sourceName = "unknown";
+      switch (item.type) {
+        case BookmarkSource.EXTENSION_STORAGE:
+          sourceName = "Extension Storage";
+          break;
+        case BookmarkSource.HTTP:
+          sourceName = "External JSON File";
+          break;
+        case BookmarkSource.BROWSER:
+          sourceName = "Browser Bookmarks";
+          break;
+      }
+      return {
+        type: item.type,
+        settings: item.settings,
+        name: sourceName,
+        defaultTags: [],
+        isEnabled: true,
+        hasFaviconsEnabled: true,
+        favIconTemplateURL: "",
+      };
+    });
+    let newData: TSettings = {
+      sources: newSources,
+      version: 4,
     };
     return newData;
   }

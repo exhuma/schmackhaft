@@ -34,6 +34,11 @@ export class FullScreenSettingsAddSource extends LitElement {
   _source: TBookmarkSource = {
     type: BookmarkSource.HTTP,
     settings: {},
+    name: "",
+    isEnabled: true,
+    hasFaviconsEnabled: true,
+    favIconTemplateURL: "",
+    defaultTags: [],
   };
 
   _onTypeChanged(evt: { target: { value: string } }) {

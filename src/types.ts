@@ -96,6 +96,11 @@ export interface IStorageBackend {
 }
 
 export type TBookmarkSource = {
+  name: string;
+  defaultTags: string[];
+  isEnabled: boolean;
+  hasFaviconsEnabled: boolean;
+  favIconTemplateURL: string;
   type: BookmarkSource;
   settings: object;
 };
