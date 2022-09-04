@@ -47,6 +47,21 @@ export class FullScreenSettings extends LitElement {
       INPUT[part="favIconTemplateUrl"] {
         flex-grow: 99;
       }
+
+      DIV.error {
+        border: 1px solid red;
+        margin: 1em 3em;
+      }
+
+      DIV.error DIV {
+        padding: 0.2em 1em;
+      }
+
+      DIV.error DIV.errorType {
+        background-color: rgba(255, 0, 0, 0.2);
+        border-bottom: 1px solid red;
+        font-weight: bolder;
+      }
     `,
   ];
 
@@ -54,6 +69,9 @@ export class FullScreenSettings extends LitElement {
   private _selectorRef: Ref<HTMLSelectElement> = createRef();
 
   private _settings: Settings = new Settings();
+
+  @state()
+  private _jsonError: string = "";
 
   set settings(value: string) {
     this._settings = Settings.fromJson(value);
@@ -80,18 +98,20 @@ export class FullScreenSettings extends LitElement {
       textArea.value = JSON.stringify(
         this._settings.sources[sourceIndex].settings
       );
+      this._jsonError = "";
     }
   }
 
   _onTextAreaBlur(evt) {
     let textArea = this._textAreaRef.value as HTMLTextAreaElement | null;
     let selector = this._selectorRef.value as HTMLSelectElement | null;
+    this._jsonError = "";
     if (textArea && selector && selector.selectedIndex !== 0) {
       let newSettings = null;
       try {
         newSettings = JSON.parse(textArea.value);
       } catch (error) {
-        console.error(error);
+        this._jsonError = error.message;
       }
       if (newSettings !== null) {
         let sourceIndex = Number.parseInt(selector.value, 10);
@@ -117,6 +137,15 @@ export class FullScreenSettings extends LitElement {
   }
 
   override render() {
+    let errorDisplay = html``;
+    if (this._jsonError !== "") {
+      errorDisplay = html`
+        <div class="error">
+          <div class="errorType">JSON Error</div>
+          <div class="errorMessage">${this._jsonError}</div>
+        </div>
+      `;
+    }
     return html`
     <div id="ToolBar">
         <div id="ToolBarLeft">
@@ -151,6 +180,7 @@ export class FullScreenSettings extends LitElement {
         @blur=${this._onTextAreaBlur}
         ${ref(this._textAreaRef)}
         part="currentSourceSettings"></textarea>
+        ${errorDisplay}
         <button @click="${this._onSaveClick}" part="saveButton">Save</button>
     </div>
     `;
