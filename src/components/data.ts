@@ -1,5 +1,5 @@
 import { Link } from "../model/link";
-import { Links } from "./model/link-collection";
+import { Links } from "../model/link-collection";
 
 export const demoLinks = new Links([
   new Link(

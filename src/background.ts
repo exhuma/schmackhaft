@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Background process for manifest-v2 based browsers (f.ex. Firefox)
  */

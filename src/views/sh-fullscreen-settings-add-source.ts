@@ -1,4 +1,4 @@
-import { BookmarkSource, TBookmarkSource } from "../types";
+import { BookmarkSource, TBookmarkSource, getEnumByValue } from "../types";
 import { LitElement, css, html } from "lit";
 import { customElement, state } from "lit/decorators.js";
 
@@ -36,11 +36,12 @@ export class FullScreenSettingsAddSource extends LitElement {
     settings: {},
   };
 
-  _onTypeChanged(evt) {
-    this._source.type = evt.target.value;
+  _onTypeChanged(evt: { target: { value: string } }) {
+    let enumValue = getEnumByValue(BookmarkSource, evt.target.value);
+    this._source.type = enumValue;
   }
 
-  _onSettingsBlurred(evt) {
+  _onSettingsBlurred(evt: { target: { value: string } }) {
     let value = "{}";
     if (evt.target.value.trim() !== "") {
       value = evt.target.value;
@@ -48,12 +49,12 @@ export class FullScreenSettingsAddSource extends LitElement {
     try {
       this._source.settings = JSON.parse(value);
       this._jsonError = "";
-    } catch (error) {
+    } catch (error: any) {
       this._jsonError = error.message;
     }
   }
 
-  _onSaveClicked(evt) {
+  _onSaveClicked() {
     if (this._jsonError !== "") {
       // TODO: Properly display the error to the user
       console.error(`Unable to save. Invalid JSON: ${this._jsonError}`);

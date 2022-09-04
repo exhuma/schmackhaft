@@ -63,8 +63,8 @@ class Migrator {
    * @returns The upgraded settings object
    */
   static upgrade(settings: any): any {
-    // @ts-ignore
     let func =
+      // @ts-ignore
       Migrator[`migrate_${settings.version}_to_${settings.version + 1}`];
     while (func !== undefined) {
       settings = func(settings);

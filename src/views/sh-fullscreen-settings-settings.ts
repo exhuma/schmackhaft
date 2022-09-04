@@ -98,7 +98,7 @@ export class FullScreenSettingsSettings extends LitElement {
     }
   }
 
-  _onTextAreaBlur(evt) {
+  _onTextAreaBlur(evt: FocusEvent) {
     let textArea = this._textAreaRef.value as HTMLTextAreaElement | null;
     let selector = this._selectorRef.value as HTMLSelectElement | null;
     this._jsonError = "";
@@ -106,7 +106,7 @@ export class FullScreenSettingsSettings extends LitElement {
       let newSettings = null;
       try {
         newSettings = JSON.parse(textArea.value);
-      } catch (error) {
+      } catch (error: any) {
         this._jsonError = error.message;
       }
       if (newSettings !== null) {
@@ -116,10 +116,11 @@ export class FullScreenSettingsSettings extends LitElement {
     }
   }
 
-  _onFaviconUrlBlur(evt: Event) {
+  _onFaviconUrlBlur(evt: FocusEvent) {
     if (!evt || !evt.target) {
       return;
     }
+    // @ts-ignore
     this._settings.favIconTemplate = evt.target.value;
   }
 

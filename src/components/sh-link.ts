@@ -116,6 +116,7 @@ class Link extends LitElement {
     let image = html`<img class="screenshot" src="${this.img}" />`;
     let tags = html`<div class="tags">${this.tags.map(this._chip, this)}</div>`;
     if (this.dense) {
+      // @ts-ignore
       image = until(this.getFavicon(this.href), html``);
       tags = html``;
     }

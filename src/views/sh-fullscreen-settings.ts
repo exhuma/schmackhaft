@@ -70,7 +70,7 @@ export class FullScreenSettings extends LitElement {
     this._selectedComponent = view;
   }
 
-  _onSourceAdded(evt) {
+  _onSourceAdded(evt: CustomEvent) {
     this._settings.sources.push(JSON.parse(evt.detail));
     this.dispatchEvent(
       new CustomEvent("change", { detail: { newSettings: this.settings } })
