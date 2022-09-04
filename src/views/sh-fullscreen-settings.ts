@@ -96,7 +96,9 @@ export class FullScreenSettings extends LitElement {
     let textArea = this._textAreaRef.value;
     if (textArea) {
       textArea.value = JSON.stringify(
-        this._settings.sources[sourceIndex].settings
+        this._settings.sources[sourceIndex].settings,
+        null,
+        2
       );
       this._jsonError = "";
     }
