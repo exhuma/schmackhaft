@@ -62,6 +62,12 @@ export class FullScreenSettings extends LitElement {
         border-bottom: 1px solid red;
         font-weight: bolder;
       }
+
+      P.hint {
+        margin: 0;
+        font-size: 80%;
+        color: #555;
+      }
     `,
   ];
 
@@ -169,6 +175,7 @@ export class FullScreenSettings extends LitElement {
       this._settings.favIconTemplate
     }" placeholder="https://www.google.com/s2/favicons?domain={domain}&sz=32"></input>
         </div>
+        <p class="hint">Fallback external service providing favicons if they are not provided by the source backend.</p>
         <h1>Sources</h1>
         <select
               ${ref(this._selectorRef)}
