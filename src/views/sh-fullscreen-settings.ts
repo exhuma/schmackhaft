@@ -12,6 +12,10 @@ export class FullScreenSettings extends LitElement {
         display: block;
       }
 
+      H1 {
+        margin-bottom: 0;
+      }
+
       #ToolBar {
         display: flex;
         flex-direction: row;
@@ -65,6 +69,7 @@ export class FullScreenSettings extends LitElement {
 
       P.hint {
         margin: 0;
+        margin-bottom: 1em;
         font-size: 80%;
         color: #555;
       }
@@ -177,6 +182,9 @@ export class FullScreenSettings extends LitElement {
         </div>
         <p class="hint">Fallback external service providing favicons if they are not provided by the source backend.</p>
         <h1>Sources</h1>
+        <p class="hint">
+          Select a bookmark source below to access and edit its settings.
+        </p>
         <select
               ${ref(this._selectorRef)}
               @change=${this._onSelectionChanged}
