@@ -1,6 +1,8 @@
+import "./sh-fullscreen-settings-add-source";
 import { LitElement, css, html } from "lit";
 import { Ref, createRef, ref } from "lit/directives/ref.js";
 import { customElement, property, state } from "lit/decorators.js";
+import { FullScreenSettingsAddSource } from "./sh-fullscreen-settings-add-source";
 import { Settings } from "../model/settings";
 import { TBookmarkSource } from "../types";
 
@@ -21,28 +23,8 @@ export class FullScreenSettingsSettings extends LitElement {
         gap: 1em;
       }
 
-      TEXTAREA {
-        width: 100%;
-        min-height: 300px;
-      }
-
       INPUT[part="favIconTemplateUrl"] {
         flex-grow: 99;
-      }
-
-      DIV.error {
-        border: 1px solid red;
-        margin: 1em 3em;
-      }
-
-      DIV.error DIV {
-        padding: 0.2em 1em;
-      }
-
-      DIV.error DIV.errorType {
-        background-color: rgba(255, 0, 0, 0.2);
-        border-bottom: 1px solid red;
-        font-weight: bolder;
       }
 
       P.hint {
@@ -54,11 +36,8 @@ export class FullScreenSettingsSettings extends LitElement {
     `,
   ];
 
-  private _textAreaRef: Ref<HTMLTextAreaElement> = createRef();
+  private _sourceSettingsRef: Ref<FullScreenSettingsAddSource> = createRef();
   private _selectorRef: Ref<HTMLSelectElement> = createRef();
-
-  @state()
-  private _jsonError: string = "";
 
   private _settings: Settings = new Settings();
 
@@ -72,14 +51,6 @@ export class FullScreenSettingsSettings extends LitElement {
     return this._settings.toJson();
   }
 
-  _onSaveClick() {
-    this.dispatchEvent(
-      new CustomEvent("change", {
-        detail: { newSettings: JSON.stringify(this._settings) },
-      })
-    );
-  }
-
   _onSelectionChanged(evt: Event) {
     if (!evt || !evt.target) {
       return;
@@ -87,32 +58,9 @@ export class FullScreenSettingsSettings extends LitElement {
 
     let target = evt.target as HTMLInputElement;
     let sourceIndex = Number.parseInt(target.value, 10);
-    let textArea = this._textAreaRef.value;
-    if (textArea) {
-      textArea.value = JSON.stringify(
-        this._settings.sources[sourceIndex].settings,
-        null,
-        2
-      );
-      this._jsonError = "";
-    }
-  }
-
-  _onTextAreaBlur(evt: FocusEvent) {
-    let textArea = this._textAreaRef.value as HTMLTextAreaElement | null;
-    let selector = this._selectorRef.value as HTMLSelectElement | null;
-    this._jsonError = "";
-    if (textArea && selector && selector.selectedIndex !== 0) {
-      let newSettings = null;
-      try {
-        newSettings = JSON.parse(textArea.value);
-      } catch (error: any) {
-        this._jsonError = error.message;
-      }
-      if (newSettings !== null) {
-        let sourceIndex = Number.parseInt(selector.value, 10);
-        this._settings.sources[sourceIndex].settings = newSettings;
-      }
+    let editor = this._sourceSettingsRef.value;
+    if (editor) {
+      editor.source = JSON.stringify(this._settings.sources[sourceIndex]);
     }
   }
 
@@ -128,16 +76,16 @@ export class FullScreenSettingsSettings extends LitElement {
     return html`<option value="${index}">Source: ${value.type}</option>`;
   }
 
-  override render() {
-    let errorDisplay = html``;
-    if (this._jsonError !== "") {
-      errorDisplay = html`
-        <div class="error">
-          <div class="errorType">JSON Error</div>
-          <div class="errorMessage">${this._jsonError}</div>
-        </div>
-      `;
+  _onSourceSettingsChanged(evt: CustomEvent) {
+    let sourceSetting = JSON.parse(evt.detail.sourceSetting);
+    let selector = this._selectorRef.value as HTMLSelectElement | null;
+    if (selector && selector.selectedIndex !== 0) {
+      let sourceIndex = Number.parseInt(selector.value, 10);
+      this._settings.sources[sourceIndex].settings = sourceSetting;
     }
+  }
+
+  override render() {
     return html`
     <h1>Settings</h1>
       <div class="keyValueField">
@@ -161,12 +109,10 @@ export class FullScreenSettingsSettings extends LitElement {
           <option selected disabled>Select a source</option>
           ${this._settings.sources.map(this._renderSelectOption)}
           </select>
-      <textarea
-      @blur=${this._onTextAreaBlur}
-      ${ref(this._textAreaRef)}
-      part="currentSourceSettings"></textarea>
-      ${errorDisplay}
-      <button @click="${this._onSaveClick}" part="saveButton">Save</button>
+      <sh-fullscreen-settings-add-source
+        ${ref(this._sourceSettingsRef)}
+        @change=${this._onSourceSettingsChanged}
+      ></sh-fullscreen-settings-add-source>
     `;
   }
 }

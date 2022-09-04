@@ -34,6 +34,9 @@ export function initUI() {
   let element = document.getElementById("TheSettings") as FullScreenSettings;
   if (element !== null) {
     element.settings = settings.toJson();
-    element.addEventListener("change", console.log);
+    element.addEventListener("change", (evt) => {
+      console.log("Demo page detected a settings change");
+      console.log({ newSettings: JSON.parse(evt.detail.newSettings) });
+    });
   }
 }

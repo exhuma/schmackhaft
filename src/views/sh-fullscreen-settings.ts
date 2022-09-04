@@ -2,7 +2,10 @@ import "./sh-fullscreen-settings-settings";
 import "./sh-fullscreen-settings-add-source";
 import "./sh-fullscreen-settings-show-links";
 import { LitElement, css, html } from "lit";
+import { Ref, createRef, ref } from "lit/directives/ref.js";
 import { customElement, property, state } from "lit/decorators.js";
+import { FullScreenSettingsAddSource } from "./sh-fullscreen-settings-add-source";
+import { FullScreenSettingsSettings } from "./sh-fullscreen-settings-settings";
 import { Settings } from "../model/settings";
 
 enum SelectedComponent {
@@ -43,6 +46,8 @@ export class FullScreenSettings extends LitElement {
       #MainContent {
         display: flex;
         flex-direction: column;
+        width: 50%;
+        margin: auto;
       }
     `,
   ];
@@ -51,6 +56,9 @@ export class FullScreenSettings extends LitElement {
 
   @state()
   private _selectedComponent: SelectedComponent = SelectedComponent.SETTINGS;
+
+  private _addSourceRef: Ref<FullScreenSettingsAddSource> = createRef();
+  private _editSourceRef: Ref<FullScreenSettingsSettings> = createRef();
 
   set settings(value: string) {
     this._settings = Settings.fromJson(value);
@@ -70,11 +78,23 @@ export class FullScreenSettings extends LitElement {
     this._selectedComponent = view;
   }
 
-  _onSourceAdded(evt: CustomEvent) {
-    this._settings.sources.push(JSON.parse(evt.detail));
-    this.dispatchEvent(
-      new CustomEvent("change", { detail: { newSettings: this.settings } })
-    );
+  _onAddSourceSaveClicked() {
+    if (this._addSourceRef.value) {
+      let data = JSON.parse(this._addSourceRef.value.source);
+      this._settings.sources.push(data);
+      this.dispatchEvent(
+        new CustomEvent("change", { detail: { newSettings: this.settings } })
+      );
+    }
+  }
+
+  _onChangeSettingsSaveClicked() {
+    if (this._editSourceRef.value) {
+      this.settings = this._editSourceRef.value.settings;
+      this.dispatchEvent(
+        new CustomEvent("change", { detail: { newSettings: this.settings } })
+      );
+    }
   }
 
   override render() {
@@ -86,15 +106,18 @@ export class FullScreenSettings extends LitElement {
           <sh-fullscreen-settings-settings
             settings=${this.settings}
             @change=${this._bubble}
+            ${ref(this._editSourceRef)}
           ></sh-fullscreen-settings-settings>
+          <button @click=${this._onChangeSettingsSaveClicked}>Save</button>
         `;
         break;
       case SelectedComponent.ADD_SOURCE:
         currentComponent = html`
           <h1>Add new Source</h1>
           <sh-fullscreen-settings-add-source
-            @sourceAdded=${this._onSourceAdded}
+            ${ref(this._addSourceRef)}
           ></sh-fullscreen-settings-add-source>
+          <button @click=${this._onAddSourceSaveClicked}>Save</button>
         `;
         break;
       case SelectedComponent.SHOW_LINKS:
