@@ -51,16 +51,13 @@ export class FullScreenSettingsSettings extends LitElement {
     return this._settings.toJson();
   }
 
-  _onSelectionChanged(evt: Event) {
-    if (!evt || !evt.target) {
+  _onSourceChanged(evt: CustomEvent) {
+    if (!evt || !evt.detail) {
       return;
     }
-
-    let target = evt.target as HTMLInputElement;
-    let sourceIndex = Number.parseInt(target.value, 10);
     let editor = this._sourceSettingsRef.value;
     if (editor) {
-      editor.source = JSON.stringify(this._settings.sources[sourceIndex]);
+      editor.source = JSON.stringify(evt.detail.source);
     }
   }
 
@@ -72,16 +69,11 @@ export class FullScreenSettingsSettings extends LitElement {
     this._settings.favIconTemplate = evt.target.value;
   }
 
-  _renderSelectOption(value: TBookmarkSource, index: number) {
-    return html`<option value="${index}">Source: ${value.type}</option>`;
-  }
-
   _onSourceSettingsChanged(evt: CustomEvent) {
     let sourceSetting = JSON.parse(evt.detail.sourceSetting);
     let selector = this._selectorRef.value as HTMLSelectElement | null;
-    if (selector && selector.selectedIndex !== 0) {
-      let sourceIndex = Number.parseInt(selector.value, 10);
-      this._settings.sources[sourceIndex] = sourceSetting;
+    if (selector && selector.selectedIndex >= 0) {
+      this._settings.sources[selector.selectedIndex] = sourceSetting;
     }
   }
 
@@ -101,14 +93,11 @@ export class FullScreenSettingsSettings extends LitElement {
       <p class="hint">
         Select a bookmark source below to access and edit its settings.
       </p>
-      <select
-            ${ref(this._selectorRef)}
-            @change=${this._onSelectionChanged}
-            name="source"
-            part="sourceSelection">
-          <option selected disabled>Select a source</option>
-          ${this._settings.sources.map(this._renderSelectOption)}
-          </select>
+      <sh-source-select
+        settings=${this._settings.toJson()}
+        @sourceChanged=${this._onSourceChanged}
+        ${ref(this._selectorRef)}
+        ></sh-source-select>
       <sh-fullscreen-settings-add-source
         ${ref(this._sourceSettingsRef)}
         @change=${this._onSourceSettingsChanged}
