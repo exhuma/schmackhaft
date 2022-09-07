@@ -9,18 +9,33 @@ let settings = new Settings(
       settings: {
         url: "https://github.com/exhuma/dotfiles/bookmarks.json",
       },
+      name: "Hello World!",
+      defaultTags: ["tag1", "tag2"],
+      favIconTemplateURL: "http://favicon.example",
+      hasFaviconsEnabled: false,
+      isEnabled: true,
     },
     {
       type: BookmarkSource.BROWSER,
       settings: {
         foo: "bar",
       },
+      name: "Browser Bookmarks",
+      defaultTags: ["tag2", "tag3"],
+      favIconTemplateURL: "http://favicon.example/another/example",
+      hasFaviconsEnabled: true,
+      isEnabled: false,
     },
     {
       type: BookmarkSource.EXTENSION_STORAGE,
       settings: {
         bar: "baz",
       },
+      name: "Extension Storage",
+      defaultTags: [],
+      favIconTemplateURL: "",
+      hasFaviconsEnabled: true,
+      isEnabled: true,
     },
   ],
   4,
