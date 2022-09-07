@@ -23,7 +23,7 @@ let settings = new Settings(
       },
     },
   ],
-  3,
+  4,
   "http://domain.of.favicon.service/{domain}"
 );
 

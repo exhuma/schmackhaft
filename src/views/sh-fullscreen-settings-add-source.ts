@@ -73,6 +73,7 @@ export class FullScreenSettingsAddSource extends LitElement {
   _onTypeChanged(evt: { target: { value: string } }) {
     let enumValue = getEnumByValue(BookmarkSource, evt.target.value);
     this._source.type = enumValue;
+    this._dispatchChangeEvent();
   }
 
   _onSettingsBlurred(evt: { target: { value: string } }) {
@@ -158,7 +159,7 @@ export class FullScreenSettingsAddSource extends LitElement {
         <input
           type="text"
           id="nameTextField"
-          value=${this._source.name}
+          .value=${this._source.name}
           @change=${this._onNameChanged}
         />
       </div>
@@ -168,7 +169,7 @@ export class FullScreenSettingsAddSource extends LitElement {
         <input
           type="text"
           id="tagsTextField"
-          value=${this._source.defaultTags}
+          .value=${this._source.defaultTags}
           @change=${this._onTagsChanged}
         />
       </div>
@@ -198,7 +199,7 @@ export class FullScreenSettingsAddSource extends LitElement {
         <input
           type="text"
           id="faviconUrlTextField"
-          value=${this._source.favIconTemplateURL}
+          .value=${this._source.favIconTemplateURL}
           @change=${this._onFaviconUrlChanged}
         />
       </div>
@@ -216,7 +217,11 @@ export class FullScreenSettingsAddSource extends LitElement {
         <label for="sourceSettingsEditor">Source Settings</label>
       </div>
       <div class="fullWidth">
-        <textarea id="sourceSettingsEditor" @blur=${this._onSettingsBlurred}>
+        <textarea
+          id="sourceSettingsEditor"
+          .value=${JSON.stringify(this._source.settings, null, 2)}
+          @blur=${this._onSettingsBlurred}
+        >
 ${JSON.stringify(this._source.settings, null, 2)}</textarea
         >
         ${errorDisplay}

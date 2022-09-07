@@ -81,7 +81,7 @@ export class FullScreenSettingsSettings extends LitElement {
     let selector = this._selectorRef.value as HTMLSelectElement | null;
     if (selector && selector.selectedIndex !== 0) {
       let sourceIndex = Number.parseInt(selector.value, 10);
-      this._settings.sources[sourceIndex].settings = sourceSetting;
+      this._settings.sources[sourceIndex] = sourceSetting;
     }
   }
 
