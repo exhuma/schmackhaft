@@ -70,10 +70,6 @@ export class FullScreenSettings extends LitElement {
     return this._settings.toJson();
   }
 
-  _bubble(evt: CustomEvent) {
-    this.dispatchEvent(new CustomEvent(evt.type, { detail: evt.detail }));
-  }
-
   _setView(view: SelectedComponent) {
     this._selectedComponent = view;
   }
@@ -105,7 +101,6 @@ export class FullScreenSettings extends LitElement {
         currentComponent = html`
           <sh-fullscreen-settings-settings
             settings=${this.settings}
-            @change=${this._bubble}
             ${ref(this._editSourceRef)}
           ></sh-fullscreen-settings-settings>
           <button @click=${this._onChangeSettingsSaveClicked}>Save</button>
