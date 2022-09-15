@@ -20,4 +20,11 @@ export default {
       },
     },
   },
+  test: {
+    include: ["test/unit/**/*.test.ts"],
+    coverage: {
+      provider: "istanbul", // or 'c8'
+      include: ["src/**/*.ts"],
+    },
+  },
 };
