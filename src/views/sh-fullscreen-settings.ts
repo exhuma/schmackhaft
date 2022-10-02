@@ -117,7 +117,9 @@ export class FullScreenSettings extends LitElement {
         break;
       case SelectedComponent.SHOW_LINKS:
         currentComponent = html`
-          <sh-fullscreen-settings-show-links></sh-fullscreen-settings-show-links>
+          <sh-fullscreen-settings-show-links
+            settings=${this.settings}
+          ></sh-fullscreen-settings-show-links>
         `;
         break;
     }
