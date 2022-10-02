@@ -5,6 +5,14 @@ import { TBookmarkSource } from "../types";
 
 @customElement("sh-source-select")
 export class SourceSelect extends LitElement {
+  static styles = [
+    css`
+      :host {
+        display: block;
+      }
+    `,
+  ];
+
   @property({
     converter: {
       fromAttribute: (value: string, type) => {
