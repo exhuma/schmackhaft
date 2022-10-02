@@ -2,6 +2,7 @@ import { BookmarkSource, IStorage, TBrowserFactory } from "../../types";
 import { BookmarkStorage } from "./bookmarks";
 import { HttpStorage } from "./http";
 import { LocalStorage } from "./local";
+import { StaticStorage } from "./static";
 
 /**
  * Create an instance of bookmarks storage.
@@ -27,6 +28,8 @@ export function createStorage(
       return new HttpStorage(settings, browserFactory);
     case BookmarkSource.BROWSER:
       return new BookmarkStorage(settings, browserFactory);
+    case BookmarkSource.STATIC:
+      return new StaticStorage(settings, browserFactory);
     default:
       throw new Error(`Unsupported storage type: ${type}`);
   }

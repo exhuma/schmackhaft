@@ -49,6 +49,7 @@ export enum BookmarkSource {
   HTTP = "http",
   BROWSER = "browser",
   EXTENSION_STORAGE = "extension_storage",
+  STATIC = "static",
 }
 
 export type Bookmark = {
