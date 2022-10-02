@@ -19,7 +19,7 @@
  * @param value The value we want to convert
  * @returns the enum value
  */
-export function getEnumByValue(cls: any, value: string): any {
+export function getEnumByValue(cls: any, value: string | number): any {
   const typeIndex = Object.values(cls).indexOf(value);
   if (typeIndex < 0) {
     throw new Error(`Unknown enum value: ${value} for enum ${cls}`);
