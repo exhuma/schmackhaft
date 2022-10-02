@@ -7,7 +7,7 @@ let settings = new Settings(
     {
       type: BookmarkSource.HTTP,
       settings: {
-        url: "https://github.com/exhuma/dotfiles/bookmarks.json",
+        url: "https://raw.githubusercontent.com/exhuma/dotfiles/master/bookmarks.json",
       },
       name: "Hello World!",
       defaultTags: ["tag1", "tag2"],
