@@ -3,11 +3,35 @@ name: CI
 
 on:
   push:
-    tags: ["v*"]
+  pull_request:
 
 jobs:
+  unit-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "16"
+      - run: npm clean-install
+      - run: npm run test-unit
+  e2e-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "16"
+      - run: npm clean-install
+      - run: npm run test-e2e
   build:
     runs-on: ubuntu-latest
+    if: >
+      github.event_name == 'push' &&
+      startsWith(github.event.ref, 'refs/tags')
+    needs:
+      - unit-tests
+      - e2e-tests
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
