@@ -46,9 +46,9 @@ export class TagList extends LitElement {
       return "No links";
     }
     let counter = new Counter<string>();
-    this.links.filtered.forEach((element) => {
+    for (let element of this.links) {
       counter.addAll(element.tags);
-    });
+    }
     let unfilterTags = this.links.searchedTags.map(
       this.renderUnfilterTag,
       this

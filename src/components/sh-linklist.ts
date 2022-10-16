@@ -38,8 +38,8 @@ export class LinkList extends LitElement {
     this.focussedLinkIndex = index;
     if (this.focussedLinkIndex < 0) {
       this.focussedLinkIndex = 0;
-    } else if (this.focussedLinkIndex > this.links.filtered.length - 1) {
-      this.focussedLinkIndex = this.links.filtered.length - 1;
+    } else if (this.focussedLinkIndex > this.links.length - 1) {
+      this.focussedLinkIndex = this.links.length - 1;
     }
     let selectedElement =
       this.containerRef?.value?.getElementsByClassName("selected");
@@ -69,7 +69,7 @@ export class LinkList extends LitElement {
     if (this.links.isEmpty) {
       return null;
     }
-    return this.links.filtered[this.focussedLinkIndex];
+    return this.links[this.focussedLinkIndex];
   }
 
   _renderTag(tagName: string, component: any) {
@@ -111,14 +111,18 @@ export class LinkList extends LitElement {
   }
 
   override render() {
+    let links = [];
+    for (let item of this.links) {
+      links.push(item);
+    }
     if (this.renderSearchedTags) {
       return html`
         <p>${this.links.searchedTags.map(this._renderTag, this)}</p>
-        ${this.links.filtered.map(this._renderLink, this)}
+        ${links.map(this._renderLink, this)}
       `;
     }
     return html`<div ${ref(this.containerRef)}>
-      ${this.links.filtered.map(this._renderLink, this)}
+      ${links.map(this._renderLink, this)}
     </div>`;
   }
 }

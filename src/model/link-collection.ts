@@ -8,9 +8,14 @@ import { Link } from "../model/link";
 import { intersection } from "../collections";
 
 /**
- * A colelction of links.
+ * A collection of links.
  *
  * This is the main implementation for working and search for links.
+ *
+ * Instances of this class support the iterator protocol and can be used in a
+ * "for ... of" loop. When used this way, the iterated links will be filtered
+ * according to the current state and sorted according to the link's
+ * "compString" argument
  */
 export class Links {
   links: Array<Link>;
@@ -54,24 +59,6 @@ export class Links {
    */
   toJson(): string {
     return JSON.stringify(this.links.map((item): Bookmark => item.toObject()));
-  }
-
-  /**
-   * Return a new list of links acording to the specified filter(s) in this class.
-   * The returned list will also be sorted according to the link's "compString"
-   * argument
-   *
-   * @todo Is it not possible to make objects comparable in JS? It should be?
-   * @returns Return only links matching the current filters
-   */
-  get filtered() {
-    const output = this.links.filter((link) => {
-      return this.isMatchingOnTags(link) && this.isMatchingOnSearchString(link);
-    });
-    output.sort((a: Link, b: Link) => {
-      return a.compString.localeCompare(b.compString);
-    });
-    return output;
   }
 
   /**
@@ -236,5 +223,66 @@ export class Links {
    */
   clearSearch() {
     this.searchString = "";
+  }
+
+  /**
+   * Return the length/count of *filtered* links. For a total length see
+   * "totalLenght"
+   *
+   * @returns The count of filtered links
+   */
+  get filteredLength() {
+    return new Array(...this).length;
+  }
+
+  /**
+   * Return the length/count of all links encapsulated by this class. For a
+   * "filtered" length see "filteredLength"
+   *
+   * @returns The count of all (unfiltered) links encapsulated by this class
+   */
+  get totalLength() {
+    return this.links.length;
+  }
+
+  /**
+   * Return a single link by position after filtering and sorting has been
+   * applied.
+   * j
+   *
+   * @param index The position of the link (after filtering and sorting)
+   * @returns The link at the given position
+   */
+  getFromFiltered(index: number): Link {
+    return new Array(...this)[index];
+  }
+
+  /**
+   * Return a single link by position before filtering and sorting has been
+   * applied.
+   *
+   * @param index The position of the link (before filtering and sorting)
+   * @returns The link at the given position
+   */
+  getFromAll(index: number): Link {
+    return this.links[index];
+  }
+
+  /**
+   * Provide the "iterator protocol"
+   *
+   * @yields link objects as filtered and sorted by this collection
+   * @todo Is it not possible to make objects comparable in JS? It should be?
+   */
+  *[Symbol.iterator](): Generator<Link> {
+    const output = this.links.filter((link) => {
+      return this.isMatchingOnTags(link) && this.isMatchingOnSearchString(link);
+    });
+    output.sort((a: Link, b: Link) => {
+      return a.compString.localeCompare(b.compString);
+    });
+    for (let item of output) {
+      yield item;
+    }
   }
 }
