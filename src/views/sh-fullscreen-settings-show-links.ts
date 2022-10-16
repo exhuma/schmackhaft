@@ -86,7 +86,12 @@ export class FullScreenSettingsShowLinks extends LitElement {
 
     let bookmarkElements: TemplateResult[] = [];
     this.bookmarks.forEach((item) => {
-      bookmarkElements.push(html`<div>${item.title ?? item.href}</div>`);
+      bookmarkElements.push(
+        html`<div>
+          ${item.title}<br />${item.href}
+          <hr />
+        </div>`
+      );
     });
 
     return html`
