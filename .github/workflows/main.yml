@@ -22,8 +22,8 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: "16"
-      - uses: microsoft/playwright-github-action@v1
       - run: npm clean-install
+      - run: npx playwright install-deps
       - run: npm run test-e2e
   build:
     runs-on: ubuntu-latest
