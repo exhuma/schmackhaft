@@ -1,15 +1,12 @@
 import "../components/sh-source-select";
 import "../components/layout-hsplit";
 import "../components/sh-chip";
-import {
-  Bookmark,
-  TBookmarkSource,
-  TBrowserFactory,
-  TagStateTransition,
-} from "../types";
 import { LitElement, TemplateResult, css, html } from "lit";
+import { TBookmarkSource, TBrowserFactory, TagStateTransition } from "../types";
 import { customElement, property, state } from "lit/decorators.js";
 import { Counter } from "../core/counter";
+import { Link } from "../model/link";
+import { Links } from "../model/link-collection";
 import { Settings } from "../model/settings";
 import { createStorage } from "../core/storage/factory";
 
@@ -47,7 +44,7 @@ export class FullScreenSettingsShowLinks extends LitElement {
   settings: Settings = new Settings();
 
   @state()
-  bookmarks: Bookmark[] = [];
+  links: Links = new Links();
 
   async _newSourceSelected(evt: { detail: { source: TBookmarkSource } }) {
     let source = evt.detail.source;
@@ -57,21 +54,45 @@ export class FullScreenSettingsShowLinks extends LitElement {
       this.browserFactory
     );
     let items = await storage.getAll();
-    this.bookmarks = items;
+    // TODO Double-check if this conversion from "Bookmark" to "Link" is really
+    // necessary
+    this.links = new Links(
+      items.map((item) => {
+        return new Link(
+          item.href,
+          item.tags,
+          item.title,
+          item.image,
+          item.description
+        );
+      })
+    );
   }
 
   _onChipClicked(evt: {
     detail: { name: string; direction: TagStateTransition };
   }) {
-    console.log(evt.detail);
+    this.links.advanceState(evt.detail.name);
+    this.requestUpdate();
   }
 
   override render() {
     let tagCounter = new Counter();
-    this.bookmarks.forEach((bookmark) => {
+    for (let bookmark of this.links) {
       tagCounter.addAll(bookmark.tags);
-    });
+    }
     let tagElements = [];
+
+    this.links.excludedTags.map((item) => {
+      tagElements.push(
+        html`<sh-chip
+          name=${item}
+          .state=${this.links.getState(item)}
+          @chipClicked=${this._onChipClicked}
+        ></sh-chip>`
+      );
+    });
+
     for (const item of tagCounter.items.entries() as IterableIterator<
       [string, number]
     >) {
@@ -79,20 +100,21 @@ export class FullScreenSettingsShowLinks extends LitElement {
         html`<sh-chip
           name=${item[0]}
           count=${item[1]}
+          .state=${this.links.getState(item[0])}
           @chipClicked=${this._onChipClicked}
         ></sh-chip>`
       );
     }
 
     let bookmarkElements: TemplateResult[] = [];
-    this.bookmarks.forEach((item) => {
+    for (let item of this.links) {
       bookmarkElements.push(
         html`<div>
           ${item.title}<br />${item.href}
           <hr />
         </div>`
       );
-    });
+    }
 
     return html`
       <sh-source-select
