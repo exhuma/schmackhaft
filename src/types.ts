@@ -83,6 +83,7 @@ export type Browser = {
 };
 
 export interface IStorage {
+  fetch: TFetcher;
   settings: any;
   get(href: string): Promise<Bookmark | null>;
   getAll(): Promise<Bookmark[]>; // TODO: Is this used?!?
@@ -111,3 +112,4 @@ export type TSettings = {
 };
 
 export type TBrowserFactory = () => Promise<Browser | null>;
+export type TFetcher = (url: string) => Promise<any>;

@@ -7,6 +7,7 @@ import {
   BrowserBookmarkNode,
   IStorage,
   TBrowserFactory,
+  TFetcher,
 } from "../../types";
 
 /**
@@ -43,10 +44,12 @@ export function visit(
 export class BookmarkStorage implements IStorage {
   settings: {};
   browserFactory: TBrowserFactory;
+  fetch: (url: string) => Promise<any>;
 
-  constructor(settings: any, browserFactory: TBrowserFactory) {
+  constructor(settings: any, browserFactory: TBrowserFactory, fetch: TFetcher) {
     this.settings = settings;
     this.browserFactory = browserFactory;
+    this.fetch = fetch;
   }
 
   async get(href: string): Promise<Bookmark | null> {

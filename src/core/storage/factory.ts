@@ -1,4 +1,9 @@
-import { BookmarkSource, IStorage, TBrowserFactory } from "../../types";
+import {
+  BookmarkSource,
+  IStorage,
+  TBrowserFactory,
+  TFetcher,
+} from "../../types";
 import { BookmarkStorage } from "./bookmarks";
 import { HttpStorage } from "./http";
 import { LocalStorage } from "./local";
@@ -13,20 +18,25 @@ import { LocalStorage } from "./local";
  * @param settings A user-settings object
  * @param browserFactory A factory method to get a reference to the
  *   browser-extension API
+ * @param fetcher A dependency-injection point for the browser "fetch" API
  * @returns A storage instance
  */
 export function createStorage(
   type: BookmarkSource,
   settings: any,
-  browserFactory: TBrowserFactory
+  browserFactory: TBrowserFactory,
+  fetcher: TFetcher | null = null
 ): IStorage {
+  if (fetcher === null) {
+    fetcher = fetch;
+  }
   switch (type) {
     case BookmarkSource.EXTENSION_STORAGE:
-      return new LocalStorage(settings, browserFactory);
+      return new LocalStorage(settings, browserFactory, fetcher);
     case BookmarkSource.HTTP:
-      return new HttpStorage(settings, browserFactory);
+      return new HttpStorage(settings, browserFactory, fetcher);
     case BookmarkSource.BROWSER:
-      return new BookmarkStorage(settings, browserFactory);
+      return new BookmarkStorage(settings, browserFactory, fetcher);
     default:
       throw new Error(`Unsupported storage type: ${type}`);
   }

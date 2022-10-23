@@ -3,10 +3,16 @@ import { Bookmark, IStorage, TBrowserFactory } from "../../types";
 export class HttpStorage implements IStorage {
   settings: any;
   browserFactory: TBrowserFactory;
+  fetch: (url: string) => Promise<any>;
 
-  constructor(settings: any, browserFactory: TBrowserFactory) {
+  constructor(
+    settings: any,
+    browserFactory: TBrowserFactory,
+    fetch: (url: string) => Promise<any>
+  ) {
     this.settings = settings;
     this.browserFactory = browserFactory;
+    this.fetch = fetch;
   }
 
   async get(href: string): Promise<Bookmark | null> {
@@ -18,7 +24,7 @@ export class HttpStorage implements IStorage {
     if (!this.settings.url || this.settings.url === "") {
       return [];
     }
-    let result = await fetch(this.settings.url);
+    let result = await this.fetch(this.settings.url);
     let data = [];
     if (result.ok) {
       data = await result.json();

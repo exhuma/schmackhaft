@@ -1,12 +1,14 @@
-import { Bookmark, IStorage, TBrowserFactory } from "../../types";
+import { Bookmark, IStorage, TBrowserFactory, TFetcher } from "../../types";
 
 export class LocalStorage implements IStorage {
   settings: object;
   browserFactory: TBrowserFactory;
+  fetch: TFetcher;
 
-  constructor(settings: any, browserFactory: TBrowserFactory) {
+  constructor(settings: any, browserFactory: TBrowserFactory, fetch: TFetcher) {
     this.settings = settings;
     this.browserFactory = browserFactory;
+    this.fetch = fetch;
   }
 
   async get(href: string): Promise<Bookmark | null> {
