@@ -55,8 +55,10 @@ export class Counter<Type> {
     }
     if (this.items.get(item) === 1) {
       this.items.delete(item);
+      return;
     }
-    let currentValue = this.items.get(item) || 0;
+    let currentValue = this.items.get(item);
+    // @ts-ignore ('undefined' is already covered by a previous 'if')
     this.items.set(item, currentValue - 1);
   }
 
