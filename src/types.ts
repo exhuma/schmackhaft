@@ -85,7 +85,7 @@ export type Browser = {
 export interface IStorage {
   settings: any;
   get(href: string): Promise<Bookmark | null>;
-  getAll(): Promise<Bookmark[]>;
+  getAll(): Promise<Bookmark[]>; // TODO: Is this used?!?
   put(data: Bookmark): Promise<void>;
   remove(href: string): Promise<void>;
 }

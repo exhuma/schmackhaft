@@ -16,7 +16,7 @@ import {
  * @param parentFolderNames A list representing the path for this current node
  * @returns A list of bookmarks in this node
  */
-function visit(
+export function visit(
   node: BrowserBookmarkNode,
   parentFolderNames: string[]
 ): Bookmark[] {
