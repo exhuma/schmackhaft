@@ -19,7 +19,7 @@
     "eslint": "eslint",
     "typecheck": "tsc --noEmit",
     "test-unit": "vitest --coverage",
-    "test-e2e": "web-test-runner --node-resolve  --playwright --browsers chromium firefox webkit"
+    "test-e2e": "web-test-runner --coverage --node-resolve  --playwright --browsers chromium firefox webkit"
   },
   "devDependencies": {
     "@esm-bundle/chai": "^4.3.4-fix.0",
