@@ -23,8 +23,9 @@ export default {
   test: {
     include: ["test/unit/**/*.test.ts"],
     coverage: {
-      provider: "istanbul", // or 'c8'
+      provider: "c8",
       include: ["src/**/*.ts"],
+      all: true,
     },
   },
 };
