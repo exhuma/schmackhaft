@@ -25,6 +25,12 @@ export default {
     coverage: {
       provider: "c8",
       include: ["src/**/*.ts"],
+      exclude: [
+        // "settings.ts" contains a bridge that relies on side-effects. Testing
+        // this is more complicated than the implementation itself. Hence we
+        // ignore it.
+        "src/core/settings.ts",
+      ],
       all: true,
     },
   },
