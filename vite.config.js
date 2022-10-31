@@ -21,7 +21,9 @@ export default {
     },
   },
   test: {
-    include: ["test/unit/**/*.test.ts"],
+    globals: true,
+    environment: "jsdom",
+    include: ["test/unit/**/*.test.ts", "test/unit/**/*.test.html"],
     coverage: {
       provider: "c8",
       include: ["src/**/*.ts"],
