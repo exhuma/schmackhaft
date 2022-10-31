@@ -16,6 +16,15 @@ async function dummyFetcher(url: string): Promise<any> {
 }
 
 class FakeBrowser {
+  get tabs() {
+    return null;
+  }
+  get runtime() {
+    return null;
+  }
+  get bookmarks() {
+    return null;
+  }
   get storage() {
     return {
       local: {
@@ -49,7 +58,11 @@ class FakeBrowser {
 
 describe("local bookmark storage", function () {
   it("can read all bookmarks", async () => {
-    let storage = new LocalStorage({}, () => new FakeBrowser(), dummyFetcher);
+    let storage = new LocalStorage(
+      {},
+      async () => new FakeBrowser(),
+      dummyFetcher
+    );
     let result = await storage.getAll();
     let expected = [
       {
@@ -71,7 +84,11 @@ describe("local bookmark storage", function () {
   });
 
   it("can retrieve details for a single URL", async () => {
-    let storage = new LocalStorage({}, () => new FakeBrowser(), dummyFetcher);
+    let storage = new LocalStorage(
+      {},
+      async () => new FakeBrowser(),
+      dummyFetcher
+    );
     let result = await storage.get("https://example.com");
     let expected = {
       description: "",
@@ -84,19 +101,31 @@ describe("local bookmark storage", function () {
   });
 
   it("can retrieve details for a single non-existing URL", async () => {
-    let storage = new LocalStorage({}, () => new FakeBrowser(), dummyFetcher);
+    let storage = new LocalStorage(
+      {},
+      async () => new FakeBrowser(),
+      dummyFetcher
+    );
     let result = await storage.get("https://example.com/does/not/exist");
     expect(result).to.be.null;
   });
 
   it("does not break if we don't have a browser", async () => {
-    let storage = new LocalStorage({}, () => new FakeBrowser(), dummyFetcher);
+    let storage = new LocalStorage(
+      {},
+      async () => new FakeBrowser(),
+      dummyFetcher
+    );
     let result = await storage.getAll();
     expect(result.length).to.equal(2);
   });
 
   it("does not break if we store new bookmarks", async () => {
-    let storage = new LocalStorage({}, () => new FakeBrowser(), dummyFetcher);
+    let storage = new LocalStorage(
+      {},
+      async () => new FakeBrowser(),
+      dummyFetcher
+    );
     let result = await storage.put({
       title: "",
       tags: [],
@@ -108,39 +137,43 @@ describe("local bookmark storage", function () {
   });
 
   it("does not break if we remove bookmarks", async () => {
-    let storage = new LocalStorage({}, () => new FakeBrowser(), dummyFetcher);
+    let storage = new LocalStorage(
+      {},
+      async () => new FakeBrowser(),
+      dummyFetcher
+    );
     let result = await storage.remove("");
     expect(result).to.be.undefined;
   });
 
   it("can read all bookmarks without browser", async () => {
-    let storage = new LocalStorage({}, () => null, dummyFetcher);
+    let storage = new LocalStorage({}, async () => null, dummyFetcher);
     let result = await storage.getAll();
     let expected = [];
     expect(result).to.have.deep.members(expected);
   });
 
   it("can retrieve details for a single URL without browser", async () => {
-    let storage = new LocalStorage({}, () => null, dummyFetcher);
+    let storage = new LocalStorage({}, async () => null, dummyFetcher);
     let result = await storage.get("https://example.com");
     let expected = null;
     expect(result).to.eql(expected);
   });
 
   it("can retrieve details for a single non-existing URL without browser", async () => {
-    let storage = new LocalStorage({}, () => null, dummyFetcher);
+    let storage = new LocalStorage({}, async () => null, dummyFetcher);
     let result = await storage.get("https://example.com/does/not/exist");
     expect(result).to.be.null;
   });
 
   it("does not break if we don't have a browser without browser", async () => {
-    let storage = new LocalStorage({}, () => null, dummyFetcher);
+    let storage = new LocalStorage({}, async () => null, dummyFetcher);
     let result = await storage.getAll();
     expect(result.length).to.equal(0);
   });
 
   it("does not break if we store new bookmarks", async () => {
-    let storage = new LocalStorage({}, () => null, dummyFetcher);
+    let storage = new LocalStorage({}, async () => null, dummyFetcher);
     let result = await storage.put({
       title: "",
       tags: [],
@@ -152,7 +185,7 @@ describe("local bookmark storage", function () {
   });
 
   it("does not break if we remove bookmarks", async () => {
-    let storage = new LocalStorage({}, () => null, dummyFetcher);
+    let storage = new LocalStorage({}, async () => null, dummyFetcher);
     let result = await storage.remove("");
     expect(result).to.be.undefined;
   });
