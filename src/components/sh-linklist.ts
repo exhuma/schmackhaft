@@ -70,6 +70,10 @@ export class LinkList extends LitElement {
     >`;
   }
 
+  updateHover(evt: { detail: string }) {
+    this.dispatchEvent(new CustomEvent("updateHover", { detail: evt.detail }));
+  }
+
   _renderLink(link: Link, idx: number) {
     let tagsWithStates = link.tags.map((tagName) => {
       return [tagName, this.links.getState(tagName)];
@@ -89,6 +93,7 @@ export class LinkList extends LitElement {
         .tags="${tagsWithStates}"
         ?dense="${this.dense}"
         @chipClicked="${this.onChipClicked}"
+        @updateHover="${this.updateHover}"
       ></sh-link>
     `;
   }
