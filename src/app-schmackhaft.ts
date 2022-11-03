@@ -266,7 +266,11 @@ export class Schmackhaft extends LitElement {
         ></sh-toolbar>
         ${this._renderMainContent()}
         ${this.errors.map((error, index) => this._renderError(error, index))}
-        <div ">${this._currentSelection}</div>
+      </div>
+      <div
+        class="px-2 pt-3 p-1 -mx-0.5 dark:bg-slate-800 dark:text-white truncate"
+      >
+        ${this._currentSelection}
       </div>
     `;
   }
