@@ -101,13 +101,24 @@ class Link extends LitElement {
     };
   }
 
+  onMouseEvent(text: string) {
+    this.dispatchEvent(new CustomEvent("updateHover", { detail: text }));
+  }
+
   override render() {
-    let title = html`<a
-      class="underline text-blue-900 dark:text-blue-100"
-      href="${this.href}"
-      target="_blank"
-      >${this.title || this.href}</a
-    >`;
+    let title = html`
+      <a
+        tabindex="1"
+        class="underline text-blue-900 dark:text-blue-100 testA"
+        href="${this.href}"
+        target="_blank"
+        @mouseover=${() => this.onMouseEvent(this.href)}
+        @mouseleave=${() => this.onMouseEvent("")}
+        @focus=${() => this.onMouseEvent(this.href)}
+      >
+        ${this.title || this.href}
+      </a>
+    `;
     let description = html``;
     if (this.description && !this.dense) {
       description = html`<p class="description">${this.description}</p>`;

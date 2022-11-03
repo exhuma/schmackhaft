@@ -77,6 +77,9 @@ export class Schmackhaft extends LitElement {
   @state()
   private _settings: Settings = new Settings();
 
+  @state()
+  private _currentSelection: string = "";
+
   private errors: { source: TBookmarkSource; errorMessage: string }[] = [];
 
   @property()
@@ -163,6 +166,10 @@ export class Schmackhaft extends LitElement {
     window.close();
   }
 
+  _updateHover(evt: { detail: string }) {
+    this._currentSelection = evt.detail;
+  }
+
   _renderBookmarks() {
     if (this._links.isEmpty) {
       return html` <strong>No links found.</strong>
@@ -173,6 +180,7 @@ export class Schmackhaft extends LitElement {
     }
     return html`<sh-bookmarklist
       @linkActivated=${this._onLinkActivated}
+      @updateHover="${this._updateHover}"
       .links=${this._links}
     ></sh-bookmarklist>`;
   }
@@ -246,6 +254,7 @@ export class Schmackhaft extends LitElement {
         ></sh-toolbar>
         ${this._renderMainContent()}
         ${this.errors.map((error) => this._renderError(error))}
+        <div ">${this._currentSelection}</div>
       </div>
     `;
   }

@@ -87,6 +87,10 @@ export class Bookmarks extends LitElement {
     this.quickSearchRef.value?.focus();
   }
 
+  updateHover(evt: { detail: string }) {
+    this.dispatchEvent(new CustomEvent("updateHover", { detail: evt.detail }));
+  }
+
   override render() {
     return html`
       <input
@@ -111,6 +115,7 @@ export class Bookmarks extends LitElement {
           .renderSearchedTags="${false}"
           favIconTemplate=${this.favIconTemplate}
           @chipClicked="${this._onChipClicked}"
+          @updateHover="${this.updateHover}"
           dense
         ></sh-linklist>
       </layout-vsplit>
