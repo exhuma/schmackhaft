@@ -14,14 +14,11 @@ mozilla: pages bundled_docs
 icons:
 	mkdir -p unpackaged/chrome/assets
 	inkscape -w 48 -h 48 assets/icon.svg \
-		-o unpackaged/chrome/assets/icon48.png \
-		2>/dev/null
+		-o unpackaged/chrome/assets/icon48.png
 	inkscape -w 96 -h 96 assets/icon.svg \
-		-o unpackaged/chrome/assets/icon96.png \
-		2>/dev/null
+		-o unpackaged/chrome/assets/icon96.png
 	inkscape -w 128 -h 128 assets/icon.svg \
-		-o unpackaged/chrome/assets/icon128.png \
-		2>/dev/null
+		-o unpackaged/chrome/assets/icon128.png
 
 chrome: pages bundled_docs icons
 	cp -r build/* unpackaged/chrome/
