@@ -15,6 +15,14 @@ describe("The chip custom element", async () => {
     node = result;
   });
 
+  it("re-renders on modification", async () => {
+    expect(node.shadowRoot?.textContent).toContain("the-title");
+    node.name = "the-name";
+    node.count = 10;
+    await node.updateComplete;
+    expect(node.shadowRoot?.textContent).toContain("the-name");
+  });
+
   it("provides the name-attribute as a DOM property", () => {
     expect(node.name).to.equal("the-title");
   });

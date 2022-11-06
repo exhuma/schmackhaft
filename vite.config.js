@@ -33,7 +33,7 @@ export default {
         // ignore it.
         "src/core/settings.ts",
       ],
-      all: true,
+      all: false,
     },
   },
 };
