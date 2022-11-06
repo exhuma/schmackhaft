@@ -7,7 +7,7 @@ but provides a reproducible build environment with all required system
 dependencies. When working with VS-Code (including the
 `ms-vscode-remote.vscode-remote-extensionpack` extension) the development
 container can be built manually by opening the command-pallette (CTRL-SHIFT-P)
-and selecting `Remote-Containers: Rebuild Container` command. This can also be
+and selecting `Dev-Containers: Rebuild Container` command. This can also be
 used any time something in the container has changed.
 
 1. Clone the Repository
@@ -19,11 +19,11 @@ used any time something in the container has changed.
 
 1. Build
 
-   - With VS-Code using the "Remote Containers" extension
+   - With VS-Code using the "Remote Development" extension
 
      - Build the development container
 
-       Select "Remote-Containers: Rebuild Container" from the command-pallette
+       Select "Dev Containers: Rebuild Container" from the command-pallette
        (CTRL-SHIFT-P)
 
      - Build the extension

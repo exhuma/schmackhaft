@@ -27,6 +27,10 @@ jobs:
       - run: npm run test-e2e
   build:
     runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/vscode/devcontainers/javascript-node:0-16-bullseye
+      env:
+        DEBIAN_FRONTEND: noninteractive
     if: >
       github.event_name == 'push' &&
       startsWith(github.event.ref, 'refs/tags')
@@ -35,11 +39,15 @@ jobs:
       - e2e-tests
     steps:
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       - uses: actions/setup-node@v3
         with:
           node-version: "16"
-      - run: sudo apt install pandoc inkscape
+      - run: sudo apt -y update
+      - run: sudo apt -y install pandoc inkscape
       - run: npm clean-install
+      - run: git config --global --add safe.directory /__w/schmackhaft/schmackhaft
       - run: make dist
       - name: Release
         uses: softprops/action-gh-release@v1
