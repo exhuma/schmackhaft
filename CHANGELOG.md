@@ -1,3 +1,7 @@
+# 1.2.3
+
+- Allow error messages to be closed
+
 # 1.2.2
 
 - Fix default icon for Chromium based browsers (edge, chrome, ...)
