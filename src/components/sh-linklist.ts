@@ -34,7 +34,7 @@ export class LinkList extends LitElement {
 
   focussedLinkIndex = 0;
 
-  focusLink(index: number) {
+  focusLink(index: number, updateLink?: boolean) {
     this.focussedLinkIndex = index;
     if (this.focussedLinkIndex < 0) {
       this.focussedLinkIndex = 0;
@@ -45,16 +45,24 @@ export class LinkList extends LitElement {
       this.containerRef?.value?.getElementsByClassName("selected");
     if (selectedElement && selectedElement[0]) {
       selectedElement[0].scrollIntoView({ block: "center" });
+      if (updateLink) {
+        const link = selectedElement[0].getAttribute("href");
+        if (link != null) {
+          this.updateHover({ detail: link });
+        }
+      } else {
+        this.updateHover({ detail: "" });
+      }
     }
     this.requestUpdate();
   }
 
   focusPreviousLink() {
-    this.focusLink(this.focussedLinkIndex - 1);
+    this.focusLink(this.focussedLinkIndex - 1, true);
   }
 
   focusNextLink() {
-    this.focusLink(this.focussedLinkIndex + 1);
+    this.focusLink(this.focussedLinkIndex + 1, true);
   }
 
   get focussedLink(): Link | null {
