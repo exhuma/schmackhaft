@@ -34,7 +34,7 @@ export class LinkList extends LitElement {
 
   focussedLinkIndex = 0;
 
-  focusLink(index: number) {
+  focusLink(index: number, updateLink?: boolean) {
     this.focussedLinkIndex = index;
     if (this.focussedLinkIndex < 0) {
       this.focussedLinkIndex = 0;
@@ -45,16 +45,24 @@ export class LinkList extends LitElement {
       this.containerRef?.value?.getElementsByClassName("selected");
     if (selectedElement && selectedElement[0]) {
       selectedElement[0].scrollIntoView({ block: "center" });
+      if (updateLink) {
+        const link = this.focussedLink?.href;
+        if (link != null) {
+          this.updateHover({ detail: link });
+        }
+      } else {
+        this.updateHover({ detail: "" });
+      }
     }
     this.requestUpdate();
   }
 
   focusPreviousLink() {
-    this.focusLink(this.focussedLinkIndex - 1);
+    this.focusLink(this.focussedLinkIndex - 1, true);
   }
 
   focusNextLink() {
-    this.focusLink(this.focussedLinkIndex + 1);
+    this.focusLink(this.focussedLinkIndex + 1, true);
   }
 
   get focussedLink(): Link | null {
@@ -68,6 +76,10 @@ export class LinkList extends LitElement {
     return html`<sh-chip name="${tagName}" data-tag="${tagName}"
       >${tagName}</sh-chip
     >`;
+  }
+
+  updateHover(evt: { detail: string }) {
+    this.dispatchEvent(new CustomEvent("updateHover", { detail: evt.detail }));
   }
 
   _renderLink(link: Link, idx: number) {
@@ -89,6 +101,7 @@ export class LinkList extends LitElement {
         .tags="${tagsWithStates}"
         ?dense="${this.dense}"
         @chipClicked="${this.onChipClicked}"
+        @updateHover="${this.updateHover}"
       ></sh-link>
     `;
   }

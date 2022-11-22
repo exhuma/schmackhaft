@@ -1,5 +1,6 @@
 import "./components/layout-vsplit";
 import "./components/sh-bookmarklist";
+import "./components/sh-error";
 import "./components/sh-link";
 import "./components/sh-linklist";
 import "./components/sh-taglist";
@@ -52,10 +53,6 @@ export class Schmackhaft extends LitElement {
         font-size: 14px;
         height: 100%;
       }
-
-      PRE CODE {
-        font-family: "Fira Code", monospace;
-      }
     `,
   ];
 
@@ -76,6 +73,9 @@ export class Schmackhaft extends LitElement {
 
   @state()
   private _settings: Settings = new Settings();
+
+  @state()
+  private _currentSelection: string = "";
 
   private errors: { source: TBookmarkSource; errorMessage: string }[] = [];
 
@@ -163,6 +163,10 @@ export class Schmackhaft extends LitElement {
     window.close();
   }
 
+  _updateHover(evt: { detail: string }) {
+    this._currentSelection = evt.detail;
+  }
+
   _renderBookmarks() {
     if (this._links.isEmpty) {
       return html` <strong>No links found.</strong>
@@ -173,6 +177,7 @@ export class Schmackhaft extends LitElement {
     }
     return html`<sh-bookmarklist
       @linkActivated=${this._onLinkActivated}
+      @updateHover="${this._updateHover}"
       .links=${this._links}
     ></sh-bookmarklist>`;
   }
@@ -208,13 +213,28 @@ export class Schmackhaft extends LitElement {
     }
   }
 
-  _renderError(error: { source: TBookmarkSource; errorMessage: string }) {
-    return html`<div class="border border-red-800 bg-red-200 rounded p-2">
-      <strong>Error:</strong> <em>${error.errorMessage}</em><br />
-      <strong>Source Type:</strong> ${error.source.type}<br />
-      <strong>Source Settings:</strong>
-      <pre class="overflow-auto">${JSON.stringify(error.source.settings)}</pre>
-    </div> `;
+  _removeError(event: Event) {
+    let target: HTMLElement | null = event.target as HTMLElement;
+    let errorIndexRaw = target?.dataset.errorIndex;
+    if (!errorIndexRaw) {
+      throw new Error(
+        `Unable to get the error index on ${target} (via ${event})`
+      );
+    }
+    let errorIndex = Number.parseInt(errorIndexRaw, 10);
+    this.errors.splice(errorIndex, 1);
+    this.requestUpdate();
+  }
+
+  _renderError(
+    error: { source: TBookmarkSource; errorMessage: string },
+    index: number
+  ) {
+    return html`<sh-error
+      @error-closed=${this._removeError}
+      data-error-index=${index}
+      .error=${error}
+    ></sh-error>`;
   }
 
   _onToolbarButtonClick(evt: { detail: { name: ToolbarAction } }) {
@@ -245,7 +265,12 @@ export class Schmackhaft extends LitElement {
           @buttonClicked=${this._onToolbarButtonClick}
         ></sh-toolbar>
         ${this._renderMainContent()}
-        ${this.errors.map((error) => this._renderError(error))}
+        ${this.errors.map((error, index) => this._renderError(error, index))}
+        <div
+          class="-m-2 mt-0 p-1 h-12 border-t text-xs dark:bg-slate-800 dark:text-white truncate"
+        >
+          ${this._currentSelection}
+        </div>
       </div>
     `;
   }
