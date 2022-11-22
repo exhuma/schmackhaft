@@ -46,7 +46,7 @@ export class LinkList extends LitElement {
     if (selectedElement && selectedElement[0]) {
       selectedElement[0].scrollIntoView({ block: "center" });
       if (updateLink) {
-        const link = selectedElement[0].getAttribute("href");
+        const link = this.focussedLink?.href;
         if (link != null) {
           this.updateHover({ detail: link });
         }
